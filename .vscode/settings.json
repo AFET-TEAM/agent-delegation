@@ -1,0 +1,14 @@
+{
+  "chat.agentFilesLocations": [".github/agents"],
+  "chat.promptFilesLocations": [".github/prompts"],
+  "chat.instructionFilesPattern": ".github/instructions/**/*.instructions.md",
+  "files.exclude": {
+    "**/.DS_Store": true,
+    "**/node_modules": true
+  },
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  }
+}
