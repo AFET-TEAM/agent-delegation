@@ -177,6 +177,63 @@ When a primary model is unavailable, the system automatically falls back:
 
 ---
 
+## 🔍 Project Context Discovery (PCD)
+
+> **System Rule**: This rule is mandatory and applies to ALL agents in ALL sessions.
+
+When this boilerplate is placed into a project, agents automatically discover and follow the host project's documentation:
+
+- **Root README.md**: Primary project documentation — always read first.
+- **Root `*.md` files**: Contributing guides, coding standards, API docs (excluding boilerplate files: `AGENTS.md`, `CHANGELOG.md`, `USAGE.md`, `LICENSE`).
+- **`docs/` folder**: Extended documentation, design docs, specifications.
+
+### Priority Hierarchy
+
+1. **Boilerplate structural rules** (tier hierarchy, review chain, file ownership) — NEVER overridden
+2. **Project-specific rules** (coding standards, naming, architecture) — OVERRIDE boilerplate coding defaults
+3. **Boilerplate coding defaults** — apply only when the project has no specific guidance
+
+### Agent Obligations
+
+- All agents read project context before starting any task.
+- Coding agents (T1, T1.5, T2) follow project conventions for all code they write.
+- Analysis agents (T2.5, T3) include project context in analysis scope.
+- Orchestrator triggers PCD scan at session start and distributes context references.
+
+Full protocol: `.github/instructions/project-context-discovery.instructions.md`
+
+---
+
+## 📋 Prompt Enrichment Protocol (PEP)
+
+> **System Rule**: This protocol is mandatory for all non-trivial development tasks.
+
+Before starting any non-trivial development task, the Orchestrator enriches the user's prompt through targeted questions and structured planning:
+
+### When to Apply
+
+- **Always**: New features, multi-file changes, architecture decisions, refactoring
+- **Skip**: Typo fixes, single-line changes, analysis-only tasks, `/resume` continuations
+- **User override**: User can say "skip questions" to bypass or "plan first" to force activation
+
+### Enrichment Process
+
+1. **Analyze prompt**: Identify clear requirements, assumptions, knowledge gaps, decision points
+2. **Ask 3-7 questions**: Cover scope, behavior, technical decisions, edge cases — offer choices with recommended defaults
+3. **Generate plan**: Produce implementation plan with task breakdown, agent assignments, confirmed requirements
+4. **Get approval**: Wait for user confirmation before dispatching agents (max 2 revision rounds)
+
+### Agent Obligations
+
+- Orchestrator owns PEP execution — formulates questions, generates plans, gates implementation
+- Principal validates architectural decisions in generated plans
+- All agents receive the enriched plan as task context and follow confirmed decisions
+- Agents report any implementation deviations from the approved plan
+
+Full protocol: `.github/instructions/prompt-enrichment.instructions.md`
+
+---
+
 ## 🌐 Language Policy
 
 - Agent communication and technical documentation: **English**

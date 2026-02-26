@@ -58,8 +58,23 @@ When the Orchestrator assigns a task, it specifies which skills to load:
 ## Progressive Loading Strategy
 
 1. **Always load first**: `shared-base.instructions.md` (auto-included via `applyTo: "**"`)
-2. **Load on demand**: Tier-specific skills based on task type
-3. **Never pre-load**: Skills outside the agent's tier capability
+2. **Project Context Discovery**: Scan and load host project documentation (`README.md`, root `*.md` files, `docs/` folder) per `project-context-discovery.instructions.md` PCD Context Budget
+3. **Load on demand**: Tier-specific skills based on task type
+4. **Never pre-load**: Skills outside the agent's tier capability
+
+## Project Context Loading (PCD)
+
+Project Context Discovery runs before skill loading and counts **within** the existing context budget (PCD files consume context file slots, not additive). See `project-context-discovery.instructions.md` for full protocol.
+
+> **Canonical Source**: The PCD budget table in `project-context-discovery.instructions.md` is the authoritative reference. The table below is a convenience copy.
+
+| Agent Tier | Max PCD Files | Max PCD Tokens |
+|------------|--------------|----------------|
+| T1 Principal | 5 | 8K |
+| T1.5 Staff Eng | 4 | 6K |
+| T2 MidCoder | 3 | 4K |
+| T2.5 Lead Analyst | 3 | 4K |
+| T3 Analyst | 2 | 3K |
 
 ## Session Context Loading
 
@@ -73,7 +88,7 @@ All instruction files use `applyTo: "**"` which means they are included in every
 
 ### Impact
 
-- Every agent session loads all 15 instruction files (~35-47K tokens of overhead).
+- Every agent session loads all 17 instruction files (~40-52K tokens of overhead).
 - Tier-specific instructions (e.g., T1 Principal rules) are visible to all agents, not just T1.
 - The 15K subtask token budget (from task-planning) does not account for this overhead.
 

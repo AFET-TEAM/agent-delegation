@@ -20,6 +20,7 @@ Break tasks into token-budgeted subtasks to enable pause/resume workflows and ef
 | Test writing                    | 5K–12K           | 1–3 files | T1.5/T2 | 🟡 Medium  |
 | Backend API endpoint            | 5K–12K           | 1–3 files | T1.5/T2 | 🟡 Medium  |
 | Database schema/migration       | 3K–8K            | 1–2 files | T1.5    | 🟡 Medium  |
+| Prompt enrichment (PEP)         | 1K–5K            | —         | Orch.   | 🟡 Medium  |
 
 ## Token Calibration Protocol
 

@@ -1,6 +1,6 @@
 # Multi-Agent Delegation System — Kullanım Kılavuzu
 
-> Versiyon: 4.5.0 | Son Güncelleme: 2026-02-25
+> Versiyon: 4.7.0 | Son Güncelleme: 2026-02-26
 
 ---
 
@@ -12,16 +12,18 @@
 4. [xN Delegasyon Parametresi](#xn-delegasyon-parametresi)
 5. [Slash Komutları](#slash-komutları)
 6. [Review Zinciri](#review-zinciri)
-7. [Skill Dosyaları](#skill-dosyaları)
-8. [Maliyet Optimizasyonu](#maliyet-optimizasyonu)
-9. [Özelleştirme](#özelleştirme)
-10. [Model Fallback](#model-fallback)
-11. [Session Memory](#session-memory)
-12. [Çakışma Önleme Mekanizması](#çakışma-önleme-mekanizması)
-13. [Metrik Toplama Sistemi](#metrik-toplama-sistemi)
-14. [Token Optimizasyonu](#token-optimizasyonu)
-15. [Araçlar](#araçlar)
-16. [SSS](#sss)
+7. [Proje Bağlamı Keşfi (PCD)](#proje-bağlamı-keşfi-pcd)
+8. [Prompt Zenginleştirme Protokolü (PEP)](#prompt-zenginleştirme-protokolü-pep)
+9. [Skill Dosyaları](#skill-dosyaları)
+10. [Maliyet Optimizasyonu](#maliyet-optimizasyonu)
+11. [Özelleştirme](#özelleştirme)
+12. [Model Fallback](#model-fallback)
+13. [Session Memory](#session-memory)
+14. [Çakışma Önleme Mekanizması](#çakışma-önleme-mekanizması)
+15. [Metrik Toplama Sistemi](#metrik-toplama-sistemi)
+16. [Token Optimizasyonu](#token-optimizasyonu)
+17. [Araçlar](#araçlar)
+18. [SSS](#sss)
 
 ---
 
@@ -311,6 +313,142 @@ Son 20 session'ı listeler. Yeni bir geliştirici veya uzun aradan sonra projeye
 
 ---
 
+## Proje Bağlamı Keşfi (PCD)
+
+> **v4.6.0+** — Bu özellik otomatik olarak aktiftir ve tüm agent'lar için geçerlidir.
+
+Bu boilerplate'i bir projeye kopyaladığınızda, agent'lar otomatik olarak hedef projenin dokümanlarını tarar ve sistem bağlamı olarak kullanır. Böylece projeye özgü kurallar, mimari kararlar ve kodlama konvansiyonları tüm geliştirme sürecinde takip edilir.
+
+### Taranan Kaynaklar
+
+| Öncelik | Kaynak | Pattern | Açıklama |
+|---------|--------|---------|----------|
+| 1 | Root README | `README.md` | Ana proje dokümantasyonu |
+| 2 | Root markdown dosyaları | `*.md` (kök dizin) | Katkı rehberleri, kodlama standartları |
+| 3 | Docs klasörü | `docs/**/*.md` | Genişletilmiş dokümantasyon, tasarım dokümanları |
+| 4 | Docs klasörü (diğer) | `docs/**/*.{txt,rst,adoc}` | Alternatif dokümantasyon formatları |
+
+### Hariç Tutulan Dosyalar
+
+Boilerplate'in kendi dosyaları proje bağlamı olarak **taranmaz**:
+
+- `AGENTS.md` — Delegasyon sistemi kuralları
+- `CHANGELOG.md` — Delegasyon sistemi değişiklikleri
+- `LICENSE` — Lisans dosyası
+- `USAGE.md` — Delegasyon sistemi kullanım kılavuzu
+- `.github/**` — Delegasyon sistemi iç dosyaları
+
+### Öncelik Hiyerarşisi
+
+```
+Seviye 1 (En yüksek): Boilerplate Yapısal Kuralları
+  └─ Tier hiyerarşisi, review zinciri, dosya sahipliği, agent izinleri
+  └─ Proje dokümanları tarafından ASLA geçersiz kılınamaz
+
+Seviye 2: Proje-Spesifik Kurallar
+  └─ Kodlama standartları, isimlendirme, mimari pattern'ler
+  └─ Framework/kütüphane tercihleri, API tasarım kuralları
+  └─ Boilerplate kodlama varsayılanlarını GEÇERSİZ KILAR
+
+Seviye 3 (En düşük): Boilerplate Kodlama Varsayılanları
+  └─ Varsayılan isimlendirme kuralları, varsayılan error handling
+  └─ YALNIZCA proje dokümanlarında belirtilmediğinde uygulanır
+```
+
+### Örnek Kullanım Senaryoları
+
+**Senaryo 1**: Bir React projesine bu boilerplate'i eklediniz. Projenin `README.md`'sinde "Tailwind CSS kullanılır, BEM isimlendirme yasaktır" yazıyor. Agent'lar boilerplate'in varsayılan BEM kuralları yerine projenin Tailwind tercihini takip eder.
+
+**Senaryo 2**: Projenin `docs/api-guide.md`'sinde REST API isimlendirme kuralları tanımlı. Agent'lar API endpoint'leri yazarken bu kurallara uyar.
+
+**Senaryo 3**: Projenin `CONTRIBUTING.md`'sinde "tab indent kullanın" diyor, boilerplate "space indent" diyor. Proje kuralı geçerlidir.
+
+### Detaylar
+
+Tam protokol: `.github/instructions/project-context-discovery.instructions.md`
+
+---
+
+## Prompt Zenginleştirme Protokolü (PEP)
+
+> **v4.7.0+** — Bu özellik otomatik olarak aktiftir. Non-trivial görevlerde Orchestrator geliştirmeye başlamadan önce soru sorar.
+
+Vague veya eksik prompt'lar hatalı implementasyona, token israfına ve revizyon döngülerine yol açar. PEP bu sorunu çözer — hedefe yönelik sorular sorarak gereksinimleri netleştirir ve detaylı plan oluşturur.
+
+### Ne Zaman Aktif Olur?
+
+| Durum | PEP Uygulanır? | Açıklama |
+|-------|:--------------:|----------|
+| Yeni feature, modül, component | ✅ Evet | Kapsam ve gereksinimler netleştirilir |
+| Mimari değişiklik, refactoring | ✅ Evet | Yaklaşım ve kısıtlamalar belirlenir |
+| Multi-file değişiklik | ✅ Evet | Etki alanı ve bağımlılıklar sorgulanır |
+| API/veritabanı tasarımı | ✅ Evet | Şema ve davranış kararları alınır |
+| Typo düzeltme, tek satır fix | ❌ Hayır | Trivial görevlerde atlanır |
+| Analiz-only görevler | ❌ Hayır | Kod değişikliği olmayan görevlerde atlanır |
+| `/resume` ile devam | ❌ Hayır | Zaten onaylanmış plan var |
+| Kullanıcı "skip questions" derse | ❌ Hayır | Kullanıcı override'ı |
+
+### Soru Kategorileri
+
+Orchestrator, görev tipine göre en uygun kategorilerden **3-7 soru** seçer:
+
+1. **Kapsam & Sınırlar**: Feature'ın neyi içerip neyi içermediği, entegrasyon kapsamı
+2. **Davranışsal Gereksinimler**: Varsayılan değerler, limitler, hata senaryoları, edge case'ler
+3. **Teknik Kararlar**: Mimari pattern, state yönetimi, veri modeli, auth stratejisi
+4. **UI/UX Tercihleri**: Layout, component tercih, feedback pattern'leri (frontend görevleri için)
+5. **Test & Kalite**: Coverage kapsamı, test senaryoları, performans hedefleri
+6. **Proje Bağlam Uyumu**: Mevcut pattern'larla tutarlılık, isimlendirme, bağımlılık tercihi
+
+### Süreç
+
+```
+1. Orchestrator prompt'u analiz eder
+   └─ Net gereksinimler, varsayımlar, bilgi boşlukları, karar noktaları belirlenir
+
+2. 3-7 hedefli soru sorulur
+   └─ Seçenekli sorular, önerilen varsayılan ile birlikte
+   └─ Kullanıcı tüm soruları tek seferde cevaplayabilir
+
+3. Cevaplara göre implementasyon planı oluşturulur
+   └─ Gereksinimler, teknik yaklaşım, görev dağılımı, agent atamaları
+
+4. Kullanıcı onayı beklenir
+   └─ Onay → implementasyon başlar
+   └─ Değişiklik → plan revize edilir (max 2 tur)
+   └─ "Just do it" → mevcut planla devam edilir
+```
+
+### Örnek Kullanım
+
+```
+Kullanıcı: "Auth modülünü oluştur x7"
+
+Orchestrator (PEP):
+  📋 Prompt Zenginleştirme — Clarification Questions
+
+  Kapsam:
+  1. Auth yöntemi ne olmalı? (Önerilen: JWT) → JWT / OAuth / Session-based
+
+  Davranış:
+  2. Token süresi ne kadar olsun? → 15dk / 1 saat / 24 saat
+  3. Refresh token kullanılsın mı? → Evet (önerilen) / Hayır
+
+  Teknik:
+  4. Kullanıcı verisi nerede tutulacak? → PostgreSQL / MongoDB / Mevcut DB
+
+  > 💡 Tümünü yanıtlayın veya "skip questions" diyerek varsayılanlarla devam edin.
+
+Kullanıcı: "JWT, 1 saat, evet refresh token, PostgreSQL"
+
+Orchestrator: [Detaylı plan oluşturur] → Kullanıcı onayı → İmplementasyon başlar
+```
+
+### Detaylar
+
+Tam protokol: `.github/instructions/prompt-enrichment.instructions.md`
+
+---
+
 ## Skill Dosyaları
 
 Her tier'ın kendine özgü skill dosyaları vardır:
@@ -528,7 +666,7 @@ Görevler maksimum **15K token bütçesiyle** alt-görevlere bölünür. Bütçe
 
 Boilerplate bütünlüğünü doğrulamak için `.github/instructions/system-validation.instructions.md` dosyasındaki kurallar kullanılır. Script yerine agent'lar bu kuralları read/search araçlarıyla manuel olarak uygular.
 
-Kontrol edilen 7 kural:
+Kontrol edilen 9 kural:
 
 - **Kural 1 — Versiyon tutarlılığı**: README, USAGE ve CHANGELOG'daki versiyon eşleşmesi
 - **Kural 2 — Dosya sayıları**: Agent, instruction, skill ve hook dosyası minimum sayıları
@@ -537,8 +675,19 @@ Kontrol edilen 7 kural:
 - **Kural 5 — Unicode kontrolü**: Bozuk karakter (U+FFFD) tespiti
 - **Kural 6 — Hook paritesi**: PreToolUse ve PostToolUse edit tool listelerinin eşleşmesi
 - **Kural 7 — Model tutarlılığı**: Agent YAML model/modelFallback değerlerinin kanonik tabloyla eşleşmesi
+- **Kural 8 — PCD dosyası**: Project Context Discovery instruction dosyasının varlığı ve gerekli bölümlerin kontrolü
+- **Kural 9 — PEP dosyası**: Prompt Enrichment Protocol instruction dosyasının varlığı ve gerekli bölümlerin kontrolü
 
-Doğrulama zamanlaması: Her versiyon bumplanmasından sonra, agent eklenip çıkarıldığında ve hook dosyaları değiştirildiğinde Orchestrator veya Principal bu kuralları çalıştırır.
+Doğrulama zamanlaması: Her versiyon bumplanmasından sonra, agent eklenip çıkarıldığında, hook dosyaları değiştirildiğinde ve PCD/PEP dosyaları değiştirildiğinde Orchestrator veya Principal bu kuralları çalıştırır.
+
+### Proje Bağlamı Keşfi (PCD) Yapılandırması
+
+Boilerplate'i bir projeye taşıdığınızda PCD otomatik olarak aktif olur. Özel yapılandırma gerekmez — agent'lar projenin root `README.md`, diğer `.md` dosyaları ve `docs/` klasörünü otomatik tarar.
+
+PCD davranışını özelleştirmek için:
+- **Proje kurallarını belirtin**: Projenin `README.md` veya `docs/` altındaki dosyalarda kodlama standartları, mimari kararlar ve konvansiyonları net şekilde yazın.
+- **Bağlam bütçesini bilin**: Her tier'ın PCD dosya ve token limiti vardır (T1: 5 dosya/8K, T3: 2 dosya/3K).
+- **Detaylar**: `.github/instructions/project-context-discovery.instructions.md`
 
 ### Agent Scaffolding Rehberi
 
@@ -585,7 +734,7 @@ Platform bağımlılıkları ve tasarım kararları `.github/docs/adr/` dizinind
 
 ### Q: Bu boilerplate'i farklı projelere nasıl taşırım?
 
-**A**: `.github/` dizinini, `AGENTS.md` dosyasını ve `.vscode/settings.json`'ı hedef projeye kopyalayın. Proje-spesifik özelleştirmeler `copilot-instructions.md` dosyasından yapılabilir.
+**A**: `.github/` dizinini, `AGENTS.md` dosyasını ve `.vscode/settings.json`'ı hedef projeye kopyalayın. **Project Context Discovery (PCD)** özelliği sayesinde agent'lar otomatik olarak projenin kendi `README.md`, diğer `.md` dosyaları ve `docs/` klasörünü tarar. **Prompt Enrichment Protocol (PEP)** ise geliştirme başlamadan önce otomatik olarak soru sorarak gereksinimleri netleştirir. Projenin kuralları, mimarisi ve konvansiyonları otomatik olarak sistem bağlamına dahil edilir — ek yapılandırma gerekmez.
 
 ### Q: Hangi VS Code sürümü gerekli?
 

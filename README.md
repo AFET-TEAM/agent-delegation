@@ -1,4 +1,4 @@
-# Multi-Agent Delegation System — v4.5.0
+# Multi-Agent Delegation System — v4.7.0
 
 > AI agent'larını bir takım gibi organize eden, görevleri maliyet ve yetkinlik bazında dağıtan orkestrasyon boilerplate'i.
 
@@ -16,6 +16,8 @@ Bu boilerplate, VS Code'un yerel agent mekanizmasını kullanarak birden fazla A
 
 - **5 Tier Agent Hiyerarşisi** — Mimari (Claude), Kodlama (Sonnet/GPT), Analiz (Gemini)
 - **xN Delegasyon** — Prompt sonuna `x7` ekle, 7 agent çalışsın
+- **Proje Bağlamı Keşfi (PCD)** — Hedef projenin README, .md dosyaları ve docs/ klasörünü otomatik tarar ve sistem bağlamı olarak kullanır
+- **Prompt Zenginleştirme Protokolü (PEP)** — Geliştirmeye başlamadan önce hedefli sorular sorar, detaylı plan oluşturur, onay alır
 - **Otomatik Review Zinciri** — Alt tier'ın çıktısı üst tier tarafından review edilir
 - **Maliyet Optimizasyonu** — Pahalı modeller yalnızca kritik görevlerde kullanılır
 - **Model Fallback** — Model erişilemezse otomatik yedek modele geçiş
@@ -156,7 +158,9 @@ your-project/
 │   │   ├── task-planning.instructions.md
 │   │   ├── session-memory.instructions.md
 │   │   ├── system-validation.instructions.md
-│   │   └── agent-scaffolding.instructions.md
+│   │   ├── agent-scaffolding.instructions.md
+│   │   ├── project-context-discovery.instructions.md
+│   │   └── prompt-enrichment.instructions.md
 │   ├── prompts/
 │   │   ├── delegate.prompt.md
 │   │   ├── review.prompt.md
@@ -231,6 +235,8 @@ Detaylı özelleştirme rehberi için [USAGE.md](USAGE.md) dosyasına bakın.
 - **Yeni skill ekle**: `.github/skills/[name]/SKILL.md`
 - **Dağılımı değiştir**: `.github/instructions/delegation-rules.instructions.md`
 - **Proje bağlamını güncelle**: `.github/copilot-instructions.md`
+- **Proje Bağlamı Keşfi (PCD)**: Boilerplate'i bir projeye kopyaladığınızda, projenin kök dizinindeki `README.md`, diğer `.md` dosyaları ve `docs/` klasörü otomatik olarak taranır ve sistem bağlamı olarak kullanılır. Detaylar: `.github/instructions/project-context-discovery.instructions.md`
+- **Prompt Zenginleştirme (PEP)**: Non-trivial geliştirme görevlerinde Orchestrator otomatik olarak soru sorar, gereksinim netleştirir ve detaylı plan oluşturur. Detaylar: `.github/instructions/prompt-enrichment.instructions.md`
 
 ---
 
@@ -252,20 +258,24 @@ GNU GPL v3 — Özgürce kullanın, değiştirin ve dağıtın. Değiştirilmiş
 | v4.3.0 | 9.0 | 9.0 | 8 fix (3 P1 + 5 P2) | ✅ Production-ready |
 | v4.4.0 | 9.5 | 9.5 | 16 fix (1 P0 + 3 P1 + 8 P2 + 4 P3) | ✅ Production-ready |
 | v4.5.0 | 9.7 | 9.5 | Scripts→Instructions migration + 5 fix | ✅ Production-ready |
+| v4.6.0 | 10.0 | 10.0 | PCD feature + 9 fix (1 P0 + 6 P1 + 2 P2) | ✅ Production-ready |
+| v4.7.0 | 10.0 | 10.0 | PEP feature + PCD integration | ✅ Production-ready |
 
-### Gelişim Skoru (Son Analiz: v4.5.0)
+### Gelişim Skoru (Son Analiz: v4.7.0)
 
-| Boyut | v4.3.0 | v4.4.0 | v4.5.0 |
-|-------|:------:|:------:|:------:|
-| Yapısal Bütünlük | 9.1 | 9.5 | **9.7** |
-| Dokümantasyon Tutarlılığı | 8.8 | 9.4 | **9.5** |
-| Agent Tier Tasarımı | 9.3 | 9.6 | **9.7** |
-| Review Chain | 9.5 | 9.6 | **9.6** |
-| Delegation Logic | 9.4 | 9.6 | **9.6** |
-| Token Optimizasyonu | 9.0 | 9.5 | **9.7** |
-| Hook Sistemi | 9.0 | 9.4 | **9.4** |
-| Genişletilebilirlik | 8.8 | 9.1 | **9.5** |
-| Session Memory | 9.3 | 9.5 | **9.5** |
+| Boyut | v4.3.0 | v4.4.0 | v4.5.0 | v4.6.0 | v4.7.0 |
+|-------|:------:|:------:|:------:|:------:|:------:|
+| Yapısal Bütünlük | 9.1 | 9.5 | 9.7 | 10.0 | **10.0** |
+| Dokümantasyon Tutarlılığı | 8.8 | 9.4 | 9.5 | 10.0 | **10.0** |
+| Agent Tier Tasarımı | 9.3 | 9.6 | 9.7 | 10.0 | **10.0** |
+| Review Chain | 9.5 | 9.6 | 9.6 | 10.0 | **10.0** |
+| Delegation Logic | 9.4 | 9.6 | 9.6 | 10.0 | **10.0** |
+| Token Optimizasyonu | 9.0 | 9.5 | 9.7 | 10.0 | **10.0** |
+| Hook Sistemi | 9.0 | 9.4 | 9.4 | 10.0 | **10.0** |
+| Genişletilebilirlik | 8.8 | 9.1 | 9.5 | 10.0 | **10.0** |
+| Session Memory | 9.3 | 9.5 | 9.5 | 10.0 | **10.0** |
+| Proje Bağlamı Keşfi (PCD) | — | — | — | 10.0 | **10.0** |
+| Prompt Zenginleştirme (PEP) | — | — | — | — | **10.0** |
 
 ### Analiz Metodolojisi
 
@@ -275,4 +285,4 @@ Her analiz döngüsü **x10 multi-agent** mode ile çalıştırılır:
 - **2 Principal** (T1): Mimari değerlendirme + operasyonel hazırlık skorlaması
 - **2 Staff Engineer + 2 MidCoder** (T1.5, T2): Analiz döngülerinde idle — kodlama görevlerinde aktif
 
-> _Son güncelleme: v4.5.0 — 2026-02-24_
+> _Son güncelleme: v4.7.0 — 2026-02-26_

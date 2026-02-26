@@ -29,7 +29,7 @@ The repository must contain a minimum number of files in each category.
 | Directory | Pattern | Minimum |
 |-----------|---------|---------|
 | `.github/agents/` | `*.agent.md` | 8 |
-| `.github/instructions/` | `*.instructions.md` | 14 |
+| `.github/instructions/` | `*.instructions.md` | 17 |
 | `.github/skills/*/` | `SKILL.md` (in subdirectories) | 8 |
 | `.github/hooks/` | `*.json` | 2 |
 
@@ -131,12 +131,14 @@ PASS if all agents match and no identical model/fallback pairs exist. FAIL with 
 - After every version bump
 - After adding or removing an agent
 - After modifying any file in `.github/hooks/`
+- After modifying `project-context-discovery.instructions.md`
+- After modifying `prompt-enrichment.instructions.md`
 
 ### Who Validates
 
 | Role | Obligation |
 |------|-----------|
-| Orchestrator | Mandatory — run all 7 rules at session end |
+| Orchestrator | Mandatory — run all 9 rules at session end |
 | Principal | Optional — spot-check any subset of rules |
 
 ### Report Format
@@ -145,14 +147,16 @@ Present results as a numbered list. Each rule gets one line.
 
 ```
 1. Version Consistency: PASS — v4.2.0 across all files
-2. File Counts: PASS — Agents=11, Instructions=15, Skills=10, Hooks=2
+2. File Counts: PASS — Agents=11, Instructions=17, Skills=10, Hooks=2
 3. No Forbidden xN References: PASS
 4. Code Fences: PASS
 5. Unicode Integrity: PASS
 6. Hook Parity: PASS
 7. Model Consistency: PASS
+8. PCD File: PASS — All 4 required sections present
+9. PEP File: PASS — All 4 required sections present
 
-Summary: 7/7 PASS
+Summary: 9/9 PASS
 ```
 
 For failures, append the details inline:
@@ -160,8 +164,42 @@ For failures, append the details inline:
 ```
 6. Hook Parity: FAIL — PreToolUse has {edit_file} but PostToolUse is missing it
 
-Summary: 6/7 PASS, 1 FAIL
+Summary: 8/9 PASS, 1 FAIL
 ```
+
+---
+
+## Rule 8 — Project Context Discovery File
+
+The PCD instruction file must exist and contain required sections.
+
+**Required file:** `.github/instructions/project-context-discovery.instructions.md`
+
+**Required sections** (search for exact headings):
+
+- `## Discovery Protocol`
+- `## Priority Hierarchy`
+- `## Agent Obligations`
+- `## Context Loading Integration`
+
+**Verification:** Read the PCD file. Confirm it exists and all four section headings are present. PASS if file exists and all headings found. FAIL with missing file or missing headings.
+
+---
+
+## Rule 9 — Prompt Enrichment Protocol File
+
+The PEP instruction file must exist and contain required sections.
+
+**Required file:** `.github/instructions/prompt-enrichment.instructions.md`
+
+**Required sections** (search for exact headings):
+
+- `## When to Apply PEP`
+- `## Question Categories`
+- `## Enrichment Process`
+- `## Orchestrator Integration`
+
+**Verification:** Read the PEP file. Confirm it exists and all four section headings are present. PASS if file exists and all headings found. FAIL with missing file or missing headings.
 
 ---
 

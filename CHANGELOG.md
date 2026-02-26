@@ -5,6 +5,87 @@ Format [Keep a Changelog](https://keepachangelog.com/) standardına uygundur.
 
 ---
 
+## [4.7.0] — 2026-02-26
+
+### Added
+
+- **Prompt Enrichment Protocol (PEP)**: Yeni sistem kuralı — non-trivial geliştirme görevlerinde Orchestrator otomatik olarak hedefli sorular sorar, gereksinimleri netleştirir ve detaylı implementasyon planı oluşturur
+  - Yeni instruction dosyası: `prompt-enrichment.instructions.md`
+  - 6 soru kategorisi: Kapsam, Davranış, Teknik, UI/UX, Test, Proje Bağlam Uyumu
+  - Skip koşulları: Trivial görevler, `/resume`, kullanıcı override
+  - Orchestrator Step 1.5 olarak entegre edildi
+  - Onay kapısı: Plan kullanıcı onayı olmadan implementasyona geçilmez (max 2 revizyon turu)
+- **System Validation Rule 9**: PEP instruction dosyasının varlığı ve gerekli bölümlerinin kontrolü
+
+### Changed
+
+- Versiyon: v4.6.0 → v4.7.0 (README, USAGE, CHANGELOG)
+- `copilot-instructions.md`: PEP operating rule eklendi (Kural 7)
+- `shared-base.instructions.md`: Universal Working Principles'a PEP eklendi
+- `orchestrator.agent.md`: Step 1.5 olarak PEP süreci eklendi
+- `AGENTS.md`: Prompt Enrichment Protocol bölümü eklendi
+- `context-loading.instructions.md`: Instruction sayısı 16→17, token overhead 38-50K→40-52K
+- `task-planning.instructions.md`: PEP token estimation satırı eklendi (1K-3K)
+- `system-validation.instructions.md`: Rule 9 eklendi, minimum instruction sayısı 16→17, rapor formatı 8/8→9/9, validation trigger'a PEP değişiklikleri eklendi, "8 rules"→"9 rules"
+- USAGE.md: PEP bölümü, içindekiler (18 entry), araçlar (9 rules), SSS güncellendi
+- README.md: PEP feature, dosya yapısı, özelleştirme, skor evrimi güncellendi
+
+### Fixed (v4.7.0 Analiz Bulguları)
+
+- **CF-01** (P0): PEP — Default behavior tanımlandı: skip durumunda en konservatif yorumlama (en küçük kapsam, PCD uyumlu basit pattern)
+- **CF-02** (P0): PEP — Cevaplanmayan soru edge case'leri eklendi (timeout, terk etme, partial answer handling)
+- **CF-03** (P0): PEP — Plan task breakdown ↔ Orchestrator Step 3 yetki ilişkisi netleştirildi (PEP planı authoritative input)
+- **CF-04** (P1): PEP — Security & Compliance soru kategorisi eklendi (Category 7)
+- **CF-05** (P1): PEP — Partial answer stratejisi tanımlandı (varsayımlar plan'da işaretlenir)
+- **CF-06** (P1): PEP — Dil politikası notu eklendi (template'ler English, kullanıcıya sunumda Language Policy geçerli)
+- **CF-07** (P1): PEP — Trivial→complex escalation re-entry mekanizması eklendi
+- **CF-08** (P1): PEP — Agent atamalarının preliminary olduğu, final atamanın Step 2/3'te yapıldığı netleştirildi
+- **CF-09** (P1): PEP — Token tahmini 1K-3K → 1K-5K olarak güncellendi (🟢→🟡 confidence)
+- **CF-10** (P1): PEP — PEP token overhead'ının 15K subtask bütçesinden bağımsız olduğu belirtildi
+- **CF-11** (P2): PEP — Lead Analyst (T2.5) Agent Responsibilities'e eklendi
+- **CF-12** (P2): PEP — Single-agent mode'da da uygulandığı açıkça belirtildi
+- **CF-13** (P2): PEP — PCD→PEP veri akışı güçlendirildi (Step 1'e PCD context, Category 6'ya PCD referansı)
+- **CF-14** (P2): PEP — ~30% improvement iddiası "estimated, calibration'a tabi" olarak nitelendirildi
+
+---
+
+## [4.6.0] — 2026-02-26
+
+### Added
+
+- **Project Context Discovery (PCD)**: Yeni sistem kuralı — boilerplate herhangi bir projeye taşındığında, hedef projenin `README.md`, kök dizinindeki `.md` dosyaları ve `docs/` klasörü otomatik olarak taranır ve sistem bağlamı olarak kullanılır
+  - Yeni instruction dosyası: `project-context-discovery.instructions.md`
+  - Öncelik hiyerarşisi: Boilerplate yapısal kuralları > Proje-spesifik kurallar > Boilerplate kodlama varsayılanları
+  - Tier bazlı PCD bağlam bütçesi (T1: 5 dosya/8K token, T3: 2 dosya/3K token)
+  - Orchestrator Step 0'a PCD tarama adımı eklendi
+- **System Validation Rule 8**: PCD instruction dosyasının varlığı ve gerekli bölümlerinin kontrolü
+
+### Changed
+
+- Versiyon: v4.5.0 → v4.6.0 (README, USAGE, CHANGELOG)
+- `copilot-instructions.md`: PCD operating rule eklendi (Kural 6)
+- `shared-base.instructions.md`: Universal Working Principles'a PCD eklendi
+- `context-loading.instructions.md`: Progressive Loading Strategy'ye PCD adımı, PCD Context Budget tablosu ve kanonik kaynak referansı eklendi; instruction sayısı 15→16, token overhead 35-47K→38-50K
+- `orchestrator.agent.md`: Step 0 PCD tarama protokolü ve task assignment PCD alanları eklendi
+- `AGENTS.md`: Project Context Discovery bölümü eklendi
+- `system-validation.instructions.md`: Rule 8 eklendi, minimum instruction sayısı 14→16, rapor formatı 7/7→8/8, validation trigger'a PCD değişiklikleri eklendi, "7 rules"→"8 rules" düzeltildi
+- USAGE.md: PCD bölümü, içindekiler, araçlar, PCD yapılandırması ve SSS güncellendi
+- README.md: PCD feature, dosya yapısı, özelleştirme bölümü ve skor evrimi güncellendi
+
+### Fixed (v4.6.0 Analiz Bulguları)
+
+- **CF-01** (P0): PCD — README.md yoksa edge case eklendi, eksik kaynak graceful degradation
+- **CF-02** (P1): system-validation.instructions.md — "run all 7 rules" → "run all 8 rules"
+- **CF-03** (P1): PCD — docs/ klasörü yoksa davranış tanımlandı, max 3 seviye derinlik limiti
+- **CF-04** (P1): PCD — Proje dokümanları arası çakışma çözüm kuralları eklendi (intra-project conflict)
+- **CF-05** (P1): PCD — Yapısal vs kodlama kuralı sınırı netleştirildi (structural vs coding boundary)
+- **CF-06** (P1): PCD — Bütçe ilişkisi netleştirildi (within, not additive) ve kanonik kaynak atandı
+- **CF-07** (P1): Orchestrator task assignment — PCD context alanları eklendi
+- **CF-08** (P2): PCD — Cache invalidation mekanizması eklendi
+- **CF-09** (P2): system-validation — "When to Validate" trigger'a PCD dosya değişiklikleri eklendi
+
+---
+
 ## [4.5.0] — 2026-02-25
 
 ### Removed

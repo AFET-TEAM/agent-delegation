@@ -11,6 +11,8 @@ These rules apply to ALL agents across ALL tiers. Individual agent files only co
 - **Clean Code**: Every line must be production-ready. SOLID, KISS, YAGNI, DRY.
 - **Zero Error Tolerance**: Edge cases and error paths must always be handled.
 - **Source References**: Every finding, decision, or change must cite its source.
+- **Project Context Discovery**: Before starting any task, read the host project's root `README.md`, other `*.md` files, and `docs/` folder. Follow project-specific rules where they exist. Boilerplate structural rules (tier hierarchy, review chain, file ownership) always take precedence. See `project-context-discovery.instructions.md`.
+- **Prompt Enrichment Protocol**: For non-trivial development tasks, the Orchestrator asks targeted clarification questions before implementation begins. This ensures clear requirements, reduces rework, and produces detailed implementation plans. See `prompt-enrichment.instructions.md`.
 
 ## Mandatory Skills (All Coding Agents: T1, T1.5, T2)
 
