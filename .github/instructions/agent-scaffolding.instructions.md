@@ -90,8 +90,8 @@ agents: []
 
 | Tier | Skills |
 |------|--------|
-| T1 | clean-code, code-architecture, code-review, implementation, frontend-development, backend-development, commit-standards, pr-standards, testing-standards, mayacore-integration, backend-security, java-quality-tooling, api-integration |
-| T1.5 | clean-code, implementation, code-review, frontend-development, backend-development, commit-standards, pr-standards, testing-standards, mayacore-integration, backend-security, java-quality-tooling, api-integration |
+| T1 | clean-code, code-architecture, code-review, implementation, frontend-development, backend-development, commit-standards, pr-standards, testing-standards, backend-security, java-quality-tooling, api-integration |
+| T1.5 | clean-code, implementation, code-review, frontend-development, backend-development, commit-standards, pr-standards, testing-standards, backend-security, java-quality-tooling, api-integration |
 | T2 | clean-code, implementation, code-review, frontend-development, backend-development, commit-standards, pr-standards, testing-standards, java-quality-tooling, api-integration |
 | T2.5 | clean-code, analysis, code-review |
 | T3 | analysis |

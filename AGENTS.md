@@ -99,7 +99,6 @@ The following skills are **binding rules** for all coding tasks:
 - **PR Standards** (`.github/skills/pr-standards/SKILL.md`) — Applied to all pull requests.
 - **Testing Standards** (`.github/skills/testing-standards/SKILL.md`) — Applied to all test code.
 - **Backend Security** (`.github/skills/backend-security/SKILL.md`) — Applied to all Java/Spring Boot security-related tasks.
-- **MayaCore Integration** (`.github/skills/mayacore-integration/SKILL.md`) — Applied to all MayaCore ecosystem integration tasks.
 - **Java Quality Tooling** (`.github/skills/java-quality-tooling/SKILL.md`) — Applied to all Java/Maven project quality tasks.
 - **API Integration** (`.github/skills/api-integration/SKILL.md`) — Applied to all frontend-backend integration tasks.
 

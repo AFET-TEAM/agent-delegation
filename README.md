@@ -1,4 +1,4 @@
-# Multi-Agent Delegation System — v4.9.0
+# Multi-Agent Delegation System — v5.0.0
 
 > AI agent'larını bir takım gibi organize eden, görevleri maliyet ve yetkinlik bazında dağıtan orkestrasyon boilerplate'i.
 
@@ -25,11 +25,10 @@ Bu boilerplate, VS Code'un yerel agent mekanizmasını kullanarak birden fazla A
 - **Token Optimizasyonu** — Paylaşılan kurallar, isteğe bağlı skill yükleme, 15K token bütçesi
 - **Metrik Toplama** — Agent performansı ve token kullanımının otomatik takibi
 - **Çakışma Önleme** — Dosya sahipliği ve kilit mekanizması ile güvenli paralel çalışma
-- **MayaCore Entegrasyon Desteği** — Config Server, Common Library, API Gateway, OpenShift deployment entegrasyon skill'leri
 - **Java/Spring Boot Standartları** — Backend güvenlik, kalite araçları (Checkstyle, SpotBugs, JaCoCo) skill'leri
 - **Frontend-Backend Entegrasyon Kontratı** — API response formatı, pagination, tarih/saat, hata yönetimi standartları
 - **Git Güvenlik Kuralları** — AI agent'ların git operasyonları için zorunlu onay mekanizması
-- **14 Hazır Skill Dosyası** — Mimari, kodlama, review, analiz, backend, güvenlik, kalite araçları, MayaCore entegrasyonu ve frontend-backend kontrat skill'leri
+- **13 Hazır Skill Dosyası** — Mimari, kodlama, review, analiz, backend, güvenlik, kalite araçları ve frontend-backend kontrat skill'leri
 - **Slash Komutları** — `/delegate`, `/review`, `/status`, `/architect`, `/resume`, `/history`
 
 ---
@@ -147,7 +146,6 @@ your-project/
 │   │   ├── pr-standards/SKILL.md            # T1, T1.5, T2: PR standartları
 │   │   ├── testing-standards/SKILL.md       # T1, T1.5, T2: Test standartları
 │   │   ├── analysis/SKILL.md               # T2.5, T3: Analiz şablonları
-│   │   ├── mayacore-integration/SKILL.md    # T1, T1.5: MayaCore ekosistem entegrasyonu
 │   │   ├── backend-security/SKILL.md        # T1, T1.5: Spring Boot güvenlik standartları
 │   │   ├── java-quality-tooling/SKILL.md    # T1, T1.5, T2: Maven kalite araçları
 │   │   └── api-integration/SKILL.md         # T1, T1.5, T2: Frontend-backend kontrat
@@ -270,8 +268,9 @@ GNU GPL v3 — Özgürce kullanın, değiştirin ve dağıtın. Değiştirilmiş
 | v4.7.0 | 10.0 | 10.0 | PEP feature + PCD integration | ✅ Production-ready |
 | v4.8.0 | 10.0 | 10.0 | Rules entegrasyonu + 4 yeni skill + 3 skill update + 2 yeni instruction | ✅ Production-ready |
 | v4.9.0 | 10.0 | 10.0 | 12 fix (7 P1 + 4 P2 + 1 P3) — tier skill mapping + token overhead + docs | ✅ Production-ready |
+| v5.0.0 | 10.0 | 10.0 | Proje bağımsızlık — proje-specific skill kaldırıldı + 6 fix (1 P1 + 3 P2 + 2 P3) | ✅ Production-ready |
 
-### Gelişim Skoru (Son Analiz: v4.9.0)
+### Gelişim Skoru (Son Analiz: v5.0.0)
 
 | Boyut | v4.3.0 | v4.4.0 | v4.5.0 | v4.6.0 | v4.7.0 | v4.8.0 | v4.9.0 |
 |-------|:------:|:------:|:------:|:------:|:------:|:------:|:------:|
@@ -286,7 +285,6 @@ GNU GPL v3 — Özgürce kullanın, değiştirin ve dağıtın. Değiştirilmiş
 | Session Memory | 9.3 | 9.5 | 9.5 | 10.0 | 10.0 | 10.0 | **10.0** |
 | Proje Bağlamı Keşfi (PCD) | — | — | — | 10.0 | 10.0 | 10.0 | **10.0** |
 | Prompt Zenginleştirme (PEP) | — | — | — | — | 10.0 | 10.0 | **10.0** |
-| MayaCore & Java Entegrasyonu | — | — | — | — | — | 10.0 | **10.0** |
 
 ### Analiz Metodolojisi
 
@@ -296,4 +294,4 @@ Her analiz döngüsü **x10 multi-agent** mode ile çalıştırılır:
 - **2 Principal** (T1): Mimari değerlendirme + operasyonel hazırlık skorlaması
 - **2 Staff Engineer + 2 MidCoder** (T1.5, T2): Analiz döngülerinde idle — kodlama görevlerinde aktif
 
-> _Son güncelleme: v4.9.0 — 2026-03-02_
+> _Son güncelleme: v5.0.0 — 2026-03-05_

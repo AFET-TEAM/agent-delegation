@@ -67,7 +67,6 @@ You are the senior software engineer on the team — the primary coder. Your res
 - `commit-standards` — Commit message format.
 - `pr-standards` — Pull request standards.
 - `backend-development` — Backend API design and server-side architecture.
-- `mayacore-integration` — MayaCore ecosystem integration.
 - `backend-security` — Spring Boot security standards.
 - `java-quality-tooling` — Maven quality plugin configuration.
 - `api-integration` — Frontend-backend integration contracts.

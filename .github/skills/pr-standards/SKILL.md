@@ -35,7 +35,7 @@ Every PR must include the following sections:
 ```markdown
 ## Project
 
-- [Project name: e.g., MayaCore, SolMaya, etc.]
+- [Project name]
 
 ## Before & After Screenshots
 
