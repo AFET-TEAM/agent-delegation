@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Project Standards - SpotBugs Exclusion Filter
+    
+    Bu dosya, SpotBugs analizinden hariç tutulacak pattern'ları tanımlar.
+    
+    Kullanım:
+    mvn spotbugs:check
+    
+    Versiyon: 2.1.0
+    Son Güncelleme: Aralık 2024
+-->
+<FindBugsFilter
+        xmlns="https://github.com/spotbugs/filter/3.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
+
+    <!-- ==================== GENERATED CLASSES ==================== -->
+    
+    <!-- MapStruct, Lombok ve diğer generated sınıflar -->
+    <Match>
+        <Class name="~.*\.generated\..*"/>
+    </Match>
+
+    <!-- MapStruct generated mapper implementations -->
+    <Match>
+        <Class name="~.*MapperImpl"/>
+        <Bug pattern="CT_CONSTRUCTOR_THROW"/>
+    </Match>
+
+    <!-- MapStruct generated mapper implementations - all bugs -->
+    <Match>
+        <Class name="~.*MapperImpl"/>
+    </Match>
+
+    <!-- ==================== TEST CLASSES ==================== -->
+    
+    <!-- Test sınıfları analiz dışı -->
+    <Match>
+        <Class name="~.*Test.*"/>
+    </Match>
+
+    <!-- ==================== CONFIGURATION CLASSES ==================== -->
+    
+    <!-- Spring Configuration sınıfları -->
+    <Match>
+        <Class name="~.*Config.*"/>
+    </Match>
+
+    <!-- ==================== SPRING MANAGED BEANS ==================== -->
+    
+    <!-- 
+        Controller sınıflarında Spring DI ile inject edilen service'ler için
+        EI_EXPOSE_REP2 false positive'dir. Spring Container bean lifecycle'ı yönetir.
+    -->
+    <Match>
+        <Class name="~.*Controller"/>
+        <Bug pattern="EI_EXPOSE_REP2"/>
+    </Match>
+
+    <!-- 
+        Service sınıflarında Spring DI ile inject edilen dependency'ler için
+        EI_EXPOSE_REP2 false positive'dir.
+    -->
+    <Match>
+        <Class name="~.*Service"/>
+        <Bug pattern="EI_EXPOSE_REP2"/>
+    </Match>
+
+    <!-- 
+        Repository implementation sınıfları
+    -->
+    <Match>
+        <Class name="~.*Repository.*"/>
+        <Bug pattern="EI_EXPOSE_REP2"/>
+    </Match>
+
+    <!-- ==================== DTO & ENTITY CLASSES ==================== -->
+    
+    <!-- 
+        DTO sınıflarında getter/setter ile mutable object exposure kabul edilir.
+        EI_EXPOSE_REP: getter returns mutable object
+        EI_EXPOSE_REP2: setter stores mutable object
+    -->
+    <Match>
+        <Class name="~.*\.dto\..*"/>
+        <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
+    </Match>
+
+    <!-- 
+        Entity sınıflarında JPA/Hibernate gereksinimleri nedeniyle 
+        benzer exclusion uygulanır.
+    -->
+    <Match>
+        <Class name="~.*\.entity\..*"/>
+        <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
+    </Match>
+
+    <!-- 
+        Model sınıfları için de aynı exclusion
+    -->
+    <Match>
+        <Class name="~.*\.model\..*"/>
+        <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
+    </Match>
+
+    <!-- 
+        Common paketindeki ApiResponse, PagedResponse gibi wrapper sınıfları
+    -->
+    <Match>
+        <Class name="~.*\.common\..*"/>
+        <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
+    </Match>
+
+    <!-- 
+        Request/Response sınıf adlarıyla biten sınıflar (paket bağımsız)
+    -->
+    <Match>
+        <Class name="~.*(Request|Response)(\$.*)?"/>
+        <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
+    </Match>
+
+</FindBugsFilter>

@@ -5,6 +5,71 @@ Format [Keep a Changelog](https://keepachangelog.com/) standardına uygundur.
 
 ---
 
+## [4.9.0] — 2026-03-02
+
+### Fixed
+
+- **Tier Skill Mapping Tutarsızlığı**: v4.8.0'da eklenen 4 yeni skill'in tier instruction dosyalarına yansıtılması
+  - `tier1-principal.instructions.md`: 4 eksik skill eklendi (mayacore-integration, backend-security, java-quality-tooling, api-integration)
+  - `tier1-5-staff-engineer.instructions.md`: 4 eksik skill eklendi (mayacore-integration, backend-security, java-quality-tooling, api-integration)
+  - `tier2-mid.instructions.md`: 2 eksik skill eklendi (java-quality-tooling, api-integration)
+- **Token Overhead Tutarsızlığı**: Instruction dosya sayısı ve token overhead tahminleri güncellendi
+  - `context-loading.instructions.md`: "17 instruction files" → "19 instruction files", token overhead ~40-52K → ~45-55K
+  - `task-planning.instructions.md`: Platform overhead ~30-40K → ~45-55K, toplam tüketim tahmini ~45-55K → ~60-70K
+- **USAGE.md PEP Kategori Eksikliği**: Kategori 7 "Güvenlik & Uyumluluk" eklendi (v4.7.0'da instruction dosyasına eklenmiş ama USAGE.md'ye yansıtılmamıştı)
+- **USAGE.md Setup Talimatı**: `.vscode/settings.json` → `.vscode/` dizini tamamı kopyalanacak şekilde güncellendi (`mcp.json` dahil)
+- **USAGE.md Logs Açıklaması**: `.github/logs/` dizininin çalışma zamanında hook'lar tarafından oluşturulduğu açıklaması eklendi
+- **README.md Dosya Ağacı**: `.vscode/mcp.json` dosyası eklendi
+- **`.github/logs/.gitkeep`**: README'de belgelenen ama repo'da eksik olan dizin ve dosya oluşturuldu
+
+### Analysis Summary
+
+- x10 multi-agent analiz döngüsü: 3 Analyst (paralel) + 1 Lead Analyst (konsolidasyon)
+- 9/9 sistem doğrulama kuralı PASS
+- 12 bulgu tespit edildi: 3 P1 cross-reference + 4 P1 documentation + 4 P2 + 1 P3
+- Tümü düzeltildi
+
+---
+
+## [4.8.0] — 2026-03-02
+
+### Added
+
+- **4 Yeni Skill Dosyası**: `rules/` dizinindeki proje standartları multi-agent sistemine entegre edildi
+  - `mayacore-integration/SKILL.md`: MayaCore ekosistem entegrasyonu (Config Server, Common Library, API Gateway, Session Library, OpenShift deployment)
+  - `backend-security/SKILL.md`: Spring Boot güvenlik standartları (SQL injection, XSS, input validation, BCrypt, JWT, rate limiting)
+  - `java-quality-tooling/SKILL.md`: Maven kalite araçları (Checkstyle, SpotBugs, JaCoCo, SonarQube konfigürasyonu)
+  - `api-integration/SKILL.md`: Frontend-backend entegrasyon kontratı (ApiResponse<T>, pagination, tarih/saat, hata yönetimi, CORS, auth)
+- **Git Safety Instructions**: AI agent'ların git operasyonları için zorunlu onay mekanizması (`git-safety.instructions.md`)
+- **Config Dosyaları**: `.github/config/` dizinine Checkstyle, SpotBugs ve Maven kalite plugin şablonları eklendi
+- **Java Backend Task Type**: `context-loading.instructions.md`'ye yeni görev tipi eklendi
+- **6 Yeni Task Type**: `delegation-rules.instructions.md`'ye Spring Boot ve MayaCore görev tipleri eklendi
+
+### Changed
+
+- Versiyon: v4.7.0 → v4.8.0 (README, USAGE, CHANGELOG)
+- `backend-development/SKILL.md`: Node.js-only → Dual-stack (Node.js + Java/Spring Boot) — Constructor injection, layered architecture, ServiceResponse<T>, GlobalExceptionHandler, retry/circuit breaker eklendi
+- `frontend-development/SKILL.md`: 4 çakışma çözüldü (form standard → React Hook Form + Yup, component max → 300 satır, interface > type, flat feature folders) + MayaCore Nx MFE kuralları, rem() auto-import, Zustand store naming, BEM prefixes eklendi
+- `testing-standards/SKILL.md`: Java/JUnit backend testing section genişletildi — AssertJ, BDDMockito, parameterized tests, integration test patterns, test data builders, F.I.R.S.T. principles eklendi
+- `context-loading.instructions.md`: Java Backend task type + api-integration skill eklendi
+- `system-validation.instructions.md`: Skill minimum 8→14, instruction minimum 17→19
+- `delegation-rules.instructions.md`: 6 yeni Spring Boot/MayaCore task type eklendi
+- `agent-scaffolding.instructions.md`: Skills by Tier tablosu güncellendi (4 yeni skill)
+- 7 agent dosyası güncellendi: Principal (×2), Staff Engineer (×2), MidCoder (×2) skill referansları güncellendi
+
+### Removed
+
+- `rules/` dizini kaldırıldı — tüm içerik `.github/skills/`, `.github/instructions/` ve `.github/config/` olarak entegre edildi
+
+### Conflict Resolutions
+
+- **Form Standard**: React Hook Form + Yup (proje kuralı) > Ant Design Form (boilerplate varsayılanı)
+- **Component Max Lines**: 300 satır (proje kuralı) > 250 satır (boilerplate varsayılanı)
+- **Interface vs Type**: `interface` for object shapes (proje kuralı) > `type` preferred (boilerplate varsayılanı)
+- **Feature Folders**: Flat structure (proje kuralı) > Type-based sub-folders (boilerplate varsayılanı)
+
+---
+
 ## [4.7.0] — 2026-02-26
 
 ### Added

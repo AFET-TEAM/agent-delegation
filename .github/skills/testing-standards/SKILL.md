@@ -1,10 +1,10 @@
 ---
 name: Testing Standards
 description: >
-  Unit testing, component testing, and Storybook standards for the frontend team.
-  Covers Vitest configuration, React Testing Library patterns, AAA methodology,
-  coverage targets, and test organization. Used by Tier 1 (Principal),
-  Tier 1.5 (Staff Engineer), and Tier 2 (MidCoder) agents.
+  Testing standards for frontend and backend teams.
+  Frontend: Vitest, React Testing Library, AAA methodology, Storybook.
+  Backend: JUnit 5, Mockito, AssertJ, Spring Boot Test, JaCoCo.
+  Used by Tier 1 (Principal), Tier 1.5 (Staff Engineer), and Tier 2 (MidCoder) agents.
 estimated-tokens: 5000
 ---
 
@@ -369,88 +369,173 @@ End-to-end tests validate complete user flows across the application.
 
 ---
 
-## Backend Testing Standards
-
-Backend tests validate API endpoints, services, and data layer logic.
+## Backend Testing Standards (Java / JUnit 5)
 
 ### Backend Test Stack
 
-| Tool               | Purpose                    |
-| ------------------ | -------------------------- |
-| **Vitest**         | Test runner                |
-| **Supertest**      | HTTP endpoint testing      |
-| **Vitest vi**      | Mocking                    |
-| **Testcontainers** | Database integration tests |
+| Tool                    | Purpose                                          |
+| ----------------------- | ------------------------------------------------ |
+| **JUnit 5**             | Test framework                                   |
+| **Mockito / BDDMockito**| Mocking (given/willReturn style)                 |
+| **AssertJ**             | Fluent assertions (preferred over JUnit asserts)  |
+| **ArgumentCaptor**      | Capture and inspect arguments passed to mocks    |
+| **Spring Boot Test**    | Integration tests (@SpringBootTest, @DataJpaTest)|
+| **JaCoCo**              | Coverage reporting and enforcement               |
 
-### Backend Test File Structure
+### F.I.R.S.T. Principles
 
+| Principle              | Rule                                                  |
+| ---------------------- | ----------------------------------------------------- |
+| **Fast**               | < 100 ms per unit test; mock all external calls       |
+| **Independent**        | No shared state; use @BeforeEach for clean setup      |
+| **Repeatable**         | Deterministic; fixed dates, no randomness             |
+| **Self-validating**    | Explicit assertions; no manual output inspection      |
+| **Timely**             | Tests ship in the same PR as production code          |
+
+### Coverage Targets
+
+| Metric              | Minimum | Build Fails |
+| ------------------- | ------- | ----------- |
+| **Line coverage**   | 80%     | Yes         |
+| **Branch coverage** | 70%     | Yes         |
+| **Method coverage**  | 80%     | No          |
+
+JaCoCo exclusions: `**/dto/**`, `**/entity/**`, `**/config/**`, `**/exception/**`, `**/*Application.class`, `**/mapper/*Impl.class`
+
+### Test Class Structure and Naming
+
+Name tests as `methodName_StateUnderTest_ExpectedBehavior`. Annotate with `@DisplayName`. Group related tests with `@Nested`.
+
+```java
+@ExtendWith(MockitoExtension.class)
+class UserServiceTest {
+
+    @Mock
+    private UserRepository userRepository;
+    @Mock
+    private UserMapper userMapper;
+    @InjectMocks
+    private UserService userService;
+    private User testUser;
+
+    @BeforeEach
+    void setUp() {
+        testUser = User.builder().id(1L).username("john.doe")
+                .email("john@example.com").active(true).build();
+    }
+
+    @Test
+    @DisplayName("Should return dto when user exists")
+    void getUserById_WhenUserExists_ShouldReturnUserDto() {
+        given(userRepository.findById(1L)).willReturn(Optional.of(testUser));
+        given(userMapper.toDto(testUser)).willReturn(expectedDto);
+        UserDto result = userService.getUserById(1L);
+        assertThat(result).isNotNull();
+        assertThat(result.getUsername()).isEqualTo("john.doe");
+        then(userRepository).should().findById(1L);
+    }
+
+    @Test
+    @DisplayName("Should throw when user not found")
+    void getUserById_WhenNotExists_ShouldThrowNotFoundException() {
+        given(userRepository.findById(999L)).willReturn(Optional.empty());
+        assertThatThrownBy(() -> userService.getUserById(999L))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessageContaining("999");
+    }
+}
 ```
-service-name/
-├── service-name.ts
-├── service-name.spec.ts
-├── service-name.controller.ts
-├── service-name.controller.spec.ts
-└── __tests__/
-    └── service-name.integration.spec.ts
+
+### AssertJ, BDDMockito, and ArgumentCaptor
+
+```java
+assertThat(result).isNotNull();
+assertThat(result.getName()).isEqualTo("John");
+assertThat(list).hasSize(3).contains("a", "b");
+assertThat(optional).isPresent().hasValue(expected);
+assertThatThrownBy(() -> service.process(null))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("Input cannot be null");
+
+given(repository.findById(1L)).willReturn(Optional.of(entity));
+UserDto result = service.getUserById(1L);
+then(repository).should().findById(1L);
+
+ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
+then(userRepository).should().save(captor.capture());
+assertThat(captor.getValue().getPassword()).isEqualTo("encoded");
 ```
 
-### Backend Test Patterns
+### Parameterized Tests
 
-#### Service Layer Test
+```java
+@ParameterizedTest
+@CsvSource({"test@example.com, true", "invalid-email, false", "@bad.com, false"})
+void validateEmail_ShouldMatchExpected(String email, boolean expected) {
+    assertThat(validator.isValidEmail(email)).isEqualTo(expected);
+}
 
-```typescript
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { UserService } from "./user-service";
+@ParameterizedTest
+@MethodSource("invalidPasswords")
+void validatePassword_ShouldRejectInvalid(String password, String reason) {
+    assertThat(validator.isValidPassword(password))
+            .as("'%s' should fail: %s", password, reason).isFalse();
+}
 
-describe("UserService", () => {
-  let userService: UserService;
-  let mockRepository: MockRepository;
-
-  beforeEach(() => {
-    mockRepository = createMockRepository();
-    userService = new UserService(mockRepository);
-  });
-
-  describe("findById", () => {
-    it("should return user when found", async () => {
-      mockRepository.findOne.mockResolvedValue(createMockUser());
-
-      const result = await userService.findById("123");
-
-      expect(result).toEqual(createMockUser());
-      expect(mockRepository.findOne).toHaveBeenCalledWith("123");
-    });
-
-    it("should throw NotFoundError when user does not exist", async () => {
-      mockRepository.findOne.mockResolvedValue(null);
-
-      await expect(userService.findById("999")).rejects.toThrow(NotFoundError);
-    });
-  });
-});
+private static Stream<Arguments> invalidPasswords() {
+    return Stream.of(
+            Arguments.of("short", "fewer than 8 characters"),
+            Arguments.of("nouppercase1", "no uppercase letter"),
+            Arguments.of("NOLOWERCASE1", "no lowercase letter"));
+}
 ```
 
-#### Controller/Endpoint Test
+### Integration Test Patterns
 
-```typescript
-import { describe, it, expect } from "vitest";
-import request from "supertest";
-import { createApp } from "../app";
+Use `@SpringBootTest` with `@AutoConfigureMockMvc` for controller tests and `@DataJpaTest` with `@TestPropertySource` for repository tests.
 
-describe("GET /api/users/:id", () => {
-  it("should return 200 with user data", async () => {
-    const response = await request(createApp())
-      .get("/api/users/123")
-      .expect(200);
+```java
+@SpringBootTest
+@AutoConfigureMockMvc
+@ActiveProfiles("test")
+@Transactional
+class UserControllerIntegrationTest {
 
-    expect(response.body).toHaveProperty("id", "123");
-  });
+    @Autowired private MockMvc mockMvc;
+    @Autowired private ObjectMapper objectMapper;
+    @Autowired private UserRepository userRepository;
 
-  it("should return 404 when user not found", async () => {
-    await request(createApp()).get("/api/users/nonexistent").expect(404);
-  });
-});
+    @Test
+    void createUser_ShouldReturn201() throws Exception {
+        CreateUserRequest req = CreateUserRequest.builder()
+                .username("john.doe").email("john@example.com")
+                .password("password123").build();
+        mockMvc.perform(post("/api/v1/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(req)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.data.username").value("john.doe"));
+        assertThat(userRepository.findByEmail("john@example.com")).isPresent();
+    }
+}
 ```
+
+### Test Data Builders
+
+```java
+public final class TestDataBuilder {
+    public static User.UserBuilder aUser() {
+        return User.builder().id(1L).username("default.user")
+                .email("default@example.com").password("encoded").active(true);
+    }
+    public static CreateUserRequest.CreateUserRequestBuilder aCreateUserRequest() {
+        return CreateUserRequest.builder().username("new.user")
+                .email("new@example.com").password("password123");
+    }
+}
+```
+
+Usage: `User custom = TestDataBuilder.aUser().id(42L).username("custom").build();`
 
 ### Backend Test Checklist
 
@@ -460,3 +545,5 @@ describe("GET /api/users/:id", () => {
 - [ ] Authentication and authorization checks
 - [ ] Database queries — correct data retrieval and mutation
 - [ ] Error propagation — domain errors mapped to HTTP status codes
+- [ ] Edge cases — null inputs, empty collections, boundary values
+- [ ] Branch coverage — all if/else paths exercised
