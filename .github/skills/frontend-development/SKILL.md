@@ -2,7 +2,7 @@
 name: Frontend Development
 description: >
   Principal-level frontend development skill covering JavaScript (ES2024+),
-  React 18+, Ant Design 5.x, and MayaCore micro-frontend standards. This skill
+  React 18+, Ant Design 5.x, and micro-frontend standards. This skill
   is MANDATORY for all frontend coding tasks. Covers component architecture,
   state management, React Hook Form + Yup, hooks patterns, performance
   optimization, and Ant Design best practices.
@@ -19,7 +19,7 @@ This skill is **mandatory** for all frontend coding tasks. It covers:
 - React component architecture and patterns
 - Ant Design component library usage
 - React Hook Form + Yup form management
-- Nx Module Federation micro-frontend architecture
+- Micro-frontend architecture patterns (Module Federation)
 - Performance optimization
 - Accessibility standards
 
@@ -358,11 +358,11 @@ src/
 > No `components/`, `hooks/`, or `services/` sub-folders inside features.
 > Sub-folders inside a feature are only allowed for separate child features.
 
-### Nx Module Federation
+### Micro-Frontend (Module Federation)
 
-- Shell (`apps/shell`) and Shared Library (`libs/shared`) are **read-only reference**.
+- Shell and Shared Library modules are **read-only reference**.
 - Modifying Shell or Shared Library requires an **RFC** with impact analysis and team approval.
-- Copy patterns into your own MFE rather than editing shared code directly.
+- Copy patterns into your own micro-frontend rather than editing shared code directly.
 
 ---
 
@@ -447,7 +447,7 @@ const value = object?.property1?.property2?.property3 || "default";
 - Import sorting: Framework → Third-party → Internal → Relative.
 - Remove unused and duplicate imports immediately.
 - Do NOT use `import * as` (wildcard imports).
-- Use library-provided barrel exports (e.g., `import { Button } from '@crm-mfe-ui'`).
+- Use library-provided barrel exports (e.g., `import { Button } from '@shared-ui'`).
 
 ---
 
@@ -622,10 +622,10 @@ const descriptionClasses = classNames("subtitle-2-bold", styles["badge__descript
 
 ## Shared Components
 
-- Shared components must be developed under the shared component library (`libs/crm-mfe-ui`).
+- Shared components must be developed under the shared component library (`libs/shared-ui`).
 - Components must be generalized for reuse across projects.
 - Every shared component requires: unit test, Storybook story, documentation.
-- Import via barrel export: `import { Component } from '@crm-mfe-ui'`.
+- Import via barrel export: `import { Component } from '@shared-ui'`.
 
 ---
 

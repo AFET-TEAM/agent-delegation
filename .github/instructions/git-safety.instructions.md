@@ -5,7 +5,6 @@ applyTo: "**"
 # Git Operation Safety Rules
 
 > These rules are MANDATORY for all agents that perform git operations.
-> Extracted from `rules/backend/general/CODING_STANDARDS.md` and `rules/frontend/MAYACORE-FRONTEND-RULES.md`.
 
 ## Consent Requirement
 

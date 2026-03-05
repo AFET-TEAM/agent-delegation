@@ -5,13 +5,54 @@ Format [Keep a Changelog](https://keepachangelog.com/) standardına uygundur.
 
 ---
 
+## [5.0.0] — 2026-03-05
+
+### Removed (BREAKING)
+
+- **Proje-Specific Integration Skill Silindi**: Proje bağımsızlık için proje-specific entegrasyon skill'i kaldırıldı
+- **Proje-Specific Referanslar Temizlendi**: Tüm agent, instruction ve skill dosyalarından proje-specific referanslar silindi
+  - 4 agent dosyası: `principal-alpha`, `principal-beta`, `staff-engineer-alpha`, `staff-engineer-beta` — proje-specific skill satırı kaldırıldı
+  - 2 tier instruction dosyası: `tier1-principal`, `tier1-5-staff-engineer` — proje-specific skill satırı kaldırıldı
+  - `agent-scaffolding.instructions.md`: T1 ve T1.5 skill tablolarından proje-specific skill kaldırıldı
+  - `context-loading.instructions.md`: Java Backend task type'dan proje-specific skill kaldırıldı
+  - `delegation-rules.instructions.md`: Proje-specific task type kaldırıldı, Spring Boot task açıklaması genelleştirildi
+  - `git-safety.instructions.md`: Proje-specific dosya referansı kaldırıldı
+  - `system-validation.instructions.md`: Skill minimum sayısı 14 → 13 güncellendi
+
+### Changed
+
+- **Frontend Development Skill Genelleştirildi**: Proje-specific micro-frontend referansları genel micro-frontend pattern'lere dönüştürüldü
+  - Proje-specific micro-frontend standards → genel "micro-frontend standards"
+  - Nx Module Federation → genel "Micro-Frontend (Module Federation)"
+  - Proje-specific import path → `@shared-ui` (genel referans)
+- **PR Standards Genelleştirildi**: Proje-specific örnek referansı kaldırıldı
+- **AGENTS.md**: Proje-specific skill zorunlu skill listesinden çıkarıldı
+- **README.md**: Proje-specific özellik satırı kaldırıldı, skill sayısı 14 → 13, dosya ağacı ve skor tablosu güncellendi
+- **USAGE.md**: Skill tablosundan proje-specific skill satırı kaldırıldı
+
+### Notes
+
+- Bu sürüm boilerplate'i **proje bağımsız** hale getirir — proje-specific tüm bilgiler kaldırılmıştır
+- Proje bağlamı bilgileri artık hedef projenin `docs/` dizini altında sağlanmalı ve PCD (Project Context Discovery) ile otomatik keşfedilecektir
+- Java/Spring Boot, Backend Security, Java Quality Tooling skill'leri korundu — bunlar genel/evrensel standartlardır
+- CHANGELOG'daki tüm proje-specific referanslar temizlendi
+
+### Fixed
+
+- **USAGE.md Token Bütçe Tablosu** (P1): Token aralıkları `task-planning.instructions.md` ile senkronize edildi
+- **README.md Versiyon Yörüngesi** (P2): v5.0.0 satırı eklendi, "Son Analiz" v5.0.0 olarak güncellendi
+- **USAGE.md FAQ** (P2): `.vscode/settings.json` → `.vscode/` dizini olarak düzeltildi
+- **PROGRESS.md Oluşturuldu**: 14 geliştirme görevi ile yol haritası dosyası eklendi
+
+---
+
 ## [4.9.0] — 2026-03-02
 
 ### Fixed
 
 - **Tier Skill Mapping Tutarsızlığı**: v4.8.0'da eklenen 4 yeni skill'in tier instruction dosyalarına yansıtılması
-  - `tier1-principal.instructions.md`: 4 eksik skill eklendi (mayacore-integration, backend-security, java-quality-tooling, api-integration)
-  - `tier1-5-staff-engineer.instructions.md`: 4 eksik skill eklendi (mayacore-integration, backend-security, java-quality-tooling, api-integration)
+  - `tier1-principal.instructions.md`: 4 eksik skill eklendi (backend-security, java-quality-tooling, api-integration ve diğerleri)
+  - `tier1-5-staff-engineer.instructions.md`: 4 eksik skill eklendi (backend-security, java-quality-tooling, api-integration ve diğerleri)
   - `tier2-mid.instructions.md`: 2 eksik skill eklendi (java-quality-tooling, api-integration)
 - **Token Overhead Tutarsızlığı**: Instruction dosya sayısı ve token overhead tahminleri güncellendi
   - `context-loading.instructions.md`: "17 instruction files" → "19 instruction files", token overhead ~40-52K → ~45-55K
@@ -36,24 +77,23 @@ Format [Keep a Changelog](https://keepachangelog.com/) standardına uygundur.
 ### Added
 
 - **4 Yeni Skill Dosyası**: `rules/` dizinindeki proje standartları multi-agent sistemine entegre edildi
-  - `mayacore-integration/SKILL.md`: MayaCore ekosistem entegrasyonu (Config Server, Common Library, API Gateway, Session Library, OpenShift deployment)
   - `backend-security/SKILL.md`: Spring Boot güvenlik standartları (SQL injection, XSS, input validation, BCrypt, JWT, rate limiting)
   - `java-quality-tooling/SKILL.md`: Maven kalite araçları (Checkstyle, SpotBugs, JaCoCo, SonarQube konfigürasyonu)
   - `api-integration/SKILL.md`: Frontend-backend entegrasyon kontratı (ApiResponse<T>, pagination, tarih/saat, hata yönetimi, CORS, auth)
 - **Git Safety Instructions**: AI agent'ların git operasyonları için zorunlu onay mekanizması (`git-safety.instructions.md`)
 - **Config Dosyaları**: `.github/config/` dizinine Checkstyle, SpotBugs ve Maven kalite plugin şablonları eklendi
 - **Java Backend Task Type**: `context-loading.instructions.md`'ye yeni görev tipi eklendi
-- **6 Yeni Task Type**: `delegation-rules.instructions.md`'ye Spring Boot ve MayaCore görev tipleri eklendi
+- **6 Yeni Task Type**: `delegation-rules.instructions.md`'ye Spring Boot görev tipleri eklendi
 
 ### Changed
 
 - Versiyon: v4.7.0 → v4.8.0 (README, USAGE, CHANGELOG)
 - `backend-development/SKILL.md`: Node.js-only → Dual-stack (Node.js + Java/Spring Boot) — Constructor injection, layered architecture, ServiceResponse<T>, GlobalExceptionHandler, retry/circuit breaker eklendi
-- `frontend-development/SKILL.md`: 4 çakışma çözüldü (form standard → React Hook Form + Yup, component max → 300 satır, interface > type, flat feature folders) + MayaCore Nx MFE kuralları, rem() auto-import, Zustand store naming, BEM prefixes eklendi
+- `frontend-development/SKILL.md`: 4 çakışma çözüldü (form standard → React Hook Form + Yup, component max → 300 satır, interface > type, flat feature folders) + micro-frontend kuralları, rem() auto-import, Zustand store naming, BEM prefixes eklendi
 - `testing-standards/SKILL.md`: Java/JUnit backend testing section genişletildi — AssertJ, BDDMockito, parameterized tests, integration test patterns, test data builders, F.I.R.S.T. principles eklendi
 - `context-loading.instructions.md`: Java Backend task type + api-integration skill eklendi
 - `system-validation.instructions.md`: Skill minimum 8→14, instruction minimum 17→19
-- `delegation-rules.instructions.md`: 6 yeni Spring Boot/MayaCore task type eklendi
+- `delegation-rules.instructions.md`: 6 yeni Spring Boot task type eklendi
 - `agent-scaffolding.instructions.md`: Skills by Tier tablosu güncellendi (4 yeni skill)
 - 7 agent dosyası güncellendi: Principal (×2), Staff Engineer (×2), MidCoder (×2) skill referansları güncellendi
 

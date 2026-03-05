@@ -16,7 +16,7 @@ Before reading any skill file, determine the task type:
 | ------------ | --------------- | ---- | ------------- |
 | Frontend UI  | clean-code, frontend-development, implementation, code-review, testing-standards | code-architecture, analysis, backend-development | commit-standards, pr-standards |
 | Backend API  | clean-code, backend-development, implementation, code-review, testing-standards, api-integration | frontend-development, code-architecture, analysis | commit-standards, pr-standards |
-| Java Backend | clean-code, backend-development, java-quality-tooling, backend-security, mayacore-integration | frontend-development, code-architecture, analysis | commit-standards, pr-standards |
+| Java Backend | clean-code, backend-development, java-quality-tooling, backend-security | frontend-development, code-architecture, analysis | commit-standards, pr-standards |
 | Architecture | clean-code, code-architecture, code-review, backend-development | implementation, frontend-development, analysis, testing-standards | commit-standards, pr-standards |
 | Analysis     | analysis | clean-code, code-architecture, code-review, backend-development, implementation, frontend-development, testing-standards, commit-standards, pr-standards | — |
 | Review       | code-review, clean-code, commit-standards, pr-standards | code-architecture, frontend-development, backend-development, analysis, implementation, testing-standards | — |

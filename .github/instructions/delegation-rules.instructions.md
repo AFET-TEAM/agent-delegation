@@ -121,9 +121,8 @@ Standard operation with a single agent (default model — Claude Opus 4.6).
 | Document reading/summarizing   | Tier 3        | Low complexity                          |
 | Test scenario generation       | Tier 3        | Analysis-based                          |
 | Performance profiling          | Tier 3        | Research                                |
-| Spring Boot service implementation | Tier 1.5  | Complex domain logic, MayaCore integration |
+| Spring Boot service implementation | Tier 1.5  | Complex domain logic, backend integration   |
 | Spring Boot entity/DTO creation | Tier 2       | Boilerplate-heavy, templated            |
-| MayaCore Config Server setup   | Tier 1.5      | Infrastructure-level integration        |
 | Backend security audit         | Tier 3        | Read-only analysis                      |
 | Frontend-backend contract alignment | Tier 2   | Templated, well-documented              |
 | Java quality gate setup        | Tier 2        | Maven plugin configuration              |

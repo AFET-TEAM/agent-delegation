@@ -1,6 +1,6 @@
 # Multi-Agent Delegation System — Kullanım Kılavuzu
 
-> Versiyon: 4.9.0 | Son Güncelleme: 2026-03-02
+> Versiyon: 5.0.0 | Son Güncelleme: 2026-03-05
 
 ---
 
@@ -466,7 +466,6 @@ Her tier'ın kendine özgü skill dosyaları vardır:
 | Commit Standards     | `.github/skills/commit-standards/SKILL.md`     | Tier 1, 1.5 & 2                |
 | PR Standards         | `.github/skills/pr-standards/SKILL.md`         | Tier 1, 1.5 & 2                |
 | Testing Standards    | `.github/skills/testing-standards/SKILL.md`    | Tier 1, 1.5 & 2                |
-| MayaCore Integration | `.github/skills/mayacore-integration/SKILL.md` | Tier 1 & 1.5 (MayaCore işleri)    |
 | Backend Security     | `.github/skills/backend-security/SKILL.md`     | Tier 1 & 1.5 (güvenlik işleri)    |
 | Java Quality Tooling | `.github/skills/java-quality-tooling/SKILL.md` | Tier 1, 1.5 & 2 (Java kalite)     |
 | API Integration      | `.github/skills/api-integration/SKILL.md`      | Tier 1, 1.5 & 2 (entegrasyon)     |
@@ -656,12 +655,13 @@ Görevler maksimum **15K token bütçesiyle** alt-görevlere bölünür. Bütçe
 
 | Görev Tipi              | Tahmini Token |
 | ----------------------- | ------------- |
-| Basit utility fonksiyon | 2K-5K         |
-| API endpoint            | 5K-8K         |
-| React component         | 5K-10K        |
-| Karmaşık iş mantığı     | 8K-15K        |
-| Analiz raporu           | 3K-8K         |
+| Basit utility fonksiyon | 5K-10K        |
+| API endpoint            | 5K-12K        |
+| React component         | 8K-15K        |
+| Karmaşık iş mantığı     | 15K-30K       |
+| Analiz raporu           | 2K-5K         |
 | Doküman özeti           | 2K-4K         |
+| Code review             | 3K-8K         |
 
 ---
 
@@ -739,7 +739,7 @@ Platform bağımlılıkları ve tasarım kararları `.github/docs/adr/` dizinind
 
 ### Q: Bu boilerplate'i farklı projelere nasıl taşırım?
 
-**A**: `.github/` dizinini, `AGENTS.md` dosyasını ve `.vscode/settings.json`'ı hedef projeye kopyalayın. **Project Context Discovery (PCD)** özelliği sayesinde agent'lar otomatik olarak projenin kendi `README.md`, diğer `.md` dosyaları ve `docs/` klasörünü tarar. **Prompt Enrichment Protocol (PEP)** ise geliştirme başlamadan önce otomatik olarak soru sorarak gereksinimleri netleştirir. Projenin kuralları, mimarisi ve konvansiyonları otomatik olarak sistem bağlamına dahil edilir — ek yapılandırma gerekmez.
+**A**: `.github/` dizinini, `AGENTS.md` dosyasını ve `.vscode/` dizinini hedef projeye kopyalayın. **Project Context Discovery (PCD)** özelliği sayesinde agent'lar otomatik olarak projenin kendi `README.md`, diğer `.md` dosyaları ve `docs/` klasörünü tarar. **Prompt Enrichment Protocol (PEP)** ise geliştirme başlamadan önce otomatik olarak soru sorarak gereksinimleri netleştirir. Projenin kuralları, mimarisi ve konvansiyonları otomatik olarak sistem bağlamına dahil edilir — ek yapılandırma gerekmez.
 
 ### Q: Hangi VS Code sürümü gerekli?
 
