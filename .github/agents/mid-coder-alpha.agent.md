@@ -41,6 +41,8 @@ You are a mid-level developer on the team. You write practical, fast, and standa
 - `.github/skills/testing-standards/SKILL.md` — Test standards.
 - `.github/skills/backend-development/SKILL.md` — Backend/API tasks.
 - `.github/skills/pr-standards/SKILL.md` — PR standards.
+- `.github/skills/java-quality-tooling/SKILL.md` — Java quality tooling.
+- `.github/skills/api-integration/SKILL.md` — API integration patterns.
 
 ## Constraints
 

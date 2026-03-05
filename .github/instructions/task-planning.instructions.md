@@ -45,10 +45,10 @@ Estimates in the matrix above are initial baselines. To improve accuracy over ti
 
 The 15K token budget per subtask refers to **work tokens** — the agent's reasoning, tool calls, and output generation. It does **not** include:
 
-- **Platform overhead** (~30–40K tokens): System prompts, instruction files, skill definitions loaded via `applyTo: "**"`.
+- **Platform overhead** (~45–55K tokens): System prompts, 19 instruction files, skill definitions loaded via `applyTo: "**"`.
 - **Context loading**: Session files, active plan, referenced source files.
 
-Practical guideline: A subtask budgeted at 15K work tokens may consume 45–55K total tokens when platform context is included. The estimation matrix targets work tokens only.
+Practical guideline: A subtask budgeted at 15K work tokens may consume 60–70K total tokens when platform context is included. The estimation matrix targets work tokens only.
 
 ## Planning Protocol
 

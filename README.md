@@ -1,4 +1,4 @@
-# Multi-Agent Delegation System — v4.7.0
+# Multi-Agent Delegation System — v4.9.0
 
 > AI agent'larını bir takım gibi organize eden, görevleri maliyet ve yetkinlik bazında dağıtan orkestrasyon boilerplate'i.
 
@@ -25,7 +25,11 @@ Bu boilerplate, VS Code'un yerel agent mekanizmasını kullanarak birden fazla A
 - **Token Optimizasyonu** — Paylaşılan kurallar, isteğe bağlı skill yükleme, 15K token bütçesi
 - **Metrik Toplama** — Agent performansı ve token kullanımının otomatik takibi
 - **Çakışma Önleme** — Dosya sahipliği ve kilit mekanizması ile güvenli paralel çalışma
-- **Hazır Skill Dosyaları** — Mimari, kodlama, review, analiz ve backend için önceden tanımlı skill'ler
+- **MayaCore Entegrasyon Desteği** — Config Server, Common Library, API Gateway, OpenShift deployment entegrasyon skill'leri
+- **Java/Spring Boot Standartları** — Backend güvenlik, kalite araçları (Checkstyle, SpotBugs, JaCoCo) skill'leri
+- **Frontend-Backend Entegrasyon Kontratı** — API response formatı, pagination, tarih/saat, hata yönetimi standartları
+- **Git Güvenlik Kuralları** — AI agent'ların git operasyonları için zorunlu onay mekanizması
+- **14 Hazır Skill Dosyası** — Mimari, kodlama, review, analiz, backend, güvenlik, kalite araçları, MayaCore entegrasyonu ve frontend-backend kontrat skill'leri
 - **Slash Komutları** — `/delegate`, `/review`, `/status`, `/architect`, `/resume`, `/history`
 
 ---
@@ -142,7 +146,11 @@ your-project/
 │   │   ├── implementation/SKILL.md          # T1, T1.5, T2: Kodlama standartları
 │   │   ├── pr-standards/SKILL.md            # T1, T1.5, T2: PR standartları
 │   │   ├── testing-standards/SKILL.md       # T1, T1.5, T2: Test standartları
-│   │   └── analysis/SKILL.md               # T2.5, T3: Analiz şablonları
+│   │   ├── analysis/SKILL.md               # T2.5, T3: Analiz şablonları
+│   │   ├── mayacore-integration/SKILL.md    # T1, T1.5: MayaCore ekosistem entegrasyonu
+│   │   ├── backend-security/SKILL.md        # T1, T1.5: Spring Boot güvenlik standartları
+│   │   ├── java-quality-tooling/SKILL.md    # T1, T1.5, T2: Maven kalite araçları
+│   │   └── api-integration/SKILL.md         # T1, T1.5, T2: Frontend-backend kontrat
 │   ├── instructions/
 │   │   ├── clean-code-standards.instructions.md
 │   │   ├── tier1-principal.instructions.md
@@ -160,14 +168,9 @@ your-project/
 │   │   ├── system-validation.instructions.md
 │   │   ├── agent-scaffolding.instructions.md
 │   │   ├── project-context-discovery.instructions.md
-│   │   └── prompt-enrichment.instructions.md
-│   ├── prompts/
-│   │   ├── delegate.prompt.md
-│   │   ├── review.prompt.md
-│   │   ├── status.prompt.md
-│   │   ├── architect.prompt.md
-│   │   ├── resume.prompt.md
-│   │   └── history.prompt.md
+│   │   ├── prompt-enrichment.instructions.md
+│   │   ├── slash-commands.instructions.md
+│   │   ├── git-safety.instructions.md
 │   ├── todo/
 │   │   ├── _template.md
 │   │   └── active-plan.md
@@ -177,6 +180,10 @@ your-project/
 │   │   └── history/
 │   │       ├── archive.md
 │   │       └── refaktor-v4.0.0.md              # Arşivlenmiş v4.0.0 refaktör notları
+│   ├── config/
+│   │   ├── checkstyle.xml                   # Checkstyle kuralları
+│   │   ├── spotbugs-exclude.xml             # SpotBugs istisnalar
+│   │   └── pom-quality-plugins.xml.template # Maven kalite plugin şablonu
 │   ├── metrics/
 │   │   ├── agent-performance.md             # Agent başarı ve maliyet metrikleri
 │   │   └── token-usage.md                   # Token tüketim kalibrasyon logları
@@ -190,7 +197,8 @@ your-project/
 │       └── .gitkeep
 ├── .gitignore                               # Git dışlama kuralları
 ├── .vscode/
-│   └── settings.json                       # VS Code yapılandırması
+│   ├── settings.json                       # VS Code yapılandırması
+│   └── mcp.json                            # MCP server yapılandırması (disabled)
 ├── AGENTS.md                                # Global agent kuralları
 ├── CHANGELOG.md                             # Değişiklik takibi
 ├── LICENSE                                  # GNU GPL v3
@@ -260,22 +268,25 @@ GNU GPL v3 — Özgürce kullanın, değiştirin ve dağıtın. Değiştirilmiş
 | v4.5.0 | 9.7 | 9.5 | Scripts→Instructions migration + 5 fix | ✅ Production-ready |
 | v4.6.0 | 10.0 | 10.0 | PCD feature + 9 fix (1 P0 + 6 P1 + 2 P2) | ✅ Production-ready |
 | v4.7.0 | 10.0 | 10.0 | PEP feature + PCD integration | ✅ Production-ready |
+| v4.8.0 | 10.0 | 10.0 | Rules entegrasyonu + 4 yeni skill + 3 skill update + 2 yeni instruction | ✅ Production-ready |
+| v4.9.0 | 10.0 | 10.0 | 12 fix (7 P1 + 4 P2 + 1 P3) — tier skill mapping + token overhead + docs | ✅ Production-ready |
 
-### Gelişim Skoru (Son Analiz: v4.7.0)
+### Gelişim Skoru (Son Analiz: v4.9.0)
 
-| Boyut | v4.3.0 | v4.4.0 | v4.5.0 | v4.6.0 | v4.7.0 |
-|-------|:------:|:------:|:------:|:------:|:------:|
-| Yapısal Bütünlük | 9.1 | 9.5 | 9.7 | 10.0 | **10.0** |
-| Dokümantasyon Tutarlılığı | 8.8 | 9.4 | 9.5 | 10.0 | **10.0** |
-| Agent Tier Tasarımı | 9.3 | 9.6 | 9.7 | 10.0 | **10.0** |
-| Review Chain | 9.5 | 9.6 | 9.6 | 10.0 | **10.0** |
-| Delegation Logic | 9.4 | 9.6 | 9.6 | 10.0 | **10.0** |
-| Token Optimizasyonu | 9.0 | 9.5 | 9.7 | 10.0 | **10.0** |
-| Hook Sistemi | 9.0 | 9.4 | 9.4 | 10.0 | **10.0** |
-| Genişletilebilirlik | 8.8 | 9.1 | 9.5 | 10.0 | **10.0** |
-| Session Memory | 9.3 | 9.5 | 9.5 | 10.0 | **10.0** |
-| Proje Bağlamı Keşfi (PCD) | — | — | — | 10.0 | **10.0** |
-| Prompt Zenginleştirme (PEP) | — | — | — | — | **10.0** |
+| Boyut | v4.3.0 | v4.4.0 | v4.5.0 | v4.6.0 | v4.7.0 | v4.8.0 | v4.9.0 |
+|-------|:------:|:------:|:------:|:------:|:------:|:------:|:------:|
+| Yapısal Bütünlük | 9.1 | 9.5 | 9.7 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Dokümantasyon Tutarlılığı | 8.8 | 9.4 | 9.5 | 10.0 | 10.0 | 9.2 | **10.0** |
+| Agent Tier Tasarımı | 9.3 | 9.6 | 9.7 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Review Chain | 9.5 | 9.6 | 9.6 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Delegation Logic | 9.4 | 9.6 | 9.6 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Token Optimizasyonu | 9.0 | 9.5 | 9.7 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Hook Sistemi | 9.0 | 9.4 | 9.4 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Genişletilebilirlik | 8.8 | 9.1 | 9.5 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Session Memory | 9.3 | 9.5 | 9.5 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Proje Bağlamı Keşfi (PCD) | — | — | — | 10.0 | 10.0 | 10.0 | **10.0** |
+| Prompt Zenginleştirme (PEP) | — | — | — | — | 10.0 | 10.0 | **10.0** |
+| MayaCore & Java Entegrasyonu | — | — | — | — | — | 10.0 | **10.0** |
 
 ### Analiz Metodolojisi
 
@@ -285,4 +296,4 @@ Her analiz döngüsü **x10 multi-agent** mode ile çalıştırılır:
 - **2 Principal** (T1): Mimari değerlendirme + operasyonel hazırlık skorlaması
 - **2 Staff Engineer + 2 MidCoder** (T1.5, T2): Analiz döngülerinde idle — kodlama görevlerinde aktif
 
-> _Son güncelleme: v4.7.0 — 2026-02-26_
+> _Son güncelleme: v4.9.0 — 2026-03-02_

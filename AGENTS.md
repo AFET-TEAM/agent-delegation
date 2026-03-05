@@ -98,12 +98,17 @@ The following skills are **binding rules** for all coding tasks:
 - **Commit Standards** (`.github/skills/commit-standards/SKILL.md`) — Applied to all commit messages.
 - **PR Standards** (`.github/skills/pr-standards/SKILL.md`) — Applied to all pull requests.
 - **Testing Standards** (`.github/skills/testing-standards/SKILL.md`) — Applied to all test code.
+- **Backend Security** (`.github/skills/backend-security/SKILL.md`) — Applied to all Java/Spring Boot security-related tasks.
+- **MayaCore Integration** (`.github/skills/mayacore-integration/SKILL.md`) — Applied to all MayaCore ecosystem integration tasks.
+- **Java Quality Tooling** (`.github/skills/java-quality-tooling/SKILL.md`) — Applied to all Java/Maven project quality tasks.
+- **API Integration** (`.github/skills/api-integration/SKILL.md`) — Applied to all frontend-backend integration tasks.
 
 ### Absolute Prohibitions in Code
 
 - **No comments**: Code must be self-documenting. No inline comments, block comments, TODO/FIXME, or commented-out code.
 - **No console statements**: No `console.log`, `console.warn`, `console.error`, or any `console.*` method.
 - **No debug artifacts**: No `debugger`, no `any` type, no hardcoded test values.
+- **No git operations without consent**: AI agents must receive explicit text consent before any git write operation (commit, push, merge, rebase). See `git-safety.instructions.md`.
 
 Violation of these rules is a 🔴 Critical review finding.
 

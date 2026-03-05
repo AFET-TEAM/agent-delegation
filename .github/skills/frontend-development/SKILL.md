@@ -2,9 +2,10 @@
 name: Frontend Development
 description: >
   Principal-level frontend development skill covering JavaScript (ES2024+),
-  React 18+, and Ant Design 5.x. This skill is MANDATORY for all frontend
-  coding tasks. Covers component architecture, state management, hooks patterns,
-  performance optimization, and Ant Design best practices.
+  React 18+, Ant Design 5.x, and MayaCore micro-frontend standards. This skill
+  is MANDATORY for all frontend coding tasks. Covers component architecture,
+  state management, React Hook Form + Yup, hooks patterns, performance
+  optimization, and Ant Design best practices.
 estimated-tokens: 8000
 ---
 
@@ -17,6 +18,8 @@ This skill is **mandatory** for all frontend coding tasks. It covers:
 - Modern JavaScript / TypeScript best practices
 - React component architecture and patterns
 - Ant Design component library usage
+- React Hook Form + Yup form management
+- Nx Module Federation micro-frontend architecture
 - Performance optimization
 - Accessibility standards
 
@@ -192,51 +195,54 @@ function useAsyncData<T>(fetcher: () => Promise<T>): AsyncState<T> {
 | ---------------- | ---------------------------------- | ---------------------------------------------------------- |
 | **Layout**       | `Layout`, `Grid`, `Space`, `Flex`  | Use `Flex` for one-dimensional, `Grid` for two-dimensional |
 | **Navigation**   | `Menu`, `Breadcrumb`, `Tabs`       | Use `items` prop (not JSX children)                        |
-| **Data Entry**   | `Form`, `Input`, `Select`          | Always use `Form.useForm()` hook                           |
+| **Data Entry**   | `Input`, `Select`, `DatePicker`    | Use with React Hook Form `Controller` for form binding     |
 | **Data Display** | `Table`, `List`, `Card`            | Provide `rowKey` for Table, paginate 20+ items             |
 | **Feedback**     | `message`, `notification`, `Modal` | Use static methods: `message.success()` not `<Message>`    |
 
-### Form Patterns
+### Form Patterns (React Hook Form + Yup)
 
 ```typescript
-// ✅ Ant Design Form with proper typing
-import { Form, Input, Button } from "antd";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { Input, Button } from "antd";
 
 interface LoginFormValues {
   email: string;
   password: string;
 }
 
-export function LoginForm({ onSubmit }: LoginFormProps) {
-  const [form] = Form.useForm<LoginFormValues>();
+const loginSchema = yup.object({
+  email: yup.string().email("Invalid email").required("Email is required"),
+  password: yup.string().required("Password is required"),
+});
 
-  const handleFinish = (values: LoginFormValues) => {
-    onSubmit(values);
-  };
+export function LoginForm({ onSubmit }: LoginFormProps) {
+  const { control, handleSubmit, formState: { isValid } } = useForm<LoginFormValues>({
+    mode: "all",
+    resolver: yupResolver(loginSchema),
+  });
 
   return (
-    <Form form={form} layout="vertical" onFinish={handleFinish}>
-      <Form.Item
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Controller
         name="email"
-        rules={[
-          { required: true, message: "Email is required" },
-          { type: "email", message: "Invalid email format" },
-        ]}
-      >
-        <Input placeholder="Email" />
-      </Form.Item>
-      <Form.Item
+        control={control}
+        render={({ field, fieldState }) => (
+          <Input {...field} placeholder="Email" status={fieldState.error ? "error" : ""} />
+        )}
+      />
+      <Controller
         name="password"
-        rules={[{ required: true, message: "Password is required" }]}
-      >
-        <Input.Password placeholder="Password" />
-      </Form.Item>
-      <Form.Item>
-        <Button type="primary" htmlType="submit" block>
-          Sign In
-        </Button>
-      </Form.Item>
-    </Form>
+        control={control}
+        render={({ field, fieldState }) => (
+          <Input.Password {...field} placeholder="Password" status={fieldState.error ? "error" : ""} />
+        )}
+      />
+      <Button type="primary" htmlType="submit" disabled={!isValid} block>
+        Sign In
+      </Button>
+    </form>
   );
 }
 ```
@@ -324,13 +330,15 @@ src/
 │   ├── routes.tsx
 │   ├── providers.tsx
 │   └── app.tsx
-├── features/               # Feature modules
+├── features/               # Feature modules (flat — no sub-folders)
 │   ├── auth/
-│   │   ├── components/
-│   │   ├── hooks/
-│   │   ├── services/
-│   │   ├── types.ts
-│   │   └── index.ts
+│   │   ├── auth.tsx
+│   │   ├── auth-form.tsx
+│   │   ├── auth.hook.ts
+│   │   ├── auth.service.ts
+│   │   ├── auth.types.ts
+│   │   ├── auth.module.scss
+│   │   └── auth.spec.tsx
 │   └── dashboard/
 │       └── ...
 ├── shared/                 # Shared across features
@@ -346,6 +354,16 @@ src/
     └── env.ts
 ```
 
+> **Flat feature folders**: All files within a feature folder live at the same level.
+> No `components/`, `hooks/`, or `services/` sub-folders inside features.
+> Sub-folders inside a feature are only allowed for separate child features.
+
+### Nx Module Federation
+
+- Shell (`apps/shell`) and Shared Library (`libs/shared`) are **read-only reference**.
+- Modifying Shell or Shared Library requires an **RFC** with impact analysis and team approval.
+- Copy patterns into your own MFE rather than editing shared code directly.
+
 ---
 
 ## React Coding Rules
@@ -354,8 +372,8 @@ src/
 
 - Components must be declared using `function` keyword (not `const` arrow function).
 - Component files use PascalCase naming. Non-component files use kebab-case.
-- Maximum **250 lines** per component — split logic/styles when exceeded.
-- Prefer `type` over `interface` for component props (avoids extends/declaration merging issues).
+- Maximum **300 lines** per component — split logic/styles when exceeded.
+- Prefer `interface` for object shapes (props, state, API responses). Use `type` only for unions, intersections, and mapped types.
 
 ### Props and Event Handlers
 
@@ -460,15 +478,26 @@ const { data } = useQuery(["addresses"], fetchAddresses);
 const formattedAddresses = data?.map(/* ... */);
 ```
 
-### Form Management
+### Form Management (React Hook Form + Yup)
 
-- All forms must use Ant Design `Form` with `Form.useForm()` hook and `rules`-based validation.
-- Complex validation rules must be extracted into separate files per form.
-- Do NOT use `react-hook-form` or `yup` — Ant Design Form is the sole form standard.
+- All forms must use React Hook Form with `useForm` hook and Yup schema validation via `yupResolver`.
+- Ant Design input components (`Input`, `Select`, `DatePicker`) are wrapped with `Controller`.
+- Complex validation schemas must be extracted into separate files per form.
+- Use `mode: "all"` and `reValidateMode: "onChange"` for real-time validation feedback.
+
+```typescript
+const customerSchema = yup.object({
+  citizenNumber: yup.string().trim().optional(),
+  firstName: yup.string().trim().optional(),
+  lastName: yup.string().trim().optional(),
+}).test("customer-params", "Citizen number or name is required", (value) => {
+  return !!value.citizenNumber?.trim() || (!!value.firstName?.trim() && !!value.lastName?.trim());
+});
+```
 
 ### Store Management (Zustand)
 
-- Store names must include project prefix to avoid collisions: `{projectName}storeName`.
+- Store names must include project prefix with slash notation: `{project}/{storeName}` (e.g., `docman/customerSearch`).
 - Use Zustand's native `setState` — do NOT create individual setter methods unless business logic is involved.
 - Filtering and sorting operations belong in the store, NOT in components.
 - Always use immutable state updates (spread operator, never direct mutation).
@@ -510,25 +539,34 @@ try {
 
 - All style naming must follow BEM (Block-Element-Modifier) convention.
 - Use nested SCSS for related selectors.
+- BEM prefix by component type: `a-` for atoms, `m-` for molecules, `o-` for organisms.
 
 ```scss
-.a-wrapperName {
-  &__content {
+.a-customerSearch {
+  &__input {
   }
-  &--variantName {
+  &--disabled {
+  }
+}
+
+.m-searchForm {
+  &__field {
+  }
+  &--compact {
   }
 }
 ```
 
 ### CSS Class Naming for Components
 
-- Atom components: `a-trkclApp{ComponentName}`
-- Molecule components: `m-trkclApp{ComponentName}`
+- Atom components: `a-{ComponentName}` (e.g., `a-customerSearch`)
+- Molecule components: `m-{ComponentName}` (e.g., `m-searchForm`)
 
 ### Units
 
 - Use `rem` instead of `px` for responsive design.
 - Use the project's `rem()` function for conversion.
+- The `rem()` function is **auto-imported** by Webpack — do NOT manually import SCSS abstracts.
 - Do NOT use percentage-based margins (except for `position: absolute` cases).
 
 ### Color and Font Management
@@ -636,7 +674,7 @@ Before submitting any frontend code, verify:
 - [ ] Custom hooks extract reusable logic
 - [ ] No inline objects/functions in JSX props (unless trivial)
 - [ ] Ant Design components used with `items` API (not JSX children)
-- [ ] Forms use Ant Design `Form` with `Form.useForm()` and `rules`-based validation
+- [ ] Forms use React Hook Form with `useForm`, `Controller`, and Yup schema validation
 - [ ] Data fetching uses TanStack Query with `select` for transformation
 - [ ] Tables have `rowKey` and pagination
 - [ ] Theme tokens used — no hardcoded colors or CSS overrides

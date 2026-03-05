@@ -29,8 +29,8 @@ The repository must contain a minimum number of files in each category.
 | Directory | Pattern | Minimum |
 |-----------|---------|---------|
 | `.github/agents/` | `*.agent.md` | 8 |
-| `.github/instructions/` | `*.instructions.md` | 17 |
-| `.github/skills/*/` | `SKILL.md` (in subdirectories) | 8 |
+| `.github/instructions/` | `*.instructions.md` | 19 |
+| `.github/skills/*/` | `SKILL.md` (in subdirectories) | 14 |
 | `.github/hooks/` | `*.json` | 2 |
 
 **Verification:** List files in each directory matching the pattern, count, and compare against the minimum. PASS if all counts meet or exceed their minimum. FAIL with actual vs. expected counts.

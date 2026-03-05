@@ -48,3 +48,7 @@ You share the workload by working in parallel with PrincipalAlpha.
 - `.github/skills/backend-development/SKILL.md` — Backend/API tasks.
 - `.github/skills/implementation/SKILL.md` — Coding standards.
 - `.github/skills/testing-standards/SKILL.md` — Test standards.
+- `.github/skills/mayacore-integration/SKILL.md` — MayaCore integration patterns.
+- `.github/skills/backend-security/SKILL.md` — Backend security standards.
+- `.github/skills/java-quality-tooling/SKILL.md` — Java quality tooling.
+- `.github/skills/api-integration/SKILL.md` — API integration patterns.

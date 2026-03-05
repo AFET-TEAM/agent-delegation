@@ -1,6 +1,6 @@
 # Multi-Agent Delegation System — Kullanım Kılavuzu
 
-> Versiyon: 4.7.0 | Son Güncelleme: 2026-02-26
+> Versiyon: 4.9.0 | Son Güncelleme: 2026-03-02
 
 ---
 
@@ -35,7 +35,7 @@
 # Boilerplate'i kendi projenize kopyalayın
 cp -r agentDelegation/.github /path/to/your/project/
 cp agentDelegation/AGENTS.md /path/to/your/project/
-cp agentDelegation/.vscode/settings.json /path/to/your/project/.vscode/
+cp agentDelegation/.vscode /path/to/your/project/.vscode -r
 ```
 
 ### 2. VS Code'da Açın
@@ -398,6 +398,7 @@ Orchestrator, görev tipine göre en uygun kategorilerden **3-7 soru** seçer:
 4. **UI/UX Tercihleri**: Layout, component tercih, feedback pattern'leri (frontend görevleri için)
 5. **Test & Kalite**: Coverage kapsamı, test senaryoları, performans hedefleri
 6. **Proje Bağlam Uyumu**: Mevcut pattern'larla tutarlılık, isimlendirme, bağımlılık tercihi
+7. **Güvenlik & Uyumluluk**: Auth stratejisi, veri gizliliği, input sanitization (güvenlik gerektiren görevler için)
 
 ### Süreç
 
@@ -465,6 +466,10 @@ Her tier'ın kendine özgü skill dosyaları vardır:
 | Commit Standards     | `.github/skills/commit-standards/SKILL.md`     | Tier 1, 1.5 & 2                |
 | PR Standards         | `.github/skills/pr-standards/SKILL.md`         | Tier 1, 1.5 & 2                |
 | Testing Standards    | `.github/skills/testing-standards/SKILL.md`    | Tier 1, 1.5 & 2                |
+| MayaCore Integration | `.github/skills/mayacore-integration/SKILL.md` | Tier 1 & 1.5 (MayaCore işleri)    |
+| Backend Security     | `.github/skills/backend-security/SKILL.md`     | Tier 1 & 1.5 (güvenlik işleri)    |
+| Java Quality Tooling | `.github/skills/java-quality-tooling/SKILL.md` | Tier 1, 1.5 & 2 (Java kalite)     |
+| API Integration      | `.github/skills/api-integration/SKILL.md`      | Tier 1, 1.5 & 2 (entegrasyon)     |
 
 ### Skill İçerikleri
 
@@ -538,11 +543,11 @@ Manuel ekleme tercih ederseniz:
 
 `.github/instructions/delegation-rules.instructions.md` dosyasındaki tabloyu güncelleyin.
 
-### Yeni Prompt Ekleme
+### Yeni Komut Ekleme
 
-1. `.github/prompts/[command].prompt.md` dosyası oluşturun.
-2. YAML frontmatter'da `name`, `description`, `agent`, `model` tanımlayın.
-3. `/command` olarak Copilot Chat'te kullanılabilir olur.
+1. `.github/instructions/slash-commands.instructions.md` dosyasına yeni komutu ekleyin.
+2. Komut tablosuna ve detay bölümüne tanımı yazın.
+3. `applyTo: "**"` sayesinde tüm ortamlarda (VS Code, CLI, diğer) otomatik tanınır.
 
 ---
 
@@ -595,7 +600,7 @@ Her oturum sonunda konuşma geçmişi, alınan kararlar ve yapılan değişiklik
 - Maksimum **20 session** dosyası tutulur; eskiler otomatik olarak arşivlenir.
 - Yalnızca **Orchestrator** session dosyası oluşturur/düzenler.
 - Diğer agent'lar session dosyalarını **salt okunur** olarak kullanır.
-- **v4.1.0+**: `SubagentStop` hook'u otomatik olarak `.github/logs/agent-activity.log` dosyasına session marker yazar. Bu, Orchestrator'ın açıkça kaydetmediği durumlarda bile oturum izlenebilirliğini sağlar.
+- **v4.1.0+**: `SubagentStop` hook'u otomatik olarak `.github/logs/agent-activity.log` dosyasına session marker yazar. `.github/logs/` dizini çalışma zamanında hook'lar tarafından otomatik oluşturulur (`mkdir -p`). Bu, Orchestrator'ın açıkça kaydetmediği durumlarda bile oturum izlenebilirliğini sağlar.
 - `/resume` komutuyla son session ve aktif plan geri yüklenir.
 - `/history` komutuyla son session'lar listelenir.
 

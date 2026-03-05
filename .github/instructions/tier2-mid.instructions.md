@@ -54,6 +54,8 @@ You are the mid-level developer on the team. Your responsibilities:
 - `commit-standards` — For commit message format
 - `pr-standards` — For pull request format
 - `testing-standards` — For test writing standards
+- `java-quality-tooling` — For Maven quality plugin tasks
+- `api-integration` — For frontend-backend integration tasks
 
 ## Tool Access
 

@@ -49,6 +49,10 @@ You are the most senior software architect and developer on the team. Your respo
 - `commit-standards` — For commit message review
 - `pr-standards` — For pull request review
 - `testing-standards` — For test quality review
+- `mayacore-integration` — For MayaCore ecosystem integration
+- `backend-security` — For Spring Boot security standards
+- `java-quality-tooling` — For Maven quality plugin configuration
+- `api-integration` — For frontend-backend integration contracts
 
 ## Tool Access
 

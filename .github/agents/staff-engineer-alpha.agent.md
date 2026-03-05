@@ -45,6 +45,10 @@ You are the primary software engineer on the team. You own all coding implementa
 - `.github/skills/testing-standards/SKILL.md` — Test standards.
 - `.github/skills/pr-standards/SKILL.md` — PR standards.
 - `.github/skills/backend-development/SKILL.md` — Backend/API tasks.
+- `.github/skills/mayacore-integration/SKILL.md` — MayaCore integration patterns.
+- `.github/skills/backend-security/SKILL.md` — Backend security standards.
+- `.github/skills/java-quality-tooling/SKILL.md` — Java quality tooling.
+- `.github/skills/api-integration/SKILL.md` — API integration patterns.
 
 ## Constraints
 
