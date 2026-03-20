@@ -28,11 +28,11 @@ The system targets VS Code + GitHub Copilot exclusively. No abstraction layer fo
 
 ### D-2: Accept `applyTo: "**"` Broadcast Behavior
 
-All instruction files use `applyTo: "**"` which loads them in every Copilot Chat interaction regardless of active agent. This creates ~30-40K tokens of overhead per session.
+Previously, all 19 instruction files used `applyTo: "**"` which loaded them in every Copilot Chat interaction (~45-55K tokens overhead including platform system prompts). As of v6.0.0, only 3 universal instruction files auto-load (~4-5K tokens for instruction content alone; ~15-20K total when platform system prompts and skill definitions are included); 16 on-demand reference files (5 tier-specific + 11 system-wide) are in `reference/` and loaded by agents when needed.
 
-**Rationale**: VS Code Copilot's `applyTo` targets workspace file patterns, not agent identity. No mechanism exists to scope instructions to specific agents.
+**Rationale**: VS Code Copilot's `applyTo` targets workspace file patterns, not agent identity. The `reference/` migration exploits this by placing non-universal files outside the glob pattern.
 
-**Mitigation**: Orchestrator specifies per-task skill loading subset. Context-loading budget limits (2-5 skills per agent tier) enforce practical filtering at the behavioral level.
+**Mitigation**: Only `shared-base`, `clean-code-standards`, and `git-safety` auto-load. Orchestrator specifies per-task skill and instruction loading subset. Context-loading budget limits (2-5 skills per agent tier) enforce practical filtering.
 
 ### D-3: File Ownership is Convention-Based
 
@@ -82,3 +82,4 @@ The `modelFallback` YAML property documents intent, but actual model routing is 
 | R-3 | Model fallback declarative | Low | Transparent reporting |
 | R-4 | Session memory depends on Orchestrator discipline | Medium | Hook-based auto-save markers |
 | R-5 | Single-platform dependency | Medium | Documented as accepted trade-off |
+| R-6 | Log rotation single-backup (`.old`) | Low | x10 TOCTOU race theoretical; telemetry-only data, no business impact |

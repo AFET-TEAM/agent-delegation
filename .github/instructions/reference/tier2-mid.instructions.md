@@ -1,7 +1,3 @@
----
-applyTo: "**"
----
-
 # Tier 2 — MidCoder Agent Instructions
 
 ## Role Definition
@@ -68,7 +64,7 @@ You are the mid-level developer on the team. Your responsibilities:
 
 ## Output Expectations
 
-- Use the report format from `AGENTS.md` at the end of each task.
+- Use the report format from `shared-base.instructions.md` at the end of each task.
 - List created/modified files.
 - Clearly state any doubts about architecture decisions.
 

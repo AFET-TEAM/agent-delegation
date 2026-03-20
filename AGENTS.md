@@ -48,7 +48,7 @@
 
 ## 🔄 Agent Communication Protocol
 
-> **Authoritative Source**: The review chain and output format defined here are the canonical references. Other instruction files reference these definitions.
+> **Summary**: The canonical review chain is defined in `review-chain.instructions.md`. The output format template is defined in `shared-base.instructions.md`. Summaries are provided here for convenience.
 
 ### Output Format
 
@@ -89,13 +89,18 @@ Tier 1 (Principal) output → Collected and presented by Orchestrator
 
 ---
 
-## 📋 Mandatory Skills
+## 📋 Binding Rules (Zorunlu Skill'ler)
 
-The following skills are **binding rules** for all coding tasks:
+> **Summary**: Canonical skill requirements are defined per-task-type in `context-loading.instructions.md`. The rules below indicate when each skill is binding — not all are active in every task.
+
+### Universal (Tüm Kodlama Görevleri)
 
 - **Clean Code** (`.github/skills/clean-code/SKILL.md`) — Applied to ALL code. No exceptions.
-- **Frontend Development** (`.github/skills/frontend-development/SKILL.md`) — Applied to all frontend tasks.
 - **Commit Standards** (`.github/skills/commit-standards/SKILL.md`) — Applied to all commit messages.
+
+### Domain-Specific (Görev Tipine Göre Aktif)
+
+- **Frontend Development** (`.github/skills/frontend-development/SKILL.md`) — Applied to all frontend tasks.
 - **PR Standards** (`.github/skills/pr-standards/SKILL.md`) — Applied to all pull requests.
 - **Testing Standards** (`.github/skills/testing-standards/SKILL.md`) — Applied to all test code.
 - **Backend Security** (`.github/skills/backend-security/SKILL.md`) — Applied to all Java/Spring Boot security-related tasks.
@@ -104,7 +109,7 @@ The following skills are **binding rules** for all coding tasks:
 
 ### Absolute Prohibitions in Code
 
-- **No comments**: Code must be self-documenting. No inline comments, block comments, TODO/FIXME, or commented-out code.
+- **No comments**: Code must be self-documenting. No inline comments, block comments, TODO/FIXME, or commented-out code. _(Exception: JSDoc/TSDoc on exported public API interfaces only.)_
 - **No console statements**: No `console.log`, `console.warn`, `console.error`, or any `console.*` method.
 - **No debug artifacts**: No `debugger`, no `any` type, no hardcoded test values.
 - **No git operations without consent**: AI agents must receive explicit text consent before any git write operation (commit, push, merge, rebase). See `git-safety.instructions.md`.
@@ -155,7 +160,7 @@ When a primary model is unavailable, the system automatically falls back:
 | Tier 2.5 — Lead Analyst   | Gemini 3.1 Pro (Preview) | Gemini 3.0 Pro (Preview) |
 | Tier 3 — Analyst          | Gemini 3 Flash           | Claude Haiku 4.5         |
 
-- Full fallback chain details: `.github/instructions/model-fallback.instructions.md`
+- Full fallback chain details: `.github/instructions/reference/model-fallback.instructions.md`
 - Agents must report fallback activation in their task report.
 - Fallback does not change tier permissions or tool access.
 
@@ -175,8 +180,8 @@ When a primary model is unavailable, the system automatically falls back:
 ## 📊 Token Optimization
 
 - Shared rules are centralized in `.github/instructions/shared-base.instructions.md` — agent files reference this instead of duplicating content.
-- Skills are loaded on-demand per task type, not all at once. See `.github/instructions/context-loading.instructions.md`.
-- Tasks are decomposed into subtasks with a maximum 15K token budget each. See `.github/instructions/task-planning.instructions.md`.
+- Skills are loaded on-demand per task type, not all at once. See `.github/instructions/reference/context-loading.instructions.md`.
+- Tasks are decomposed into subtasks with a maximum 15K token budget each. See `.github/instructions/reference/task-planning.instructions.md`.
 - Active plan is tracked in `.github/todo/active-plan.md` for pause/resume across token limits.
 
 ---
@@ -204,7 +209,7 @@ When this boilerplate is placed into a project, agents automatically discover an
 - Analysis agents (T2.5, T3) include project context in analysis scope.
 - Orchestrator triggers PCD scan at session start and distributes context references.
 
-Full protocol: `.github/instructions/project-context-discovery.instructions.md`
+Full protocol: `.github/instructions/reference/project-context-discovery.instructions.md`
 
 ---
 
@@ -234,7 +239,7 @@ Before starting any non-trivial development task, the Orchestrator enriches the 
 - All agents receive the enriched plan as task context and follow confirmed decisions
 - Agents report any implementation deviations from the approved plan
 
-Full protocol: `.github/instructions/prompt-enrichment.instructions.md`
+Full protocol: `.github/instructions/reference/prompt-enrichment.instructions.md`
 
 ---
 

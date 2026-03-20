@@ -4,7 +4,8 @@ description: >
   Pull request format, size limits, description template, and review readiness
   standards. Used by all coding agents (Tier 1, Tier 1.5, Tier 2) to ensure
   consistent and reviewable pull requests.
-estimated-tokens: 2000
+estimated-tokens: 1400
+used-by: [T1, T1.5, T2]
 ---
 
 # PR Standards Skill

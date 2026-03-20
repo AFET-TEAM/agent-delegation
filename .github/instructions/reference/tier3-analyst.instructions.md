@@ -1,7 +1,3 @@
----
-applyTo: "**"
----
-
 # Tier 3 — Analyst Agent Instructions
 
 ## Role Definition

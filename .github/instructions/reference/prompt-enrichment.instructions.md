@@ -1,7 +1,3 @@
----
-applyTo: "**"
----
-
 # Prompt Enrichment Protocol (PEP)
 
 Before starting any development task, enrich the user's prompt through targeted questions and structured planning. This ensures clarity, reduces rework, and produces higher-quality deliverables.

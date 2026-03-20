@@ -1,59 +1,39 @@
 ---
-plan-id: PLAN-003
-created: 2026-02-23
+plan-id: PLAN-004
+created: 2026-03-16
 status: completed
-total-tasks: 32
-completed-tasks: 32
-estimated-remaining-tokens: 0K
+total-tasks: 14
+completed-tasks: 14
+estimated-remaining-tokens: 0
 ---
 
-## Active Plan: Refactor to 10/10 Maturity (x10)
+## Active Plan: v6.0.0 → v6.3.0 Agent Rename + Token Optimization + Deep Fix Cycle
 
 ### Progress
 
-- [x] TASK-001: C-1 — Principal review chain fix (T1.5, ~2K tokens) ✅
-- [x] TASK-002: C-2 — MidCoder analyst review fix (T1.5, ~2K tokens) ✅
-- [x] TASK-003: C-3 — Function length standardize to 20 (T1.5, ~1K tokens) ✅
-- [x] TASK-004: C-4 — Cyclomatic complexity standardize to 8 (T1.5, ~1K tokens) ✅
-- [x] TASK-005: C-5 — File/component limit standardize to 250 (T1.5, ~1K tokens) ✅
-- [x] TASK-006: C-6 — Git tracking contradiction fix (T1.5, ~1K tokens) ✅
-- [x] TASK-007: I-1 — Principal YAML agents cleanup (T1.5, ~1K tokens) ✅
-- [x] TASK-008: I-2 — Safety guard hook tools (T1.5, ~1K tokens) ✅
-- [x] TASK-009: I-3 — Backend skill to 6 agents (T2, ~2K tokens) ✅
-- [x] TASK-010: I-4 — Clean code scope T1.5 (T1.5, ~1K tokens) ✅
-- [x] TASK-011: I-5 — Alpha file ownership rules (T2, ~2K tokens) ✅
-- [x] TASK-012: I-6 — StaffEngineerAlpha output format (T2, ~1K tokens) ✅
-- [x] TASK-013: I-7 — Copilot-instructions update (T1.5, ~2K tokens) ✅
-- [x] TASK-014: S-1 — Context-loading table fix (T2, ~1K tokens) ✅
-- [x] TASK-015: S-2 — Covered by TASK-003 (T2, ~0K tokens) ✅
-- [x] TASK-016: S-3 — Delegation x4 edge case (T2, ~1K tokens) ✅
-- [x] TASK-017: S-4 — Archive format alignment (T2, ~1K tokens) ✅
-- [x] TASK-018: S-5 — Token usage code fence (T2, ~1K tokens) ✅
-- [x] TASK-019: S-6 — UTC timezone hooks (T2, ~1K tokens) ✅
-- [x] TASK-020: S-7 — Active plan rewrite (T2, ~1K tokens) ✅
-- [x] TASK-021: S-8 — .spec.tsx standardization (T2, ~1K tokens) ✅
-- [x] TASK-022: S-9 — E2E and backend testing (T1.5, ~3K tokens) ✅
-- [x] TASK-023: DRY tier instructions (T1.5, ~2K tokens) ✅
-- [x] TASK-024: Skill estimated-tokens (T2, ~2K tokens) ✅
-- [x] TASK-025: Context budget enforcement (T1.5, ~1K tokens) ✅
-- [x] TASK-026: Orchestrator token reporting (T1.5, ~2K tokens) ✅
-- [x] TASK-027: Implementation test cross-ref (T2, ~1K tokens) ✅
-- [x] TASK-028: Orchestrator skill budget (T1.5, ~1K tokens) ✅
-- [x] TASK-029: Escalation guides (T1.5, ~2K tokens) ✅
-- [x] TASK-030: Chain integrity rules (T1.5, ~2K tokens) ✅
-- [x] TASK-031: Optimal task sizing (T1.5, ~1K tokens) ✅
-- [x] TASK-032: Active plan PLAN-003 (T2, ~1K tokens) ✅
+- [x] PHASE-01: Rewrite all 11 agent files with Turkish names and titles (~8K tokens) ✅
+- [x] PHASE-02: Create reference/ directory and move 16 instruction files (~2K tokens) ✅
+- [x] PHASE-03: Update shared-base.instructions.md agent name references (~1K tokens) ✅
+- [x] PHASE-04: Update .vscode/settings.json glob pattern (~0.5K tokens) ✅
+- [x] PHASE-05: Update AGENTS.md instruction path references (~1K tokens) ✅
+- [x] PHASE-06: Update copilot-instructions.md instruction path references (~1K tokens) ✅
+- [x] PHASE-07: Update system-validation.instructions.md model table (~1K tokens) ✅
+- [x] PHASE-08: Update agent-performance.md and token-usage.md (~1K tokens) ✅
+- [x] PHASE-09: Update README.md — version, file tree, paths, scores (~3K tokens) ✅
+- [x] PHASE-10: Update USAGE.md — version, agent tables, paths, FAQ (~3K tokens) ✅
+- [x] PHASE-11: Update CHANGELOG.md — add v6.0.0 entry (~2K tokens) ✅
+- [x] PHASE-12: Update PROGRESS.md and active-plan.md (~1K tokens) ✅
+- [x] PHASE-13: Optimize skill files — trim frontend-development, reduce DRY (~5K tokens) ✅
+- [x] PHASE-14: Final consistency verification — deep analysis x10 (~8K tokens) ✅
 
-### Dependency Graph
+### Completion Summary
 
-TASK-001, TASK-002, TASK-007 → Review chain consistency
-TASK-003, TASK-004, TASK-005 → Numeric threshold standardization
-TASK-006 → Session strategy clarity
-TASK-023 → TASK-024 → TASK-025 (token chain)
-TASK-026 → TASK-028 (reporting chain)
-TASK-029 → TASK-030 (escalation chain)
-TASK-032 → Final update
+v6.0.0 → v6.3.0 yolculuğu tamamlandı:
+- v6.0.0: Agent rename + reference/ migration (15 bulgu düzeltildi)
+- v6.1.0: x10 analiz sonrası tüm düzeltmeler (15 bulgu)
+- v6.2.0: Hook lifecycle automation + agent identity banners
+- v6.2.1: Derin re-analiz + 19 bulgu düzeltmesi
+- v6.2.2: İkinci derin analiz + 12 bulgu düzeltmesi
+- v6.3.0: Kapsamlı x10 analiz (28 bulgu) + 10 ek bulgu düzeltmesi
 
-### Resume Point
-
-All 32 tasks completed. Plan status: completed.
+Toplam: 9/9 doğrulama kuralı PASS, 38 bulgu düzeltildi.

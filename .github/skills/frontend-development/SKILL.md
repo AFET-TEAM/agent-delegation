@@ -6,7 +6,8 @@ description: >
   is MANDATORY for all frontend coding tasks. Covers component architecture,
   state management, React Hook Form + Yup, hooks patterns, performance
   optimization, and Ant Design best practices.
-estimated-tokens: 8000
+estimated-tokens: 6000
+used-by: [T1, T1.5, T2]
 ---
 
 # Frontend Development Skill
@@ -139,27 +140,18 @@ export function UserForm({ onSubmit, initialValues }: UserFormProps) {
 
 ### Custom Hook Patterns
 
+Custom hooks must return typed state. Use `AbortController` for cleanup in async hooks:
+
 ```typescript
-// ✅ Custom hook with Result type
 function useAsyncData<T>(fetcher: () => Promise<T>): AsyncState<T> {
   const [state, setState] = useState<AsyncState<T>>({ status: "idle" });
 
   useEffect(() => {
     const controller = new AbortController();
     setState({ status: "loading" });
-
     fetcher()
-      .then((data) => {
-        if (!controller.signal.aborted) {
-          setState({ status: "success", data });
-        }
-      })
-      .catch((error) => {
-        if (!controller.signal.aborted) {
-          setState({ status: "error", error });
-        }
-      });
-
+      .then((data) => { if (!controller.signal.aborted) setState({ status: "success", data }); })
+      .catch((error) => { if (!controller.signal.aborted) setState({ status: "error", error }); });
     return () => controller.abort();
   }, [fetcher]);
 
@@ -176,14 +168,14 @@ function useAsyncData<T>(fetcher: () => Promise<T>): AsyncState<T> {
 5. **Server state** — use TanStack Query / SWR for API data.
 6. **Never duplicate** server state in client state.
 
-### Performance Rules
+### Performance Rules (Quick Reference)
+
+> **Canonical list**: See the "Performance Rules" section below for the full consolidated list.
 
 - Use `React.memo()` only for components that re-render with same props.
 - Use `React.lazy()` + `Suspense` for code splitting at route boundaries.
-- Avoid inline object/array/function creation in JSX props.
 - Never use index as `key` for dynamic lists.
-- Virtualize lists with 50+ items (react-window, react-virtuoso).
-- Image optimization: lazy loading, proper sizing, WebP format.
+- Virtualize lists with 50+ items.
 
 ---
 
@@ -204,17 +196,12 @@ function useAsyncData<T>(fetcher: () => Promise<T>): AsyncState<T> {
 ```typescript
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import { object, string, InferType } from "yup";
 import { Input, Button } from "antd";
 
-interface LoginFormValues {
-  email: string;
-  password: string;
-}
-
-const loginSchema = yup.object({
-  email: yup.string().email("Invalid email").required("Email is required"),
-  password: yup.string().required("Password is required"),
+const loginSchema = object({
+  email: string().email("Invalid email").required("Email is required"),
+  password: string().required("Password is required"),
 });
 
 export function LoginForm({ onSubmit }: LoginFormProps) {
@@ -225,23 +212,11 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Controller
-        name="email"
-        control={control}
+      <Controller name="email" control={control}
         render={({ field, fieldState }) => (
           <Input {...field} placeholder="Email" status={fieldState.error ? "error" : ""} />
-        )}
-      />
-      <Controller
-        name="password"
-        control={control}
-        render={({ field, fieldState }) => (
-          <Input.Password {...field} placeholder="Password" status={fieldState.error ? "error" : ""} />
-        )}
-      />
-      <Button type="primary" htmlType="submit" disabled={!isValid} block>
-        Sign In
-      </Button>
+        )} />
+      <Button type="primary" htmlType="submit" disabled={!isValid} block>Sign In</Button>
     </form>
   );
 }
@@ -250,67 +225,20 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
 ### Table Patterns
 
 ```typescript
-// ✅ Typed Table with proper column definitions
 import { Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 
 const columns: ColumnsType<User> = [
-  {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-    sorter: (a, b) => a.name.localeCompare(b.name),
-  },
-  {
-    title: "Email",
-    dataIndex: "email",
-    key: "email",
-    ellipsis: true,
-  },
-  {
-    title: "Actions",
-    key: "actions",
-    render: (_, record) => (
-      <Space>
-        <Button type="link" onClick={() => handleEdit(record.id)}>
-          Edit
-        </Button>
-      </Space>
-    ),
-  },
+  { title: "Name", dataIndex: "name", key: "name", sorter: (a, b) => a.name.localeCompare(b.name) },
+  { title: "Email", dataIndex: "email", key: "email", ellipsis: true },
 ];
 
-<Table<User>
-  columns={columns}
-  dataSource={users}
-  rowKey="id"
-  pagination={{ pageSize: 20, showSizeChanger: true }}
-/>
+<Table<User> columns={columns} dataSource={users} rowKey="id" pagination={{ pageSize: 20, showSizeChanger: true }} />
 ```
 
 ### Theme Customization
 
-```typescript
-// ✅ Use ConfigProvider for theming — never override CSS directly
-import { ConfigProvider } from "antd";
-
-<ConfigProvider
-  theme={{
-    token: {
-      colorPrimary: "#1677ff",
-      borderRadius: 6,
-      fontFamily: "Inter, sans-serif",
-    },
-    components: {
-      Button: {
-        controlHeight: 40,
-      },
-    },
-  }}
->
-  <App />
-</ConfigProvider>
-```
+Use `ConfigProvider` for theming — never override CSS directly. Customize via `theme.token` (global tokens) and `theme.components` (component-level). Access tokens in components via `theme.useToken()`.
 
 ### Ant Design Anti-Patterns
 
@@ -373,6 +301,9 @@ src/
 - Components must be declared using `function` keyword (not `const` arrow function).
 - Component files use PascalCase naming. Non-component files use kebab-case.
 - Maximum **300 lines** per component — split logic/styles when exceeded.
+
+> **Alignment with clean-code**: The general file limit is 250 lines (`clean-code/SKILL.md`). Frontend components are allowed 300 lines as a domain-specific override when logic/style splitting within a single component is impractical.
+
 - Prefer `interface` for object shapes (props, state, API responses). Use `type` only for unions, intersections, and mapped types.
 
 ### Props and Event Handlers
@@ -395,52 +326,14 @@ src/
 - Do NOT define functions inside render/return — keep logic outside JSX.
 - Use `Fragment` (`<>...</>`) instead of `div` when no wrapper is needed.
 - Avoid `React.useState`, `React.useEffect` — import hooks directly.
-- When using conditional rendering without `else`, use `&&` operator.
-- When nested ternaries are needed, extract into a function.
 - Do NOT use index as `key` for dynamic lists.
-
-```typescript
-// ✅ Correct — logic outside render
-const handleSubmitData = () => dispatch(ACTION_TO_SEND_DATA);
-return <button onClick={handleSubmitData}>Submit</button>;
-
-// ❌ Wrong — inline function in render
-return <button onClick={() => dispatch(ACTION_TO_SEND_DATA)}>Submit</button>;
-```
 
 ### Conditional Rendering
 
-```typescript
-// ✅ Use && when there is no else branch
-{message && <p className={errorClasses}>{message}</p>}
-
-// ❌ Do NOT use ternary with empty fragment
-{message ? <p className={errorClasses}>{message}</p> : <></>}
-```
-
-### Multiple Conditions — Use Map Pattern
-
-```typescript
-// ✅ Correct — map pattern for many conditions
-const periodMap: Record<string, [number, dayjs.ManipulateType]> = {
-  "Last 1 Day": [1, "day"],
-  "Last 1 Week": [6, "day"],
-  "Last 1 Month": [1, "month"],
-};
-
-// ❌ Wrong — repeated if statements
-if (period === "Last 1 Day") startDate = startDate.subtract(1, "day");
-if (period === "Last 1 Week") startDate = startDate.subtract(6, "day");
-```
-
-### Optional Chaining Limit
-
-- Maximum **3 levels** of optional chaining. Restructure if deeper.
-
-```typescript
-// ❌ Avoid
-const value = object?.property1?.property2?.property3 || "default";
-```
+- Use `&&` when there is no else branch. Do NOT use ternary with empty fragment.
+- For multiple conditions, use a map/record pattern instead of repeated if statements.
+- When nested ternaries are needed, extract into a function.
+- Maximum **3 levels** of optional chaining — restructure if deeper.
 
 ### Import Rules
 
@@ -460,76 +353,36 @@ const value = object?.property1?.property2?.property3 || "default";
 - Data transformation must happen in `select` method, NOT in the component.
 
 ```typescript
-// ✅ Correct — data transformation in select
-const useCustomerData = (customerId: string) => {
-  return useQuery({
+const useCustomerData = (customerId: string) =>
+  useQuery({
     queryKey: ["customer", customerId],
     queryFn: () => fetchCustomerData(customerId),
-    select: (data) => ({
-      ...data,
-      fullName: `${data.firstName} ${data.lastName}`,
-      formattedDate: formatDate(data.createdAt),
-    }),
+    select: (data) => ({ ...data, fullName: `${data.firstName} ${data.lastName}` }),
   });
-};
-
-// ❌ Wrong — transformation in component
-const { data } = useQuery(["addresses"], fetchAddresses);
-const formattedAddresses = data?.map(/* ... */);
 ```
 
 ### Form Management (React Hook Form + Yup)
 
+> See "Ant Design 5.x Patterns → Form Patterns" above for the code example.
+
 - All forms must use React Hook Form with `useForm` hook and Yup schema validation via `yupResolver`.
-- Ant Design input components (`Input`, `Select`, `DatePicker`) are wrapped with `Controller`.
+- Ant Design input components are wrapped with `Controller`.
 - Complex validation schemas must be extracted into separate files per form.
 - Use `mode: "all"` and `reValidateMode: "onChange"` for real-time validation feedback.
 
-```typescript
-const customerSchema = yup.object({
-  citizenNumber: yup.string().trim().optional(),
-  firstName: yup.string().trim().optional(),
-  lastName: yup.string().trim().optional(),
-}).test("customer-params", "Citizen number or name is required", (value) => {
-  return !!value.citizenNumber?.trim() || (!!value.firstName?.trim() && !!value.lastName?.trim());
-});
-```
-
 ### Store Management (Zustand)
 
-- Store names must include project prefix with slash notation: `{project}/{storeName}` (e.g., `docman/customerSearch`).
+- Store names must include project prefix with slash notation: `{project}/{storeName}`.
 - Use Zustand's native `setState` — do NOT create individual setter methods unless business logic is involved.
 - Filtering and sorting operations belong in the store, NOT in components.
 - Always use immutable state updates (spread operator, never direct mutation).
 
-```typescript
-// ✅ Correct — native setState
-campaignStore.setState({ wttxRadioType: "new-value" });
-
-// ❌ Wrong — individual setter for each field
-setWttxRadioType: (value) => set({ wttxRadioType: value });
-```
-
 ### Error Handling in Services
 
-```typescript
-// ✅ Correct — meaningful catch block
-try {
-  const { data } = await service.post("/endpoint", body);
-  return data;
-} catch (error) {
-  dispatch(setErrorMessage(error?.response?.data?.errorDetail));
-  throw error;
-}
+> See `clean-code/SKILL.md` for core error handling rules.
 
-// ❌ Wrong — catch with only rethrow (remove try-catch entirely)
-try {
-  const { data } = await service.post("/endpoint", body);
-  return data;
-} catch (error) {
-  throw error;
-}
-```
+- Every `catch` block must perform a meaningful action (dispatch error, throw).
+- Do NOT wrap in try-catch if only rethrowing — let the error propagate naturally.
 
 ---
 
@@ -537,30 +390,13 @@ try {
 
 ### BEM Methodology
 
-- All style naming must follow BEM (Block-Element-Modifier) convention.
-- Use nested SCSS for related selectors.
+- All style naming must follow BEM (Block-Element-Modifier) convention with nested SCSS.
 - BEM prefix by component type: `a-` for atoms, `m-` for molecules, `o-` for organisms.
 
 ```scss
-.a-customerSearch {
-  &__input {
-  }
-  &--disabled {
-  }
-}
-
-.m-searchForm {
-  &__field {
-  }
-  &--compact {
-  }
-}
+.a-customerSearch { &__input {} &--disabled {} }
+.m-searchForm { &__field {} &--compact {} }
 ```
-
-### CSS Class Naming for Components
-
-- Atom components: `a-{ComponentName}` (e.g., `a-customerSearch`)
-- Molecule components: `m-{ComponentName}` (e.g., `m-searchForm`)
 
 ### Units
 
@@ -585,16 +421,8 @@ try {
 
 ### Correct classNames Usage
 
-```scss
-// ✅ Use @extend for combining classes
-&__description {
-  color: $gray-900;
-  @extend .subtitle-1-bold;
-}
-
-// ❌ Do NOT use classNames for static single classes
-const descriptionClasses = classNames("subtitle-2-bold", styles["badge__description"]);
-```
+- Use `@extend` for combining utility classes in SCSS.
+- Do NOT use `classNames()` for static single classes — use direct class references.
 
 ---
 
@@ -603,20 +431,7 @@ const descriptionClasses = classNames("subtitle-2-bold", styles["badge__descript
 - Multi-tab/multi-page modules must use React Router for navigation.
 - Each tab/page must have its own unique URL (deep linking support).
 - Ant Design Tabs can be combined with router-based navigation.
-
-```typescript
-// ✅ Router-based navigation
-<Routes>
-  <Route path="create" element={<CreateForm />} />
-  <Route path="existing" element={<ExistingTable />} />
-</Routes>
-
-// Tab bar with router integration
-<Tabs activeKey={currentRoute} onChange={(key) => navigate(`/module/${key}`)} />
-
-// ❌ State-based tab switching (no URL change)
-<Tabs defaultActiveKey="create" items={[...]} />
-```
+- ❌ Never use state-based tab switching without URL change.
 
 ---
 
@@ -629,7 +444,7 @@ const descriptionClasses = classNames("subtitle-2-bold", styles["badge__descript
 
 ---
 
-## Accessibility (a11y)
+## Accessibility (a11y) & SEO
 
 - All interactive elements must be keyboard accessible.
 - Use semantic HTML (`<button>`, `<nav>`, `<main>`, not `<div onClick>`).
@@ -639,19 +454,15 @@ const descriptionClasses = classNames("subtitle-2-bold", styles["badge__descript
 - Ant Design's built-in a11y props must be used when available.
 - Focus states must be visible for all interactive elements.
 - Screen reader compatibility must be verified.
-
----
-
-## SEO Requirements
-
-- Semantic HTML tags must be used correctly (heading hierarchy, proper elements).
-- `aria-label` and `alt` text for accessibility and SEO.
+- Semantic HTML heading hierarchy must be correct for SEO.
 - Lazy loading for images and links.
 - Lighthouse audit must pass for both mobile and web.
 
 ---
 
 ## Performance Rules
+
+> **Note**: Code splitting and image optimization are also referenced in the React Architecture section above. This section is the canonical, consolidated list.
 
 - Code splitting with `React.lazy()` at route boundaries.
 - Dynamic import for large modules.
@@ -660,7 +471,7 @@ const descriptionClasses = classNames("subtitle-2-bold", styles["badge__descript
 - Minimize re-renders: proper key usage, minimal props changes.
 - Third-party scripts loaded async/defer.
 - Bundle size must be minimized — avoid importing entire libraries.
-- Lists with 50+ items must be virtualized.
+- Lists with 50+ items must be virtualized (react-window, react-virtuoso).
 
 ---
 
@@ -669,12 +480,10 @@ const descriptionClasses = classNames("subtitle-2-bold", styles["badge__descript
 Before submitting any frontend code, verify:
 
 - [ ] TypeScript strict mode — no `any`, no `@ts-ignore`
-- [ ] Components follow single responsibility
-- [ ] Props interface is typed and minimal (≤ 5 props)
+- [ ] Components follow single responsibility (≤ 300 lines, ≤ 5 props)
 - [ ] Custom hooks extract reusable logic
-- [ ] No inline objects/functions in JSX props (unless trivial)
 - [ ] Ant Design components used with `items` API (not JSX children)
-- [ ] Forms use React Hook Form with `useForm`, `Controller`, and Yup schema validation
+- [ ] Forms use React Hook Form + Yup schema validation
 - [ ] Data fetching uses TanStack Query with `select` for transformation
 - [ ] Tables have `rowKey` and pagination
 - [ ] Theme tokens used — no hardcoded colors or CSS overrides
@@ -682,9 +491,4 @@ Before submitting any frontend code, verify:
 - [ ] Code splitting at route boundaries
 - [ ] Router-based navigation for multi-tab modules
 - [ ] Lists with 50+ items are virtualized
-- [ ] All images are lazy loaded with proper alt text
-- [ ] Keyboard navigation works for all interactive elements
-- [ ] Lighthouse scores acceptable (mobile + web)
-- [ ] Unit tests and Storybook stories included
-- [ ] Maximum 3 levels of optional chaining
-- [ ] No individual setter methods in Zustand stores
+- [ ] Keyboard navigation and Lighthouse scores acceptable

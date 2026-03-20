@@ -5,7 +5,8 @@ description: >
   Frontend: Vitest, React Testing Library, AAA methodology, Storybook.
   Backend: JUnit 5, Mockito, AssertJ, Spring Boot Test, JaCoCo.
   Used by Tier 1 (Principal), Tier 1.5 (Staff Engineer), and Tier 2 (MidCoder) agents.
-estimated-tokens: 5000
+estimated-tokens: 6600
+used-by: [T1, T1.5, T2]
 ---
 
 # Testing Standards Skill
@@ -84,13 +85,11 @@ it("should render loading spinner when data is fetching", () => {});
 component-name/
 ├── component-name.tsx
 ├── component-name.module.scss
+├── component-name.types.ts
 ├── component-name.spec.tsx
-├── component-name.stories.tsx
-├── types/
-│   └── component-name-interface.ts
-└── __tests__/
-    ├── component-name.integration.spec.tsx
-    └── component-name.e2e.spec.tsx
+├── component-name.integration.spec.tsx
+├── component-name.e2e.spec.tsx
+└── component-name.stories.tsx
 ```
 
 | File Type         | Naming Pattern                        |
@@ -227,25 +226,23 @@ vi.mock("@services", () => ({
 ### Router Mocking
 
 ```typescript
-vi.mock("next/router", () => ({
-  useRouter: () => ({
-    push: vi.fn(),
-    query: { slug: ["test-slug"] },
-    pathname: "/test-path",
-  }),
+vi.mock('react-router-dom', () => ({
+  useNavigate: () => vi.fn(),
+  useParams: () => ({ id: '123' }),
+  useLocation: () => ({ pathname: '/test' }),
 }));
 ```
 
 ### Store Mocking
 
 ```typescript
-import { configureStore } from "@reduxjs/toolkit";
-
-const createMockStore = (initialState = {}) => {
-  return configureStore({
-    reducer: { user: (state = initialState) => state },
-  });
-};
+vi.mock('../store/use-user-store', () => ({
+  useUserStore: vi.fn(() => ({
+    users: [],
+    isLoading: false,
+    fetchUsers: vi.fn(),
+  })),
+}));
 ```
 
 ---

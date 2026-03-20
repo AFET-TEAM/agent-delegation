@@ -6,7 +6,7 @@
     Kullanım:
     1. Bu dosyadaki plugin konfigürasyonlarını pom.xml'inizin <build><plugins> bölümüne ekleyin
     2. Properties bölümüne şunu ekleyin:
-       <quality.dir>${project.basedir}/project-standards/config</quality.dir>
+       <quality.dir>${project.basedir}/.github/config</quality.dir>
     3. Profile bölümüne quality-checks profile'ını ekleyin (dosyanın sonunda)
     
     Not: Bu template sadece plugin konfigürasyonlarını içerir.
@@ -27,13 +27,12 @@
     <version>0.8.12</version>
     <configuration>
         <excludes>
-            <exclude>**/target/generated-sources/**</exclude>
             <exclude>**/dto/**</exclude>
             <exclude>**/model/**</exclude>
             <exclude>**/entity/**</exclude>
-            <exclude>**/repository/**</exclude>
-            <exclude>**/*Application.class</exclude>
             <exclude>**/config/**</exclude>
+            <exclude>**/mapper/*Impl.class</exclude>
+            <exclude>**/*Application.class</exclude>
         </excludes>
     </configuration>
     <executions>
@@ -168,7 +167,7 @@
                 <plugin>
                     <groupId>com.github.spotbugs</groupId>
                     <artifactId>spotbugs-maven-plugin</artifactId>
-                    <version>4.8.3.0</version>
+                    <version>4.8.6</version>
                     <configuration>
                         <excludeFilterFile>${quality.dir}/spotbugs-exclude.xml</excludeFilterFile>
                         <effort>max</effort>
@@ -209,8 +208,8 @@
 
 <!--
 <properties>
-    <!-- Quality directory - project-standards klasörünün path'i -->
-    <quality.dir>${project.basedir}/project-standards/config</quality.dir>
+    <!-- Quality directory - .github/config klasörünün path'i -->
+    <quality.dir>${project.basedir}/.github/config</quality.dir>
     
     <!-- Quality Tool Versions -->
     <lombok.version>1.18.34</lombok.version>

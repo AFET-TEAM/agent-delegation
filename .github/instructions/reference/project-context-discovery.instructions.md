@@ -1,7 +1,3 @@
----
-applyTo: "**"
----
-
 # Project Context Discovery (PCD)
 
 Automatically discover and apply the host project's documentation as system context. This rule ensures the delegation system adapts to any project it is placed into.
@@ -173,7 +169,7 @@ PCD context counts **within** the agent's existing context budget (see `context-
 When assigning tasks with PCD active, the Orchestrator includes project context references:
 
 ```markdown
-**Agent**: StaffEngineerAlpha
+**Agent**: BarisBenli
 **Task**: Implement user authentication
 **Load Skills**: clean-code, backend-development, implementation
 **Project Context**: README.md (Section: Authentication), docs/api-design.md

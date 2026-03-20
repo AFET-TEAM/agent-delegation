@@ -1,7 +1,3 @@
----
-applyTo: "**"
----
-
 # Agent Scaffolding Rules
 
 Portable, declarative guide for any coding agent (T1, T1.5, T2) to create a new agent. Supersedes the former `scripts/create-agent.sh` bash script with security-friendly instructions that work in any environment.
@@ -16,7 +12,7 @@ Agent names **must** be kebab-case, matching the pattern `^[a-z][a-z0-9]*(-[a-z0
 **File paths**:
 
 - Agent file: `.github/agents/{agent-name}.agent.md`
-- Instructions file: `.github/instructions/{tier-prefix}-{agent-name}.instructions.md`
+- Instructions file: `.github/instructions/reference/{tier-prefix}-{agent-name}.instructions.md`
 
 **Tier prefix mapping**:
 
@@ -100,13 +96,9 @@ Reference each skill as: `.github/skills/{skill-name}/SKILL.md`
 
 ## 5. Instructions File Template
 
-Create `.github/instructions/{tier-prefix}-{agent-name}.instructions.md` with this exact structure:
+Create `.github/instructions/reference/{tier-prefix}-{agent-name}.instructions.md` with this exact structure:
 
 ```markdown
----
-applyTo: "**"
----
-
 # {TierDescription} — {PascalCaseName} Instructions
 
 ## Role Definition
@@ -158,4 +150,38 @@ Before writing any file, the creating agent must verify:
 - The agent name matches `^[a-z][a-z0-9]*(-[a-z0-9]+)*$`.
 - Neither the agent file nor the instructions file already exists.
 - The tier value is one of: `t1`, `t1.5`, `t2`, `t2.5`, `t3`.
-- The `.github/agents/` and `.github/instructions/` directories exist.
+- The `.github/agents/` and `.github/instructions/reference/` directories exist.
+
+## 9. Skill Scaffolding Guide
+
+To create a new skill, follow the consistent pattern established by the 13 existing skills:
+
+### Skill File Template
+
+Create `.github/skills/{skill-name}/SKILL.md` with this structure:
+
+```yaml
+---
+name: {Skill Name}
+description: >
+  {1-2 sentence description of what this skill covers}
+used-by: [{tier list, e.g. T1, T1.5, T2}]
+estimated-tokens: {calibrated token estimate}
+---
+```
+
+### Naming Convention
+
+- Directory: `kebab-case` (e.g., `api-integration`, `clean-code`)
+- File: Always `SKILL.md` (uppercase)
+- YAML `name`: `Title Case` (e.g., `API Integration`, `Clean Code`)
+
+### Post-Creation Checklist
+
+1. Add the skill to `context-loading.instructions.md` → Task Type Detection table (specify which task types require it).
+2. Add the skill to the relevant tier's skill list in `agent-scaffolding.instructions.md` Section 4.
+3. Add the skill to each applicable tier's instruction file skill capability map.
+4. Add the skill to each applicable agent's `.agent.md` description if it changes capabilities.
+5. Run system validation — verify file count (Rule 2: minimum 13 SKILL.md files).
+6. Update `USAGE.md` and `README.md` if the skill count or capabilities change.
+7. Calibrate `estimated-tokens` by measuring actual file size after content is written.

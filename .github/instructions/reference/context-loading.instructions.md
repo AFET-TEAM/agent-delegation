@@ -1,7 +1,3 @@
----
-applyTo: "**"
----
-
 # Dynamic Context Loading
 
 Load only the skills and context needed for the current task. This reduces token consumption significantly.
@@ -14,14 +10,14 @@ Before reading any skill file, determine the task type:
 
 | Task Type    | Required Skills | Skip | Phase-Loaded† |
 | ------------ | --------------- | ---- | ------------- |
-| Frontend UI  | clean-code, frontend-development, implementation, code-review, testing-standards | code-architecture, analysis, backend-development | commit-standards, pr-standards |
-| Backend API  | clean-code, backend-development, implementation, code-review, testing-standards, api-integration | frontend-development, code-architecture, analysis | commit-standards, pr-standards |
+| Frontend UI  | clean-code, frontend-development, implementation | code-architecture, analysis, backend-development, java-quality-tooling, backend-security | commit-standards, pr-standards, code-review, testing-standards |
+| Backend API  | clean-code, backend-development, implementation, api-integration | frontend-development, code-architecture, analysis, java-quality-tooling, backend-security | commit-standards, pr-standards, code-review, testing-standards |
 | Java Backend | clean-code, backend-development, java-quality-tooling, backend-security | frontend-development, code-architecture, analysis | commit-standards, pr-standards |
-| Architecture | clean-code, code-architecture, code-review, backend-development | implementation, frontend-development, analysis, testing-standards | commit-standards, pr-standards |
-| Analysis     | analysis | clean-code, code-architecture, code-review, backend-development, implementation, frontend-development, testing-standards, commit-standards, pr-standards | — |
-| Review       | code-review, clean-code, commit-standards, pr-standards | code-architecture, frontend-development, backend-development, analysis, implementation, testing-standards | — |
-| Testing      | testing-standards, clean-code, implementation | code-architecture, analysis, frontend-development, backend-development, code-review, commit-standards, pr-standards | — |
-| PR/Commit    | commit-standards, pr-standards, clean-code, code-review | code-architecture, analysis, frontend-development, backend-development, implementation, testing-standards | — |
+| Architecture | clean-code, code-architecture, code-review, backend-development | implementation, frontend-development, analysis, testing-standards, java-quality-tooling, backend-security | commit-standards, pr-standards |
+| Analysis     | analysis | clean-code, code-architecture, code-review, backend-development, implementation, frontend-development, testing-standards, commit-standards, pr-standards, java-quality-tooling, backend-security | — |
+| Review       | code-review, clean-code, commit-standards, pr-standards | code-architecture, frontend-development, backend-development, analysis, implementation, testing-standards, java-quality-tooling, backend-security | — |
+| Testing      | testing-standards, clean-code, implementation | code-architecture, analysis, frontend-development, backend-development, code-review, commit-standards, pr-standards, java-quality-tooling, backend-security | — |
+| PR/Commit    | commit-standards, pr-standards, clean-code, code-review | code-architecture, analysis, frontend-development, backend-development, implementation, testing-standards, java-quality-tooling, backend-security | — |
 
 > **† Phase-Loaded**: Skills loaded only during the commit/PR phase, not during active development. They do not count against the skill budget during the coding phase.
 
@@ -34,8 +30,15 @@ Before reading any skill file, determine the task type:
 | T2 MidCoder       | 4                  | 6                 |
 | T2.5 Lead Analyst | 3                  | 5                 |
 | T3 Analyst        | 2                  | 4                 |
+| Orchestrator      | — (sınırsız)       | — (sınırsız)      |
+
+> Orchestrator kodlama görevi yürütmediği için skill/context bütçesi uygulanmaz.
 
 **STRICT**: Exceeding the context budget is forbidden. If a task requires more skills than the budget allows, the agent must request Orchestrator guidance to prioritize which skills to load. Loading skills outside the assigned tier capability is never permitted.
+
+> **Note**: Backend API has 4 required skills (`clean-code`, `backend-development`, `implementation`, `api-integration`) plus 4 phase-loaded skills (`code-review`, `testing-standards`, `commit-standards`, `pr-standards`). Phase-loaded skills are deferred to the review/commit phase, keeping the active development budget within T2 limits.
+
+> **Note**: Frontend UI has 3 required skills (`clean-code`, `frontend-development`, `implementation`) plus 4 phase-loaded skills (`code-review`, `testing-standards`, `commit-standards`, `pr-standards`). All tier budgets are satisfied during active development.
 
 ### Budget Exceeded Protocol
 
@@ -50,7 +53,7 @@ If an agent detects it needs more skills than its budget allows:
 When the Orchestrator assigns a task, it specifies which skills to load:
 
 ```markdown
-**Agent**: StaffEngineerAlpha
+**Agent**: BarisBenli
 **Task**: Implement login form component
 **Load Skills**: clean-code, frontend-development, testing-standards
 **Skip Skills**: code-architecture, analysis, commit-standards, pr-standards
@@ -83,15 +86,20 @@ Project Context Discovery runs before skill loading and counts **within** the ex
 - Read `.github/todo/active-plan.md` only when `/resume` is invoked or task references ongoing work
 - Skip session context for fresh, standalone tasks
 
-## Known Limitation: applyTo Scope
+## Token Optimization: reference/ Migration (v6.0.0+)
 
-All instruction files use `applyTo: "**"` which means they are included in every Copilot Chat interaction regardless of which agent is active. This is a VS Code Copilot platform constraint — `applyTo` targets workspace file patterns, not agent identity.
+As of v6.0.0, only **3 universal instruction files** auto-load via `applyTo: "**"` (~4-5K tokens):
+- `shared-base.instructions.md` — Universal agent rules
+- `clean-code-standards.instructions.md` — Mandatory code quality
+- `git-safety.instructions.md` — Git consent protocol
 
-### Impact
+The remaining **16 instruction files** reside in `.github/instructions/reference/` and are **not** auto-loaded. They are loaded on-demand by agents when referenced. This reduces per-session platform overhead from ~45-55K to ~4-5K tokens.
 
-- Every agent session loads all 19 instruction files (~45-55K tokens of overhead).
-- Tier-specific instructions (e.g., T1 Principal rules) are visible to all agents, not just T1.
-- The 15K subtask token budget (from task-planning) does not account for this overhead.
+### Impact (Post-Migration)
+
+- Only 3 instruction files auto-load per session (~4-5K tokens of overhead).
+- Tier-specific instructions are in `reference/` and loaded only when that agent reads them.
+- The 15K subtask token budget is more practical with reduced overhead.
 
 ### Mitigation
 

@@ -1,7 +1,3 @@
----
-applyTo: "**"
----
-
 # Tier 2.5 — Lead Analyst Agent Instructions
 
 ## Role Definition

@@ -1,7 +1,3 @@
----
-applyTo: "**"
----
-
 # Delegation Rules
 
 ## xN Parameter Distribution Table

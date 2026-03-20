@@ -5,6 +5,7 @@ description: >
   Used by all coding agents (Tier 1, Tier 1.5, Tier 2) to ensure consistent
   version control practices across the team.
 estimated-tokens: 2000
+used-by: [T1, T1.5, T2]
 ---
 
 # Commit Standards Skill

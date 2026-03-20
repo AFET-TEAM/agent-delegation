@@ -3,10 +3,19 @@
     "event": "SubagentStart",
     "steps": [
       {
-        "run": "echo '[AGENT-START] agent=${COPILOT_AGENT:-unknown} at $(date -u +\"%Y-%m-%d %H:%M:%S UTC\")' >> .github/logs/agent-activity.log"
+        "run": "mkdir -p .github/memory/sessions .github/logs"
       },
       {
-        "run": "mkdir -p .github/memory/sessions .github/logs"
+        "run": "LOG=.github/logs/agent-activity.log; if [ -f \"$LOG\" ] && [ \"$(wc -c < \"$LOG\" 2>/dev/null || echo 0)\" -gt 1048576 ]; then mv \"$LOG\" \"${LOG}.old\"; fi; SAFE=$(echo \"${COPILOT_AGENT:-unknown}\" | tr -cd 'A-Za-z0-9_-'); echo \"[AGENT-START] agent=$SAFE at $(date -u +'%Y-%m-%d %H:%M:%S UTC')\" >> \"$LOG\""
+      },
+      {
+        "run": "AGENT=\"${COPILOT_AGENT:-unknown}\"; case \"$AGENT\" in VarolMaksutoglu) TIER=\"Orchestrator\"; ROLE=\"Teknik Koordinator\"; EMOJI=\"D\";; TanerYilmaz) TIER=\"T1 Principal\"; ROLE=\"Bas Yazilim Mimari\"; EMOJI=\"P1\";; OyaKanat) TIER=\"T1 Principal\"; ROLE=\"Kidemli Yazilim Mimari\"; EMOJI=\"P1\";; BarisBenli) TIER=\"T1.5 Staff Engineer\"; ROLE=\"Kidemli Yazilim Muhendisi\"; EMOJI=\"SE\";; TarikZiyaYesilcimen) TIER=\"T1.5 Staff Engineer\"; ROLE=\"Yazilim Muhendisi\"; EMOJI=\"SE\";; EnisSaitErken) TIER=\"T2 MidCoder\"; ROLE=\"Yazilim Gelistirici\"; EMOJI=\"MC\";; SelinAkar) TIER=\"T2 MidCoder\"; ROLE=\"Yazilim Gelistirici\"; EMOJI=\"MC\";; CananBirsen) TIER=\"T2.5 Lead Analyst\"; ROLE=\"Kidemli Sistem Analisti\"; EMOJI=\"LA\";; EmreKilic) TIER=\"T3 Analyst\"; ROLE=\"Sistem Analisti\"; EMOJI=\"A3\";; AyseDemir) TIER=\"T3 Analyst\"; ROLE=\"Guvenlik ve Performans Analisti\"; EMOJI=\"A3\";; ElifOzgeMaksutoglu) TIER=\"T3 Analyst\"; ROLE=\"Test ve Kalite Analisti\"; EMOJI=\"A3\";; *) TIER=\"Unknown\"; ROLE=\"Unknown\"; EMOJI=\"??\";; esac; echo \"\"; echo \"[$EMOJI] =======================================\"; echo \"[$EMOJI]  $AGENT — $ROLE\"; echo \"[$EMOJI]  Tier: $TIER\"; echo \"[$EMOJI]  Session: $(date -u +'%Y-%m-%d %H:%M UTC')\"; echo \"[$EMOJI] =======================================\"; echo \"\""
+      },
+      {
+        "run": "if [ -f \".github/todo/active-plan.md\" ]; then PLAN_STATUS=$(head -10 .github/todo/active-plan.md | grep 'status:' | head -1); if [ -n \"$PLAN_STATUS\" ]; then echo \"[PLAN] Active plan detected: $PLAN_STATUS\"; fi; fi"
+      },
+      {
+        "run": "SESSION_COUNT=$(find .github/memory/sessions -name '*.md' ! -name '_*' 2>/dev/null | wc -l | tr -d ' '); if [ \"$SESSION_COUNT\" -gt 20 ]; then echo \"[SESSION-WARNING] $SESSION_COUNT sessions found (limit: 20). Archiving recommended.\"; fi"
       }
     ]
   },
@@ -14,10 +23,7 @@
     "event": "SubagentStop",
     "steps": [
       {
-        "run": "echo '[AGENT-STOP] agent=${COPILOT_AGENT:-unknown} at $(date -u +\"%Y-%m-%d %H:%M:%S UTC\")' >> .github/logs/agent-activity.log"
-      },
-      {
-        "run": "echo '---' >> .github/logs/agent-activity.log && echo \"[SESSION-MARKER] agent=${COPILOT_AGENT:-unknown} stopped at $(date -u +'%Y-%m-%d %H:%M:%S UTC'). Check .github/memory/sessions/ for session file.\" >> .github/logs/agent-activity.log"
+        "run": "mkdir -p .github/logs; SAFE=$(echo \"${COPILOT_AGENT:-unknown}\" | tr -cd 'A-Za-z0-9_-'); printf '%s\\n%s\\n%s\\n' \"[AGENT-STOP] agent=$SAFE at $(date -u +'%Y-%m-%d %H:%M:%S UTC')\" '---' \"[SESSION-MARKER] agent=$SAFE stopped at $(date -u +'%Y-%m-%d %H:%M:%S UTC'). Check .github/memory/sessions/ for session file.\" >> .github/logs/agent-activity.log"
       }
     ]
   },
@@ -25,7 +31,7 @@
     "event": "SubagentError",
     "steps": [
       {
-        "run": "echo '[AGENT-ERROR] agent=${COPILOT_AGENT:-unknown} at $(date -u +\"%Y-%m-%d %H:%M:%S UTC\")' >> .github/logs/agent-activity.log"
+        "run": "mkdir -p .github/logs; SAFE=$(echo \"${COPILOT_AGENT:-unknown}\" | tr -cd 'A-Za-z0-9_-'); echo \"[AGENT-ERROR] agent=$SAFE at $(date -u +'%Y-%m-%d %H:%M:%S UTC')\" >> .github/logs/agent-activity.log"
       }
     ]
   }

@@ -4,11 +4,8 @@ description: >
   Dual-stack backend skill covering Node.js/TypeScript AND Java/Spring Boot.
   API design, layered architecture, exception handling, database patterns,
   authentication, and server-side standards for all backend coding tasks.
-used-by:
-  - Tier 1 (Principal)
-  - Tier 1.5 (Staff Engineer)
-  - Tier 2 (MidCoder)
-estimated-tokens: 5500
+used-by: [T1, T1.5, T2]
+estimated-tokens: 4800
 ---
 
 # Backend Development Skill
@@ -26,13 +23,13 @@ estimated-tokens: 5500
 ### Response Format — Node.js (TypeScript)
 
 ```typescript
-interface ApiResponse<T> {
+interface ServiceResponse<T> {
   success: boolean;
   data: T;
   meta?: PaginationMeta;
 }
 
-interface ApiErrorResponse {
+interface ServiceErrorResponse {
   success: boolean;
   error: {
     code: string;
@@ -45,6 +42,8 @@ interface ApiErrorResponse {
 ### Response Format — Java (Spring Boot)
 
 All endpoints return `ServiceResponse<T>` via factory methods:
+
+> **Note**: `ServiceResponse<T>` is the **internal service-layer** wrapper with `traceId` for observability. For frontend-facing API responses, use `ApiResponse<T>` (defined in `api-integration` skill) which omits internal fields. Controllers should map `ServiceResponse<T>` → `ApiResponse<T>` at the controller boundary.
 
 ```java
 public class ServiceResponse<T> {
@@ -345,6 +344,8 @@ Catch all unhandled errors at the global level. Map domain errors to HTTP status
 
 ## Testing Standards
 
+> **Cross-reference**: For comprehensive testing standards, see `testing-standards/SKILL.md`. This section provides backend-specific testing context only.
+
 ### Node.js (Jest / Vitest)
 
 - Test service methods in isolation with mocked repositories.
@@ -385,7 +386,7 @@ class UserServiceTest {
 
 Before submitting backend code, verify:
 
-- [ ] All endpoints return the stack's standard response format (`ApiResponse` or `ServiceResponse`).
+- [ ] All endpoints return the stack's standard response format (`ServiceResponse<T>` internally; mapped to `ApiResponse<T>` at controller boundary — see `api-integration` skill).
 - [ ] Input validation on every mutation endpoint (Zod/Joi or `@Valid` + Bean Validation).
 - [ ] Authentication and authorization applied to protected routes.
 - [ ] Error handling returns appropriate status codes.

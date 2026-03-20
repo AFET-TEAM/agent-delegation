@@ -5,6 +5,7 @@ description: >
   Used by Tier 1 (Principal) agents. Provides guidance on architecture patterns, SOLID principles,
   scalability, and developer experience.
 estimated-tokens: 2000
+used-by: [T1]
 ---
 
 # Code Architecture Skill

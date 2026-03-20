@@ -3,11 +3,8 @@ name: Backend Security
 description: >
   Spring Boot security standards covering SQL injection, XSS, input validation,
   password hashing, JWT handling, and rate limiting for all backend tasks.
-used-by:
-  - Tier 1 (Principal)
-  - Tier 1.5 (Staff Engineer)
-  - Tier 2 (MidCoder)
-estimated-tokens: 3500
+used-by: [T1, T1.5]
+estimated-tokens: 4700
 ---
 
 # Backend Security Skill
@@ -98,12 +95,14 @@ public class CreateCommentRequest {
 
 ```java
 @PostMapping(value = "/api/comments", consumes = MediaType.APPLICATION_JSON_VALUE)
-public ResponseEntity<ApiResponse<CommentDto>> create(
+public ResponseEntity<ServiceResponse<CommentDto>> create(
         @Valid @RequestBody CreateCommentRequest request) {
     CommentDto dto = commentService.create(request);
-    return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(dto));
+    return ResponseEntity.status(HttpStatus.CREATED).body(ServiceResponse.success(dto));
 }
 ```
+
+> Controllers map ServiceResponse<T> → ApiResponse<T> at the boundary. See api-integration skill for the frontend-facing contract.
 
 ---
 
@@ -137,10 +136,10 @@ public class CreateUserRequest {
 
 ```java
 @PostMapping("/api/users")
-public ResponseEntity<ApiResponse<UserDto>> register(
+public ResponseEntity<ServiceResponse<UserDto>> register(
         @Valid @RequestBody CreateUserRequest request) {
     UserDto user = userService.register(request);
-    return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(user));
+    return ResponseEntity.status(HttpStatus.CREATED).body(ServiceResponse.success(user));
 }
 ```
 
