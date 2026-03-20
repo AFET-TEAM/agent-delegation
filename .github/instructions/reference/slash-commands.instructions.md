@@ -1,7 +1,3 @@
----
-applyTo: "**"
----
-
 # Slash Commands — Instruction-Based Routing
 
 Platform-agnostic command definitions. These commands work in any environment (VS Code, Copilot CLI, other tools) without requiring `.github/prompts/` support.
@@ -15,7 +11,7 @@ When the user's message starts with one of the following commands, route to the 
 | `/delegate [task] xN` | Orchestrator | Multi-agent delegation |
 | `/review [scope]` | Orchestrator | Review chain trigger |
 | `/status` | Orchestrator | Delegation status report |
-| `/architect [task]` | PrincipalAlpha | Direct architecture task |
+| `/architect [task]` | TanerYilmaz | Direct architecture task |
 | `/resume [task-id]` | Orchestrator | Resume previous work |
 | `/history [count]` | Orchestrator | Session history listing |
 
@@ -103,7 +99,7 @@ Show the status of the current multi-agent session.
 
 ## /architect — Direct Architecture Task
 
-Assign an architecture task directly to PrincipalAlpha without needing the xN parameter.
+Assign an architecture task directly to Taner Yılmaz (TanerYilmaz) without needing the xN parameter.
 
 **Usage**:
 ```
@@ -112,7 +108,7 @@ Assign an architecture task directly to PrincipalAlpha without needing the xN pa
 /architect Refactor the API layer
 ```
 
-> **Orchestrator Bypass**: This command sends tasks directly to PrincipalAlpha, bypassing the Orchestrator. The Orchestrator's delegation overhead is unnecessary when only one Principal-level task is needed. No xN parameter should be used with this command.
+> **Orchestrator Bypass**: This command sends tasks directly to Taner Yılmaz (TanerYilmaz), bypassing the Orchestrator. The Orchestrator's delegation overhead is unnecessary when only one Principal-level task is needed. No xN parameter should be used with this command.
 
 ---
 

@@ -4,7 +4,8 @@ description: >
   Analysis, research, document reading, and information gathering skill.
   Used by Tier 2.5 (Lead Analyst) and Tier 3 (Analyst) agents. Provides guidance on structured analysis
   outputs, research formats, and risk assessment.
-estimated-tokens: 3000
+estimated-tokens: 2500
+used-by: [T2.5, T3]
 ---
 
 # Analysis Skill

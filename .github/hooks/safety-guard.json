@@ -1,10 +1,12 @@
 [
   {
     "event": "PreToolUse",
-    "tools": ["run_in_terminal"],
+    "tools": [
+      "run_in_terminal"
+    ],
     "steps": [
       {
-        "run": "echo '[SAFETY-TERMINAL] agent=${COPILOT_AGENT:-unknown} at $(date -u +\"%Y-%m-%d %H:%M:%S UTC\")' >> .github/logs/agent-activity.log"
+        "run": "mkdir -p .github/logs; AGENT=\"${COPILOT_AGENT:-unknown}\"; SAFE=$(echo \"$AGENT\" | tr -cd 'A-Za-z0-9_-'); IS_READONLY=false; case \"$AGENT\" in EmreKilic|AyseDemir|ElifOzgeMaksutoglu|CananBirsen|VarolMaksutoglu) IS_READONLY=true;; esac; if [ \"$IS_READONLY\" = \"true\" ]; then echo \"[SAFETY-BLOCKED-TERMINAL] READ-ONLY agent=$SAFE at $(date -u +'%Y-%m-%d %H:%M:%S UTC')\" >> .github/logs/agent-activity.log; echo \"⛔ WARNING: Read-only/coordinator agent attempted terminal access. This is logged.\"; else echo \"[SAFETY-TERMINAL] agent=$SAFE at $(date -u +'%Y-%m-%d %H:%M:%S UTC')\" >> .github/logs/agent-activity.log; fi"
       }
     ]
   },
@@ -15,11 +17,23 @@
       "replace_string_in_file",
       "multi_replace_string_in_file",
       "create_file",
-      "edit_notebook_file"
+      "edit_notebook_file",
+      "delete_file"
     ],
     "steps": [
       {
-        "run": "AGENT_NAME=${COPILOT_AGENT:-unknown}; LOWER_NAME=$(echo $AGENT_NAME | tr '[:upper:]' '[:lower:]'); IS_READONLY=false; case $LOWER_NAME in *analyst*) IS_READONLY=true;; esac; if [ \"$IS_READONLY\" = \"true\" ]; then echo \"[SAFETY-BLOCKED] READ-ONLY agent=$AGENT_NAME attempted edit at $(date -u +\\\"%Y-%m-%d %H:%M:%S UTC\\\")\" >> .github/logs/agent-activity.log; echo '⛔ WARNING: Read-only agent (T2.5/T3) attempted a file edit. This action is logged and may be rejected.'; else echo \"[SAFETY-EDIT] agent=$AGENT_NAME at $(date -u +\\\"%Y-%m-%d %H:%M:%S UTC\\\")\" >> .github/logs/agent-activity.log; fi"
+        "run": "mkdir -p .github/logs; AGENT=\"${COPILOT_AGENT:-unknown}\"; SAFE=$(echo \"$AGENT\" | tr -cd 'A-Za-z0-9_-'); IS_READONLY=false; case \"$AGENT\" in EmreKilic|AyseDemir|ElifOzgeMaksutoglu|CananBirsen|VarolMaksutoglu) IS_READONLY=true;; esac; if [ \"$IS_READONLY\" = \"true\" ]; then echo \"[SAFETY-BLOCKED] READ-ONLY agent=$SAFE attempted edit at $(date -u +'%Y-%m-%d %H:%M:%S UTC')\" >> .github/logs/agent-activity.log; echo \"⛔ WARNING: Read-only agent (T2.5/T3/Orchestrator) attempted a file edit. This action is logged.\"; else echo \"[SAFETY-EDIT] agent=$SAFE at $(date -u +'%Y-%m-%d %H:%M:%S UTC')\" >> .github/logs/agent-activity.log; fi"
+      }
+    ]
+  },
+  {
+    "event": "PostToolUse",
+    "tools": [
+      "run_in_terminal"
+    ],
+    "steps": [
+      {
+        "run": "mkdir -p .github/logs; SAFE=$(echo \"${COPILOT_AGENT:-unknown}\" | tr -cd 'A-Za-z0-9_-'); echo \"[SAFETY-TERMINAL-DONE] agent=$SAFE at $(date -u +'%Y-%m-%d %H:%M:%S UTC')\" >> .github/logs/agent-activity.log"
       }
     ]
   },
@@ -30,11 +44,12 @@
       "replace_string_in_file",
       "multi_replace_string_in_file",
       "create_file",
-      "edit_notebook_file"
+      "edit_notebook_file",
+      "delete_file"
     ],
     "steps": [
       {
-        "run": "echo '[SAFETY-EDIT-DONE] agent=${COPILOT_AGENT:-unknown} at $(date -u +\"%Y-%m-%d %H:%M:%S UTC\")' >> .github/logs/agent-activity.log"
+        "run": "mkdir -p .github/logs; SAFE=$(echo \"${COPILOT_AGENT:-unknown}\" | tr -cd 'A-Za-z0-9_-'); echo \"[SAFETY-EDIT-DONE] agent=$SAFE at $(date -u +'%Y-%m-%d %H:%M:%S UTC')\" >> .github/logs/agent-activity.log"
       }
     ]
   }

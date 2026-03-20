@@ -41,17 +41,32 @@ Every agent presents its output in this format:
 
 ## Review Protocol (All Reviewers)
 
+> **Hook automated**: `review-enforcer.json` tracks edit counts per agent and displays the correct reviewer at SubagentStop. `context-guard.json` enforces skill/PCD budgets at SubagentStart.
+
 1. Apply the checklist from the `code-review` skill.
 2. 🔴 Critical → **Reviewer applies the fix.**
 3. 🟠 Major → Task owner fixes; if unresolved after round 2, reviewer takes over.
 4. 🟡 Minor / 🔵 Suggestion → Feedback only, not a blocker.
 5. Maximum **2 revision rounds** — then upper tier takes over.
 
-## Read-Only Agents (T2.5 Lead Analyst, T3 Analyst)
+## Read-Only Agents (T2.5 Lead Analyst, T3 Analyst, Orchestrator)
+
+> **Hook enforced**: `safety-guard.json` logs and warns when read-only agents (EmreKilic, AyseDemir, ElifOzgeMaksutoglu, CananBirsen, VarolMaksutoglu) attempt edit or terminal tool calls. Primary enforcement is the YAML `tools` field (platform-level). The Orchestrator (VarolMaksutoglu) is also read-only — it delegates and coordinates but never edits files directly.
 
 - **NEVER edit files.** Operate in read-only mode.
 - Present findings in report format — let upper tiers implement changes.
 - Available tools: `read`, `search`, `fetch` only.
+
+> **Orchestrator exception**: VarolMaksutoglu's tools are `agent`, `read`, `search` (no `edit`, no `fetch`). The Orchestrator delegates all file writes via the `agent` tool. It is read-only by design but has different tools than T2.5/T3.
+
+## Hook System: Known Platform Limitations
+
+> These limitations are inherent to the VS Code Copilot hooks platform and are documented as accepted risks.
+
+- **Advisory enforcement**: `safety-guard.json` PreToolUse hooks log and warn but cannot programmatically block tool execution. Primary enforcement is the YAML `tools` field (platform-enforced).
+- **No hook execution order guarantee**: Multiple hooks registering for the same event may fire in platform-dependent order. Critical operations (like `mkdir -p`) are duplicated across hooks for resilience.
+- **No file locking for log writes**: In x10 parallel mode, concurrent log appends may produce interleaved entries. Log entries are atomic at the `echo >>` level (POSIX guarantees atomic appends for small writes <PIPE_BUF).
+- **Convention-based file ownership**: No hook validates which files an agent is allowed to edit. File ownership is enforced through Orchestrator task assignments and agent instruction compliance.
 
 ## Coordination Rules
 
@@ -67,7 +82,7 @@ Every agent presents its output in this format:
 When the Orchestrator distributes tasks, it **must** specify file ownership for each agent:
 
 ```markdown
-**Agent**: StaffEngineerAlpha
+**Agent**: Barış Benli (Staff Engineer Alpha)
 **Owned Files**: src/auth/login-service.ts, src/auth/login-controller.ts
 **Read-Only Access**: src/shared/types.ts
 ```
@@ -96,6 +111,8 @@ If an agent needs to modify a file it does not own:
 3. After all tasks complete, verify no file was edited by multiple agents.
 
 ## Session Awareness
+
+> **Hook automated**: `agent-lifecycle.json` auto-creates session directories, displays agent identity banner, checks active plans, and warns when session count exceeds 20 — all at SubagentStart.
 
 - At task start, check `.github/memory/sessions/` for active session context.
 - At task end, report changes for session logging.

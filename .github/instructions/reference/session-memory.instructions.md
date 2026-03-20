@@ -1,7 +1,3 @@
----
-applyTo: "**"
----
-
 # Session Memory & Chat History
 
 Persist session state and conversation history so developers can resume work across sessions and new team members can understand project history.
@@ -13,6 +9,8 @@ Persist session state and conversation history so developers can resume work acr
 1. Check `.github/memory/sessions/` for the most recent session file.
 2. If an active session exists, load its context summary.
 3. If no active session, create a new session file.
+
+> **Note**: The Orchestrator delegates session file creation/updates to a coding agent via the `agent` tool (the Orchestrator has no `edit` tool).
 
 ### During Session
 

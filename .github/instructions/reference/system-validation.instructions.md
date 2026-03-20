@@ -1,7 +1,3 @@
----
-applyTo: "**"
----
-
 # System Validation Rules
 
 Agent-verifiable integrity rules that supersede the former bash linter (`scripts/validate-system.sh`). When the Orchestrator or any Principal needs to validate system integrity, they follow these rules manually using read/search tools instead of running a script.
@@ -29,9 +25,9 @@ The repository must contain a minimum number of files in each category.
 | Directory | Pattern | Minimum |
 |-----------|---------|---------|
 | `.github/agents/` | `*.agent.md` | 8 |
-| `.github/instructions/` | `*.instructions.md` | 19 |
+| `.github/instructions/` | `**/*.instructions.md` | 19 |
 | `.github/skills/*/` | `SKILL.md` (in subdirectories) | 13 |
-| `.github/hooks/` | `*.json` | 2 |
+| `.github/hooks/` | `*.json` | 4 |
 
 **Verification:** List files in each directory matching the pattern, count, and compare against the minimum. PASS if all counts meet or exceed their minimum. FAIL with actual vs. expected counts.
 
@@ -39,7 +35,7 @@ The repository must contain a minimum number of files in each category.
 
 ## Rule 3 — No Forbidden xN References
 
-No references to multipliers x11 or higher may appear in `.github/instructions/` files.
+No references to prohibited multipliers (x11 or higher) may appear in `.github/instructions/` files.
 
 **Search pattern:** `x1[1-9]|x[2-9][0-9]`
 
@@ -94,19 +90,19 @@ Each agent file's YAML `model` and `modelFallback` fields must match the canonic
 
 ### Canonical Model Table
 
-| Agent | Primary Model | Fallback Model |
-|-------|--------------|----------------|
-| orchestrator | Claude Opus 4.6 | Claude Opus 4.5 |
-| principal-alpha | Claude Opus 4.6 | Claude Opus 4.5 |
-| principal-beta | Claude Opus 4.6 | Claude Opus 4.5 |
-| staff-engineer-alpha | Claude Sonnet 4.6 | Claude Sonnet 4.5 |
-| staff-engineer-beta | Claude Sonnet 4.6 | Claude Sonnet 4.5 |
-| mid-coder-alpha | GPT-5.3-Codex | GPT-5.2-Codex |
-| mid-coder-beta | GPT-5.3-Codex | GPT-5.2-Codex |
-| lead-analyst | Gemini 3.1 Pro (Preview) | Gemini 3.0 Pro (Preview) |
-| analyst-alpha | Gemini 3 Flash | Claude Haiku 4.5 |
-| analyst-beta | Gemini 3 Flash | Claude Haiku 4.5 |
-| analyst-gamma | Gemini 3 Flash | Claude Haiku 4.5 |
+| Agent (filename) | Display Name | Primary Model | Fallback Model |
+|-------|-------------|--------------|----------------|
+| orchestrator | Varol Maksutoğlu | Claude Opus 4.6 | Claude Opus 4.5 |
+| principal-alpha | Taner Yılmaz | Claude Opus 4.6 | Claude Opus 4.5 |
+| principal-beta | Oya Kanat | Claude Opus 4.6 | Claude Opus 4.5 |
+| staff-engineer-alpha | Barış Benli | Claude Sonnet 4.6 | Claude Sonnet 4.5 |
+| staff-engineer-beta | Tarık Ziya Yeşilçimen | Claude Sonnet 4.6 | Claude Sonnet 4.5 |
+| mid-coder-alpha | Enis Sait Erken | GPT-5.3-Codex | GPT-5.2-Codex |
+| mid-coder-beta | Selin Akar | GPT-5.3-Codex | GPT-5.2-Codex |
+| lead-analyst | Canan Birsen | Gemini 3.1 Pro (Preview) | Gemini 3.0 Pro (Preview) |
+| analyst-alpha | Emre Kılıç | Gemini 3 Flash | Claude Haiku 4.5 |
+| analyst-beta | Ayşe Demir | Gemini 3 Flash | Claude Haiku 4.5 |
+| analyst-gamma | Elif Özge Maksutoğlu | Gemini 3 Flash | Claude Haiku 4.5 |
 
 ### Constraints
 
@@ -146,8 +142,8 @@ PASS if all agents match and no identical model/fallback pairs exist. FAIL with 
 Present results as a numbered list. Each rule gets one line.
 
 ```
-1. Version Consistency: PASS — v4.2.0 across all files
-2. File Counts: PASS — Agents=11, Instructions=17, Skills=10, Hooks=2
+1. Version Consistency: PASS — vX.Y.Z across all files
+2. File Counts: PASS — Agents=11, Instructions=19, Skills=13, Hooks=4
 3. No Forbidden xN References: PASS
 4. Code Fences: PASS
 5. Unicode Integrity: PASS
@@ -173,7 +169,7 @@ Summary: 8/9 PASS, 1 FAIL
 
 The PCD instruction file must exist and contain required sections.
 
-**Required file:** `.github/instructions/project-context-discovery.instructions.md`
+**Required file:** `.github/instructions/reference/project-context-discovery.instructions.md`
 
 **Required sections** (search for exact headings):
 
@@ -190,7 +186,7 @@ The PCD instruction file must exist and contain required sections.
 
 The PEP instruction file must exist and contain required sections.
 
-**Required file:** `.github/instructions/prompt-enrichment.instructions.md`
+**Required file:** `.github/instructions/reference/prompt-enrichment.instructions.md`
 
 **Required sections** (search for exact headings):
 

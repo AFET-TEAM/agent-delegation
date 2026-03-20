@@ -4,7 +4,8 @@ description: >
   Clean code principles, software engineering best practices, and code quality
   standards. This skill is MANDATORY for all coding tasks across all tiers.
   Enforces SOLID, DRY, KISS, YAGNI, and strict code hygiene rules.
-estimated-tokens: 3000
+estimated-tokens: 2700
+used-by: [T1, T1.5, T2, T2.5]
 ---
 
 # Clean Code Skill
@@ -136,7 +137,12 @@ logger.error("Payment processing failed", { orderId, error });
 ### Size and Complexity
 
 - **Maximum 20 lines** per function (excluding type definitions).
+
+> **Java gate vs standard**: Java Checkstyle enforces MethodLength=80 as a build-failure gate. The 20-line standard is the team's quality target; Checkstyle's 80-line limit prevents extreme violations.
+
 - **Maximum 3 parameters** — use an options object for more.
+
+> **Java gate vs standard**: Java Checkstyle enforces ParameterNumber=7 as a build-failure gate. The 3-parameter standard is the team's quality target; Checkstyle's 7-parameter limit prevents extreme violations.
 - **Maximum 2 levels of nesting** — use early returns and extraction.
 - **Cyclomatic complexity ≤ 8** per function.
 - **One function, one job** — if "and" appears in the name, split it.
@@ -191,6 +197,9 @@ type Result<T, E = Error> = { ok: true; value: T } | { ok: false; error: E };
 ## File Structure
 
 - **Maximum 250 lines** per file.
+
+> **Domain-specific overrides**: Frontend components may extend to 300 lines when logic/style splitting is impractical (see `frontend-development/SKILL.md`). Java files use Checkstyle FileLength=2000 as a build-failure gate while 250 lines remains the team standard (see `java-quality-tooling/SKILL.md`).
+
 - **One concept per file** — one component, one service, one hook.
 - **Barrel exports** (`index.ts`) for public API of a module.
 - **Co-locate related files** — tests next to source, types next to implementation.

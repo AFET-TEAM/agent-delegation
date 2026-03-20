@@ -4,7 +4,8 @@ description: >
   Maven quality plugin configuration and enforcement for Java projects.
   Covers Checkstyle, SpotBugs, JaCoCo, and SonarQube integration.
   Defines quality gates, coverage targets, and IDE setup requirements.
-estimated-tokens: 3500
+estimated-tokens: 2400
+used-by: [T1, T1.5, T2]
 ---
 
 # Java Quality Tooling Skill
@@ -52,6 +53,8 @@ Reference configuration: `.github/config/checkstyle.xml`
 | `MissingSwitchDefault` | `default` case is mandatory |
 | `FileLength` | Max 2000 lines per file |
 | `FileTabCharacter` | Tabs forbidden — use spaces |
+
+> **Checkstyle vs team standard**: These Checkstyle limits (MethodLength=80, FileLength=2000) are build-failure gates — the absolute maximum before CI fails. The team's quality standard is stricter: 20-line functions and 250-line files (`clean-code/SKILL.md`). Checkstyle prevents extreme violations; code review enforces the team standard.
 
 ### @Autowired Ban
 

@@ -4,11 +4,8 @@ description: >
   Frontend-backend integration contract covering response format,
   HTTP standards, pagination, error handling, authentication,
   and environment configuration for all full-stack tasks.
-used-by:
-  - Tier 1 (Principal)
-  - Tier 1.5 (Staff Engineer)
-  - Tier 2 (MidCoder)
-estimated-tokens: 4500
+used-by: [T1, T1.5, T2]
+estimated-tokens: 5200
 ---
 
 # API Integration Skill
@@ -16,6 +13,8 @@ estimated-tokens: 4500
 ## 1. Response Format
 
 All endpoints wrap responses in `ApiResponse<T>`.
+
+> **Note**: `ApiResponse<T>` is the **frontend-backend contract** wrapper. For internal service-layer communication in Spring Boot, `ServiceResponse<T>` (defined in `backend-development` skill) includes additional fields like `traceId` for observability. Agents should use `ApiResponse<T>` for controller/API responses and `ServiceResponse<T>` for internal service orchestration.
 
 ### TypeScript
 
@@ -34,6 +33,8 @@ export interface ApiError {
   message: string;
 }
 ```
+
+> **Canonical format**: This `ApiResponse<T>` is the canonical API contract for all frontend-backend communication. The `backend-development/SKILL.md` Node.js section defines a simplified internal `ServiceResponse` pattern — when building API endpoints, always conform to this `ApiResponse<T>` shape for external responses.
 
 ### Java
 

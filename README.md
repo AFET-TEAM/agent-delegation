@@ -1,4 +1,4 @@
-# Multi-Agent Delegation System — v5.0.0
+# Multi-Agent Delegation System — v6.4.0
 
 > AI agent'larını bir takım gibi organize eden, görevleri maliyet ve yetkinlik bazında dağıtan orkestrasyon boilerplate'i.
 
@@ -124,17 +124,17 @@ your-project/
 ├── .github/
 │   ├── copilot-instructions.md              # Always-on proje bağlamı
 │   ├── agents/
-│   │   ├── orchestrator.agent.md            # Koordinatör (Claude Opus 4.6)
-│   │   ├── principal-alpha.agent.md         # T1: Mimari & kod (Claude)
-│   │   ├── principal-beta.agent.md          # T1: Paralel mimari (Claude)
-│   │   ├── staff-engineer-alpha.agent.md    # T1.5: Kodlama (Claude Sonnet)
-│   │   ├── staff-engineer-beta.agent.md     # T1.5: Paralel kodlama (Sonnet)
-│   │   ├── mid-coder-alpha.agent.md         # T2: Kodlama (GPT-5.3)
-│   │   ├── mid-coder-beta.agent.md          # T2: Paralel kodlama (GPT-5.3)
-│   │   ├── lead-analyst.agent.md            # T2.5: Analyst review (Gemini Pro)
-│   │   ├── analyst-alpha.agent.md           # T3: Analiz (Gemini 3 Flash)
-│   │   ├── analyst-beta.agent.md            # T3: Güvenlik/perf (Gemini)
-│   │   └── analyst-gamma.agent.md           # T3: Test/doküman (Gemini)
+│   │   ├── orchestrator.agent.md            # Koordinatör — Varol Maksutoğlu (Claude Opus 4.6)
+│   │   ├── principal-alpha.agent.md         # T1: Baş Yazılım Mimarı — Taner Yılmaz (Claude)
+│   │   ├── principal-beta.agent.md          # T1: Kıdemli Yazılım Mimarı — Oya Kanat (Claude)
+│   │   ├── staff-engineer-alpha.agent.md    # T1.5: Kıdemli Müh. — Barış Benli (Sonnet)
+│   │   ├── staff-engineer-beta.agent.md     # T1.5: Yazılım Müh. — Tarık Ziya Yeşilçimen (Sonnet)
+│   │   ├── mid-coder-alpha.agent.md         # T2: Geliştirici — Enis Sait Erken (GPT-5.3)
+│   │   ├── mid-coder-beta.agent.md          # T2: Geliştirici — Selin Akar (GPT-5.3)
+│   │   ├── lead-analyst.agent.md            # T2.5: Kıdemli Sistem Analisti — Canan Birsen (Gemini Pro)
+│   │   ├── analyst-alpha.agent.md           # T3: Analist — Emre Kılıç (Gemini Flash)
+│   │   ├── analyst-beta.agent.md            # T3: Analist — Ayşe Demir (Gemini Flash)
+│   │   └── analyst-gamma.agent.md           # T3: Analist — Elif Özge Maksutoğlu (Gemini Flash)
 │   ├── skills/
 │   │   ├── clean-code/SKILL.md              # Tüm kodlama + T2.5 (awareness): Kod hijyeni
 │   │   ├── code-architecture/SKILL.md       # T1: Mimari rehber
@@ -150,25 +150,26 @@ your-project/
 │   │   ├── java-quality-tooling/SKILL.md    # T1, T1.5, T2: Maven kalite araçları
 │   │   └── api-integration/SKILL.md         # T1, T1.5, T2: Frontend-backend kontrat
 │   ├── instructions/
-│   │   ├── clean-code-standards.instructions.md
-│   │   ├── tier1-principal.instructions.md
-│   │   ├── tier1-5-staff-engineer.instructions.md
-│   │   ├── tier2-mid.instructions.md
-│   │   ├── tier2-5-lead-analyst.instructions.md
-│   │   ├── tier3-analyst.instructions.md
-│   │   ├── review-chain.instructions.md
-│   │   ├── delegation-rules.instructions.md
-│   │   ├── model-fallback.instructions.md
-│   │   ├── shared-base.instructions.md
-│   │   ├── context-loading.instructions.md
-│   │   ├── task-planning.instructions.md
-│   │   ├── session-memory.instructions.md
-│   │   ├── system-validation.instructions.md
-│   │   ├── agent-scaffolding.instructions.md
-│   │   ├── project-context-discovery.instructions.md
-│   │   ├── prompt-enrichment.instructions.md
-│   │   ├── slash-commands.instructions.md
-│   │   ├── git-safety.instructions.md
+│   │   ├── clean-code-standards.instructions.md   # Universal (auto-loaded)
+│   │   ├── shared-base.instructions.md            # Universal (auto-loaded)
+│   │   ├── git-safety.instructions.md             # Universal (auto-loaded)
+│   │   └── reference/                             # Reference docs (NOT auto-loaded)
+│   │       ├── tier1-principal.instructions.md
+│   │       ├── tier1-5-staff-engineer.instructions.md
+│   │       ├── tier2-mid.instructions.md
+│   │       ├── tier2-5-lead-analyst.instructions.md
+│   │       ├── tier3-analyst.instructions.md
+│   │       ├── review-chain.instructions.md
+│   │       ├── delegation-rules.instructions.md
+│   │       ├── model-fallback.instructions.md
+│   │       ├── context-loading.instructions.md
+│   │       ├── task-planning.instructions.md
+│   │       ├── session-memory.instructions.md
+│   │       ├── system-validation.instructions.md
+│   │       ├── agent-scaffolding.instructions.md
+│   │       ├── project-context-discovery.instructions.md
+│   │       ├── prompt-enrichment.instructions.md
+│   │       └── slash-commands.instructions.md
 │   ├── todo/
 │   │   ├── _template.md
 │   │   └── active-plan.md
@@ -186,13 +187,16 @@ your-project/
 │   │   ├── agent-performance.md             # Agent başarı ve maliyet metrikleri
 │   │   └── token-usage.md                   # Token tüketim kalibrasyon logları
 │   ├── hooks/
-│   │   ├── agent-lifecycle.json
-│   │   └── safety-guard.json
+│   │   ├── agent-lifecycle.json              # Agent kimlik banner'ı + session yönetimi
+│   │   ├── safety-guard.json                 # Read-only koruma + edit audit log
+│   │   ├── review-enforcer.json              # Otomatik review döngüsü takibi
+│   │   └── context-guard.json                # Context/skill bütçe kontrolü
 │   ├── docs/
 │   │   └── adr/
 │   │       └── ADR-001-platform-boundary.md  # Platform bağımlılık kararları
-│   └── logs/
-│       └── .gitkeep
+│   ├── logs/
+│   │   └── .gitkeep
+│   └── reviews/                              # Analiz review çıktıları (runtime artifact)
 ├── .gitignore                               # Git dışlama kuralları
 ├── .vscode/
 │   ├── settings.json                       # VS Code yapılandırması
@@ -200,6 +204,7 @@ your-project/
 ├── AGENTS.md                                # Global agent kuralları
 ├── CHANGELOG.md                             # Değişiklik takibi
 ├── LICENSE                                  # GNU GPL v3
+├── PROGRESS.md                              # Geliştirme yol haritası ve mevcut durum
 ├── USAGE.md                                 # Detaylı kullanım kılavuzu
 └── README.md                                # Bu dosya
 ```
@@ -237,12 +242,12 @@ your-project/
 
 Detaylı özelleştirme rehberi için [USAGE.md](USAGE.md) dosyasına bakın.
 
-- **Yeni agent ekle**: `.github/instructions/agent-scaffolding.instructions.md` rehberine uyarak yeni agent oluşturun
+- **Yeni agent ekle**: `.github/instructions/reference/agent-scaffolding.instructions.md` rehberine uyarak yeni agent oluşturun
 - **Yeni skill ekle**: `.github/skills/[name]/SKILL.md`
-- **Dağılımı değiştir**: `.github/instructions/delegation-rules.instructions.md`
+- **Dağılımı değiştir**: `.github/instructions/reference/delegation-rules.instructions.md`
 - **Proje bağlamını güncelle**: `.github/copilot-instructions.md`
-- **Proje Bağlamı Keşfi (PCD)**: Boilerplate'i bir projeye kopyaladığınızda, projenin kök dizinindeki `README.md`, diğer `.md` dosyaları ve `docs/` klasörü otomatik olarak taranır ve sistem bağlamı olarak kullanılır. Detaylar: `.github/instructions/project-context-discovery.instructions.md`
-- **Prompt Zenginleştirme (PEP)**: Non-trivial geliştirme görevlerinde Orchestrator otomatik olarak soru sorar, gereksinim netleştirir ve detaylı plan oluşturur. Detaylar: `.github/instructions/prompt-enrichment.instructions.md`
+- **Proje Bağlamı Keşfi (PCD)**: Boilerplate'i bir projeye kopyaladığınızda, projenin kök dizinindeki `README.md`, diğer `.md` dosyaları ve `docs/` klasörü otomatik olarak taranır ve sistem bağlamı olarak kullanılır. Detaylar: `.github/instructions/reference/project-context-discovery.instructions.md`
+- **Prompt Zenginleştirme (PEP)**: Non-trivial geliştirme görevlerinde Orchestrator otomatik olarak soru sorar, gereksinim netleştirir ve detaylı plan oluşturur. Detaylar: `.github/instructions/reference/prompt-enrichment.instructions.md`
 
 ---
 
@@ -266,25 +271,34 @@ GNU GPL v3 — Özgürce kullanın, değiştirin ve dağıtın. Değiştirilmiş
 | v4.5.0 | 9.7 | 9.5 | Scripts→Instructions migration + 5 fix | ✅ Production-ready |
 | v4.6.0 | 10.0 | 10.0 | PCD feature + 9 fix (1 P0 + 6 P1 + 2 P2) | ✅ Production-ready |
 | v4.7.0 | 10.0 | 10.0 | PEP feature + PCD integration | ✅ Production-ready |
-| v4.8.0 | 10.0 | 10.0 | Rules entegrasyonu + 4 yeni skill + 3 skill update + 2 yeni instruction | ✅ Production-ready |
+| v4.8.0 | 10.0 | 10.0 | Rules entegrasyonu + 3 yeni skill + 3 skill update + 2 yeni instruction | ✅ Production-ready |
 | v4.9.0 | 10.0 | 10.0 | 12 fix (7 P1 + 4 P2 + 1 P3) — tier skill mapping + token overhead + docs | ✅ Production-ready |
 | v5.0.0 | 10.0 | 10.0 | Proje bağımsızlık — proje-specific skill kaldırıldı + 6 fix (1 P1 + 3 P2 + 2 P3) | ✅ Production-ready |
+| v6.0.0 | 10.0 | 10.0 | Türkçe agent isimleri + token optimizasyonu (16 instruction → reference/) + isim güncellemeleri | ✅ Production-ready |
+| v6.1.0 | 10.0 | 10.0 | 15 bulgu düzeltmesi (5 P1 + 5 P2 + 5 P3) — review chain + Java config + token docs + Orchestrator | ✅ Production-ready |
+| v6.2.0 | 10.0 | 10.0 | Hook lifecycle otomasyon (4 hook) + agent identity banner + safety-guard fix | ✅ Production-ready |
+| v6.2.1 | 10.0 | 10.0 | 12 bulgu düzeltmesi (2 P0 + 3 P1 + 4 P2 + 3 P3) — shell quoting + terminal guard + log rotation + sanitization | ✅ Production-ready |
+| v6.2.2 | 10.0 | 10.0 | 10 bulgu (1 P1 + 8 P2 + 1 P3) — run_in_terminal PostToolUse + applyTo removal + doc accuracy + counter validation | ✅ Production-ready |
+| v6.3.0 | 10.0 | 10.0 | 28+10 bulgu — delete_file hook + scaffolding path fix + token recalibration + skill used-by + ApiResponse alignment + platform limitations documented | ✅ Production-ready |
+| v6.4.0 | 10.0 | 10.0 | 20+ bulgu — stale refs fix + skill conflict resolution + instruction table fixes + score methodology + doc accuracy | ✅ Production-ready |
 
-### Gelişim Skoru (Son Analiz: v5.0.0)
+### Gelişim Skoru (Son Analiz: v6.3.0)
 
-| Boyut | v4.3.0 | v4.4.0 | v4.5.0 | v4.6.0 | v4.7.0 | v4.8.0 | v4.9.0 |
-|-------|:------:|:------:|:------:|:------:|:------:|:------:|:------:|
-| Yapısal Bütünlük | 9.1 | 9.5 | 9.7 | 10.0 | 10.0 | 10.0 | **10.0** |
-| Dokümantasyon Tutarlılığı | 8.8 | 9.4 | 9.5 | 10.0 | 10.0 | 9.2 | **10.0** |
-| Agent Tier Tasarımı | 9.3 | 9.6 | 9.7 | 10.0 | 10.0 | 10.0 | **10.0** |
-| Review Chain | 9.5 | 9.6 | 9.6 | 10.0 | 10.0 | 10.0 | **10.0** |
-| Delegation Logic | 9.4 | 9.6 | 9.6 | 10.0 | 10.0 | 10.0 | **10.0** |
-| Token Optimizasyonu | 9.0 | 9.5 | 9.7 | 10.0 | 10.0 | 10.0 | **10.0** |
-| Hook Sistemi | 9.0 | 9.4 | 9.4 | 10.0 | 10.0 | 10.0 | **10.0** |
-| Genişletilebilirlik | 8.8 | 9.1 | 9.5 | 10.0 | 10.0 | 10.0 | **10.0** |
-| Session Memory | 9.3 | 9.5 | 9.5 | 10.0 | 10.0 | 10.0 | **10.0** |
-| Proje Bağlamı Keşfi (PCD) | — | — | — | 10.0 | 10.0 | 10.0 | **10.0** |
-| Prompt Zenginleştirme (PEP) | — | — | — | — | 10.0 | 10.0 | **10.0** |
+| Boyut | v4.3.0 | v4.4.0 | v4.5.0 | v4.6.0 | v4.7.0 | v4.8.0 | v4.9.0 | v5.0.0 | v6.0.0 | v6.1.0 | v6.2.0 | v6.3.0 |
+|-------|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|
+| Yapısal Bütünlük | 9.1 | 9.5 | 9.7 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Dokümantasyon Tutarlılığı | 8.8 | 9.4 | 9.5 | 10.0 | 10.0 | 9.2 | 10.0 | 9.5 | 9.5 | 10.0 | 10.0 | **10.0** |
+| Agent Tier Tasarımı | 9.3 | 9.6 | 9.7 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Review Chain | 9.5 | 9.6 | 9.6 | 10.0 | 10.0 | 10.0 | 10.0 | 9.8 | 9.8 | 10.0 | 10.0 | **10.0** |
+| Delegation Logic | 9.4 | 9.6 | 9.6 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Token Optimizasyonu | 9.0 | 9.5 | 9.7 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Hook Sistemi | 9.0 | 9.4 | 9.4 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Genişletilebilirlik | 8.8 | 9.1 | 9.5 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Session Memory | 9.3 | 9.5 | 9.5 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Proje Bağlamı Keşfi (PCD) | — | — | — | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Prompt Zenginleştirme (PEP) | — | — | — | — | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Konfigürasyon Tutarlılığı | — | — | — | — | — | — | — | 8.5 | 8.5 | 10.0 | 10.0 | **10.0** |
+| Hook Lifecycle Otomasyon | — | — | — | — | — | — | — | — | — | — | 10.0 | **10.0** |
 
 ### Analiz Metodolojisi
 
@@ -294,4 +308,12 @@ Her analiz döngüsü **x10 multi-agent** mode ile çalıştırılır:
 - **2 Principal** (T1): Mimari değerlendirme + operasyonel hazırlık skorlaması
 - **2 Staff Engineer + 2 MidCoder** (T1.5, T2): Analiz döngülerinde idle — kodlama görevlerinde aktif
 
-> _Son güncelleme: v5.0.0 — 2026-03-05_
+### Skor Hesaplama Yöntemi
+
+Skorlar, her versiyonun **post-fix (düzeltme sonrası)** durumunu yansıtır:
+- Analiz → Bulgu tespiti → Düzeltme → Doğrulama → Skor atanır
+- 10.0 = Tespit edilen tüm bulgular düzeltilmiş, 9/9 yapısal doğrulama PASS
+- P0/P1 bulgu varsa düzeltilmeden skor 10.0 atanamaz
+- P2/P3 bulgular düzeltilmeden skor ≤ 9.5 kalır
+
+> _Son güncelleme: v6.4.0 — 2026-03-19_

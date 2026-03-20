@@ -4,7 +4,8 @@ description: >
   Skill for coding, implementation, and development tasks.
   Used by Tier 1 (Principal), Tier 1.5 (Staff Engineer), and Tier 2 (MidCoder) agents.
   Provides guidance on coding standards, patterns, error handling, and testing.
-estimated-tokens: 3000
+estimated-tokens: 2500
+used-by: [T1, T1.5, T2]
 ---
 
 # Implementation Skill
@@ -25,11 +26,9 @@ This skill is used by Principal (Tier 1), Staff Engineer (Tier 1.5), and MidCode
 
 ### General Rules
 
-1. **Function Length**: Maximum 20 lines. Extract if longer.
-2. **File Length**: Maximum 250 lines. Split into modules if longer.
-3. **Nesting Depth**: Maximum 2 levels. Fix with early return if deeper.
-4. **Parameter Count**: Maximum 3. Wrap in an options object if more.
-5. **Cyclomatic Complexity**: Maximum 8 per function.
+> **Canonical source**: Function/file size limits and complexity thresholds are defined in `clean-code/SKILL.md`. Summary:
+> - Function: max 20 lines, max 3 parameters, max 2 nesting levels, cyclomatic complexity ≤ 8
+> - File: max 250 lines, one concept per file
 
 ### TypeScript / JavaScript
 
@@ -80,20 +79,7 @@ import type { UserProps } from "./types";
 
 ## Error Handling Guide
 
-### Pattern: Result Type
-
-```typescript
-type Result<T, E = Error> = { ok: true; value: T } | { ok: false; error: E };
-
-function parseConfig(raw: string): Result<Config> {
-  try {
-    const parsed = JSON.parse(raw);
-    return { ok: true, value: parsed as Config };
-  } catch (e) {
-    return { ok: false, error: new Error(`Invalid config: ${e}`) };
-  }
-}
-```
+> **Canonical source**: Error handling rules and Result type pattern are defined in `clean-code/SKILL.md`.
 
 ### Pattern: Error Boundary
 
@@ -122,9 +108,10 @@ class NotFoundError extends Error {
 
 ### Try-Catch Rules
 
+> See `clean-code/SKILL.md` for complete error handling rules.
+
 - **What to do in catch**: Log, transform, rethrow — pick one.
 - **Empty catch is forbidden**: At minimum, log it.
-- **Specific catch**: Filter by error type when possible.
 
 ---
 
@@ -187,23 +174,17 @@ const withTracing = <T extends (...args: unknown[]) => unknown>(fn: T): T => {
 describe("UserService", () => {
   describe("createUser", () => {
     it("should create a user with valid data", async () => {
-      // Arrange
       const userData = { name: "John", email: "john@test.com" };
       const repo = createMockRepo();
 
-      // Act
       const user = await createUser(userData, repo);
 
-      // Assert
       expect(user.name).toBe("John");
       expect(user.id).toBeDefined();
     });
 
     it("should throw ValidationError for invalid email", async () => {
-      // Arrange
       const userData = { name: "John", email: "invalid" };
-
-      // Act & Assert
       await expect(createUser(userData)).rejects.toThrow(ValidationError);
     });
   });
@@ -212,8 +193,8 @@ describe("UserService", () => {
 
 ### Test Naming
 
-- `should [expected behavior] when [condition]`
-- Turkish is not used — test names are always in English.
+- Format: `should [expected behavior] when [condition]` (see `testing-standards/SKILL.md` for details)
+- Language: **English** only.
 
 ### What Should Be Tested?
 

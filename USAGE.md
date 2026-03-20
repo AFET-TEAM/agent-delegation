@@ -1,6 +1,6 @@
 # Multi-Agent Delegation System — Kullanım Kılavuzu
 
-> Versiyon: 5.0.0 | Son Güncelleme: 2026-03-05
+> Versiyon: 6.4.0 | Son Güncelleme: 2026-03-19
 
 ---
 
@@ -35,7 +35,7 @@
 # Boilerplate'i kendi projenize kopyalayın
 cp -r agentDelegation/.github /path/to/your/project/
 cp agentDelegation/AGENTS.md /path/to/your/project/
-cp agentDelegation/.vscode /path/to/your/project/.vscode -r
+cp -r agentDelegation/.vscode /path/to/your/project/.vscode
 ```
 
 ### 2. VS Code'da Açın
@@ -102,10 +102,10 @@ MidCoder çıktısı ──review──▶ Staff Engineer ──review──▶ 
 
 ### Tier 1 — Principal (Claude Opus 4.6)
 
-| Agent          | Rol                                   | Tool Erişimi                     |
-| -------------- | ------------------------------------- | -------------------------------- |
-| PrincipalAlpha | Birincil mimari, quality gate, review | edit, search, read, fetch, agent |
-| PrincipalBeta  | İkincil mimari (x10 modunda aktif)    | edit, search, read, fetch, agent |
+| Agent                    | Rol                                   | Tool Erişimi                     |
+| ------------------------ | ------------------------------------- | -------------------------------- |
+| Taner Yılmaz             | Birincil mimari, quality gate, review | edit, search, read, fetch, agent |
+| Oya Kanat                | İkincil mimari (x10 modunda aktif)    | edit, search, read, fetch, agent |
 
 **Ne yapar?**
 
@@ -121,10 +121,10 @@ MidCoder çıktısı ──review──▶ Staff Engineer ──review──▶ 
 
 ### Tier 1.5 — Staff Engineer (Claude Sonnet 4.6)
 
-| Agent              | Rol                                       | Tool Erişimi              |
-| ------------------ | ----------------------------------------- | ------------------------- |
-| StaffEngineerAlpha | Birincil kodlama, feature implementasyonu | edit, search, read, fetch |
-| StaffEngineerBeta  | İkincil kodlama (x7+ modunda aktif)       | edit, search, read, fetch |
+| Agent                    | Rol                                       | Tool Erişimi              |
+| ------------------------ | ----------------------------------------- | ------------------------- |
+| Barış Benli              | Birincil kodlama, feature implementasyonu | edit, search, read, fetch |
+| Tarık Ziya Yeşilçimen    | İkincil kodlama (x7+ modunda aktif)       | edit, search, read, fetch |
 
 **Ne yapar?**
 
@@ -140,10 +140,10 @@ MidCoder çıktısı ──review──▶ Staff Engineer ──review──▶ 
 
 ### Tier 2 — MidCoder (GPT-5.3-Codex)
 
-| Agent         | Rol                                 | Tool Erişimi       |
-| ------------- | ----------------------------------- | ------------------ |
-| MidCoderAlpha | Birincil basit kodlama              | edit, search, read |
-| MidCoderBeta  | İkincil kodlama (x10 modunda aktif) | edit, search, read |
+| Agent                    | Rol                                 | Tool Erişimi       |
+| ------------------------ | ----------------------------------- | ------------------ |
+| Enis Sait Erken          | Birincil basit kodlama              | edit, search, read |
+| Selin Akar               | İkincil kodlama (x10 modunda aktif) | edit, search, read |
 
 **Ne yapar?**
 
@@ -158,9 +158,9 @@ MidCoder çıktısı ──review──▶ Staff Engineer ──review──▶ 
 
 ### Tier 2.5 — Lead Analyst (Gemini 3.1 Pro Preview)
 
-| Agent       | Rol                                 | Tool Erişimi        |
-| ----------- | ----------------------------------- | ------------------- |
-| LeadAnalyst | Analyst çıktı review, konsolidasyon | read, search, fetch |
+| Agent                    | Rol                                 | Tool Erişimi        |
+| ------------------------ | ----------------------------------- | ------------------- |
+| Canan Birsen             | Analyst çıktı review, konsolidasyon | read, search, fetch |
 
 **Ne yapar?**
 
@@ -177,11 +177,11 @@ MidCoder çıktısı ──review──▶ Staff Engineer ──review──▶ 
 
 ### Tier 3 — Analyst (Gemini 3 Flash)
 
-| Agent        | Rol                                     | Tool Erişimi        |
-| ------------ | --------------------------------------- | ------------------- |
-| AnalystAlpha | Kod tabanı analizi, bağımlılık auditi   | read, search, fetch |
-| AnalystBeta  | Performans analizi, güvenlik auditi     | read, search, fetch |
-| AnalystGamma | Test senaryosu üretimi, doküman analizi | read, search, fetch |
+| Agent                    | Rol                                     | Tool Erişimi        |
+| ------------------------ | --------------------------------------- | ------------------- |
+| Emre Kılıç               | Kod tabanı analizi, bağımlılık auditi   | read, search, fetch |
+| Ayşe Demir               | Performans analizi, güvenlik auditi     | read, search, fetch |
+| Elif Özge Maksutoğlu     | Test senaryosu üretimi, doküman analizi | read, search, fetch |
 
 **Ne yapar?**
 
@@ -269,7 +269,7 @@ Mevcut oturumun durumunu gösterir — hangi agent ne yapıyor, review durumlar�
 
 ### /architect
 
-Orchestrator'ı atlayarak doğrudan PrincipalAlpha'ya mimari görev atar. Tek başına çözülebilecek mimari işler için idealdir.
+Orchestrator'ı atlayarak doğrudan Taner Yılmaz'a (Principal) mimari görev atar. Tek başına çözülebilecek mimari işler için idealdir.
 
 ### /resume
 
@@ -310,6 +310,18 @@ Son 20 session'ı listeler. Yeni bir geliştirici veya uzun aradan sonra projeye
 - MidCoder'lar Staff Engineer kararını override edemez
 - Staff Engineer'lar Principal kararını override edemez
 - Orchestrator arabuluculuk yapar
+
+### İndirgenmiş Mod Review Kuralları
+
+Agent sayısı azaldığında review zinciri adapte olur:
+
+| Mod | Dağılım | Review Zinciri |
+|-----|---------|---------------|
+| **x2** | 1 Principal + 1 Analyst | `T3 → T1 → Orchestrator` (Principal, Lead Analyst checklist'ini de uygular) |
+| **x3** | 1 Principal + 1 Staff Eng + 1 Analyst | `T3 → T1.5 → T1 → Orchestrator` (Staff Eng, Analyst review'ını da üstlenir) |
+| **x4** | 1 Principal + 1 Staff Eng + 1 MidCoder + 1 Analyst | `T3 → T1.5, T2 → T1.5 → T1 → Orchestrator` (Lead Analyst yok — Staff Eng üstlenir) |
+
+> **Kural**: Eksik tier'ın review sorumluluğu, bir üst mevcut tier'a devredilir. Devir alan reviewer, eksik tier'ın checklist'ini de uygular.
 
 ---
 
@@ -365,7 +377,7 @@ Seviye 3 (En düşük): Boilerplate Kodlama Varsayılanları
 
 ### Detaylar
 
-Tam protokol: `.github/instructions/project-context-discovery.instructions.md`
+Tam protokol: `.github/instructions/reference/project-context-discovery.instructions.md`
 
 ---
 
@@ -446,7 +458,7 @@ Orchestrator: [Detaylı plan oluşturur] → Kullanıcı onayı → İmplementas
 
 ### Detaylar
 
-Tam protokol: `.github/instructions/prompt-enrichment.instructions.md`
+Tam protokol: `.github/instructions/reference/prompt-enrichment.instructions.md`
 
 ---
 
@@ -516,13 +528,13 @@ Her tier'ın kendine özgü skill dosyaları vardır:
 
 ### Yeni Agent Ekleme
 
-`.github/instructions/agent-scaffolding.instructions.md` dosyasındaki rehberi izleyerek yeni agent oluşturabilirsiniz.
+`.github/instructions/reference/agent-scaffolding.instructions.md` dosyasındaki rehberi izleyerek yeni agent oluşturabilirsiniz.
 
 **Adımlar:**
 
 1. Rehberdeki Tier Konfigürasyon Matrisi'nden doğru model, fallback ve tool setini belirleyin.
 2. Agent dosyası şablonunu kullanarak `.github/agents/<agent-name>.agent.md` oluşturun.
-3. Instructions dosyası şablonunu kullanarak `.github/instructions/<tier-prefix>-<agent-name>.instructions.md` oluşturun.
+3. Instructions dosyası şablonunu kullanarak `.github/instructions/reference/<tier-prefix>-<agent-name>.instructions.md` oluşturun.
 4. Post-creation checklist'teki 6 adımı tamamlayın.
 5. Sistem doğrulama kurallarını (Kural 2 ve 7) çalıştırarak entegrasyonu doğrulayın.
 
@@ -530,23 +542,25 @@ Manuel ekleme tercih ederseniz:
 1. `.github/agents/` dizinine yeni `.agent.md` dosyası oluşturun.
 2. YAML frontmatter'da `name`, `model`, `tools` tanımlayın.
 3. Orchestrator'ın `agents` listesine yeni agent'ı ekleyin.
-4. İlgili instruction dosyasına `applyTo` pattern'ını güncelleyin.
+4. Instructions dosyasını `.github/instructions/reference/` dizinine oluşturun (bkz. agent-scaffolding rehberi).
 
 ### Yeni Skill Ekleme
 
 1. `.github/skills/[skill-name]/SKILL.md` dosyası oluşturun.
-2. YAML frontmatter'da `name` ve `description` tanımlayın.
+2. YAML frontmatter'da `name`, `description`, `used-by`, `estimated-tokens` tanımlayın.
 3. İlgili agent'ların talimatlarında bu skill'e referans ekleyin.
+
+> Tam checklist: `.github/instructions/reference/agent-scaffolding.instructions.md` Section 9
 
 ### xN Dağılımını Değiştirme
 
-`.github/instructions/delegation-rules.instructions.md` dosyasındaki tabloyu güncelleyin.
+`.github/instructions/reference/delegation-rules.instructions.md` dosyasındaki tabloyu güncelleyin.
 
 ### Yeni Komut Ekleme
 
-1. `.github/instructions/slash-commands.instructions.md` dosyasına yeni komutu ekleyin.
+1. `.github/instructions/reference/slash-commands.instructions.md` dosyasına yeni komutu ekleyin.
 2. Komut tablosuna ve detay bölümüne tanımı yazın.
-3. `applyTo: "**"` sayesinde tüm ortamlarda (VS Code, CLI, diğer) otomatik tanınır.
+3. Komutlar Orchestrator tarafından otomatik tespit edilir — ek yapılandırma gerekmez.
 
 ---
 
@@ -569,7 +583,7 @@ Her agent'ın birincil modeli erişilemez olduğunda otomatik olarak yedek model
 - Fallback aktivasyonu agent'ın izinlerini veya tier yetkilerini **değiştirmez**.
 - Agent, fallback'e geçtiğini task raporunda belirtmelidir.
 - Analyst tier'ı için ek fallback: Haiku 4.5 de erişilemezse `auto` modeline düşer.
-- Detaylar: `.github/instructions/model-fallback.instructions.md`
+- Detaylar: `.github/instructions/reference/model-fallback.instructions.md`
 
 ---
 
@@ -600,6 +614,11 @@ Her oturum sonunda konuşma geçmişi, alınan kararlar ve yapılan değişiklik
 - Yalnızca **Orchestrator** session dosyası oluşturur/düzenler.
 - Diğer agent'lar session dosyalarını **salt okunur** olarak kullanır.
 - **v4.1.0+**: `SubagentStop` hook'u otomatik olarak `.github/logs/agent-activity.log` dosyasına session marker yazar. `.github/logs/` dizini çalışma zamanında hook'lar tarafından otomatik oluşturulur (`mkdir -p`). Bu, Orchestrator'ın açıkça kaydetmediği durumlarda bile oturum izlenebilirliğini sağlar.
+- **v6.2.0+**: 4 hook dosyası döngüsel işlemleri otomatize eder:
+  - `agent-lifecycle.json` — Agent kimlik banner'ı (isim + tier + rol), aktif plan kontrolü, session sayısı uyarısı
+  - `safety-guard.json` — Read-only agent koruması (YAML isimlerine göre), edit audit log
+  - `review-enforcer.json` — Edit sayacı takibi, SubagentStop'ta review chain yönlendirmesi
+  - `context-guard.json` — Tier bazlı skill/PCD bütçe gösterimi
 - `/resume` komutuyla son session ve aktif plan geri yüklenir.
 - `/history` komutuyla son session'lar listelenir.
 
@@ -669,7 +688,7 @@ Görevler maksimum **15K token bütçesiyle** alt-görevlere bölünür. Bütçe
 
 ### Sistem Doğrulama Kuralları
 
-Boilerplate bütünlüğünü doğrulamak için `.github/instructions/system-validation.instructions.md` dosyasındaki kurallar kullanılır. Script yerine agent'lar bu kuralları read/search araçlarıyla manuel olarak uygular.
+Boilerplate bütünlüğünü doğrulamak için `.github/instructions/reference/system-validation.instructions.md` dosyasındaki kurallar kullanılır. Script yerine agent'lar bu kuralları read/search araçlarıyla manuel olarak uygular.
 
 Kontrol edilen 9 kural:
 
@@ -692,11 +711,11 @@ Boilerplate'i bir projeye taşıdığınızda PCD otomatik olarak aktif olur. Ö
 PCD davranışını özelleştirmek için:
 - **Proje kurallarını belirtin**: Projenin `README.md` veya `docs/` altındaki dosyalarda kodlama standartları, mimari kararlar ve konvansiyonları net şekilde yazın.
 - **Bağlam bütçesini bilin**: Her tier'ın PCD dosya ve token limiti vardır (T1: 5 dosya/8K, T3: 2 dosya/3K).
-- **Detaylar**: `.github/instructions/project-context-discovery.instructions.md`
+- **Detaylar**: `.github/instructions/reference/project-context-discovery.instructions.md`
 
 ### Agent Scaffolding Rehberi
 
-Yeni agent oluşturmak için `.github/instructions/agent-scaffolding.instructions.md` dosyasındaki kurallar izlenir. Bash script yerine agent'lar bu rehberdeki template ve konfigürasyon matrisini kullanarak dosyaları manuel oluşturur.
+Yeni agent oluşturmak için `.github/instructions/reference/agent-scaffolding.instructions.md` dosyasındaki kurallar izlenir. Bash script yerine agent'lar bu rehberdeki template ve konfigürasyon matrisini kullanarak dosyaları manuel oluşturur.
 
 Rehber içerikleri:
 
@@ -719,7 +738,7 @@ Platform bağımlılıkları ve tasarım kararları `.github/docs/adr/` dizinind
 
 ### Q: xN parametresi olmadan da agent'ları kullanabilir miyim?
 
-**A**: Evet. `/architect` komutuyla doğrudan PrincipalAlpha'ya görev atayabilirsiniz. Veya Copilot Chat'te agent picker'dan istediğiniz agent'ı seçebilirsiniz (Orchestrator `user-invokable: true`).
+**A**: Evet. `/architect` komutuyla doğrudan Taner Yılmaz'a (Principal) görev atayabilirsiniz. Veya Copilot Chat'te agent picker'dan istediğiniz agent'ı seçebilirsiniz (Varol Maksutoğlu / Orchestrator `user-invokable: true`).
 
 ### Q: Kaç adet x parametresi verilebilir?
 

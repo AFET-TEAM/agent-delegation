@@ -42,8 +42,8 @@ The user activates multi-agent mode by appending the `xN` parameter to the end o
 3. File editing permission belongs only to Tier 1, Tier 1.5, and Tier 2.
 4. Tier 2.5 and Tier 3 operate in read-only mode.
 5. Code quality standard: Principal-level clean code.
-6. **Project Context Discovery (PCD)**: Agents automatically scan the host project's root `README.md`, other `*.md` files, and `docs/` folder. These documents are treated as system context — all development follows project-specific rules. See `project-context-discovery.instructions.md`.
-7. **Prompt Enrichment Protocol (PEP)**: For non-trivial tasks, the Orchestrator asks targeted clarification questions before implementation. This enriches the prompt, produces detailed implementation plans, and reduces rework. See `prompt-enrichment.instructions.md`.
+6. **Project Context Discovery (PCD)**: Agents automatically scan the host project's root `README.md`, other `*.md` files, and `docs/` folder. These documents are treated as system context — all development follows project-specific rules. See `reference/project-context-discovery.instructions.md`.
+7. **Prompt Enrichment Protocol (PEP)**: For non-trivial tasks, the Orchestrator asks targeted clarification questions before implementation. This enriches the prompt, produces detailed implementation plans, and reduces rework. See `reference/prompt-enrichment.instructions.md`.
 
 ## Model Fallback
 
@@ -75,8 +75,8 @@ Fallback does not change agent permissions or tier capabilities.
 ## Token Optimization
 
 - Shared rules centralized in `shared-base.instructions.md` — agents reference instead of duplicating.
-- Skills loaded on-demand per task type via `context-loading.instructions.md`.
-- Tasks decomposed into subtasks with max 15K token budget via `task-planning.instructions.md`.
+- Skills loaded on-demand per task type via `reference/context-loading.instructions.md`.
+- Tasks decomposed into subtasks with max 15K token budget via `reference/task-planning.instructions.md`.
 - Active plan tracked in `.github/todo/active-plan.md` for pause/resume across token limits.
 
 ## Session Memory

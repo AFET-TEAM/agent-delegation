@@ -1,7 +1,3 @@
----
-applyTo: "**"
----
-
 # Model Fallback Chain
 
 When a primary model is unavailable, the system automatically falls back to the next model in the chain.
@@ -45,5 +41,5 @@ When any agent runs on a fallback model, the Orchestrator must include a `### Mo
 
 | Agent        | Expected Model | Actual Model     | Reason              |
 | ------------ | -------------- | ---------------- | ------------------- |
-| AnalystAlpha | Gemini 3 Flash | Claude Haiku 4.5 | Primary unavailable |
+| EmreKilic    | Gemini 3 Flash | Claude Haiku 4.5 | Primary unavailable |
 ```

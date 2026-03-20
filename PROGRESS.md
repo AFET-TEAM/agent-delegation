@@ -1,7 +1,7 @@
 # Multi-Agent Delegation System — Geliştirme Yol Haritası
 
 > Bu dosya, sistemin mevcut durumunu, tespit edilen iyileştirme fırsatlarını ve planlanan geliştirme adımlarını takip eder.
-> Son güncelleme: v5.0.0
+> Son güncelleme: v6.4.0
 
 ---
 
@@ -9,13 +9,13 @@
 
 | Metrik | Değer |
 |--------|-------|
-| Versiyon | v5.0.0 |
+| Versiyon | v6.4.0 |
 | Yapısal Bütünlük | 9/9 doğrulama kuralı ✅ PASS |
-| Cross-Reference Tutarlılığı | 9/9 kontrol ✅ PASS |
-| Dokümantasyon Doğruluğu | 17 kontrol ✅ PASS, 6 bulgu düzeltildi |
-| Agent Sayısı | 11 (5 tier) |
-| Skill Sayısı | 13 |
-| Instruction Sayısı | 19 |
+| Cross-Reference Tutarlılığı | ✅ 7/7 PASS (v6.3.0 x10 audit) |
+| Dokümantasyon Doğruluğu | ✅ 60/60 PASS (v6.4.0 audit — 11 agent × 3 alan + 4 hook × 2 alan + 5 root doc × 3 alan + 4 config = 60) |
+| Agent Sayısı | 11 (5 tier) — Türkçe insan isimleriyle |
+| Skill Sayısı | 13 (tümü kalibre token tahminleriyle) |
+| Instruction Sayısı | 19 (3 evrensel + 16 reference/) |
 
 ---
 
@@ -25,12 +25,8 @@
 
 #### TASK-001: Platform Context Overhead Azaltımı
 **Problem**: Her agent oturumu ~45-55K token platform overhead yüklüyor (19 instruction dosyası `applyTo: "**"` ile). 15K subtask bütçesi dahil toplam ~60-70K token tüketiliyor.
-**Önerilen Çözüm**: 
-- Instruction dosyalarını tier-aware `applyTo` pattern'leriyle gruplayarak sadece ilgili dosyaları yükle
-- Shared-base + tier-specific + task-specific olarak 3 katmanlı yükleme sistemi
-- Platform sınırlaması (`applyTo` sadece dosya pattern'i destekliyor, agent identity değil) nedeniyle alternatif: instruction dosyalarını birleştirerek dosya sayısını azalt
-**Tahmini Etki**: %20-30 token tasarrufu (~10-15K token/oturum)
-**Karmaşıklık**: Yüksek — tüm instruction dosyaları yeniden yapılandırılmalı
+**Durum**: ✅ v6.0.0'da çözüldü — 16 instruction dosyası `reference/` alt dizinine taşınarak otomatik yüklemeden çıkarıldı. Sadece 3 evrensel dosya otomatik yüklenir. Tahmini tasarruf: ~30-40K token/oturum.
+**Önerilen Çözüm**: ~~Instruction dosyalarını tier-aware `applyTo` pattern'leriyle gruplayarak sadece ilgili dosyaları yükle~~ → `reference/` dizin yapısı + glob pattern değişikliği ile çözüldü.
 
 #### TASK-002: Skill Dosyası Token Bütçesi Optimizasyonu
 **Problem**: Bazı skill dosyaları çok büyük (frontend-development: 691 satır, testing-standards: 550 satır, api-integration: 435 satır). Bunlar context bütçesini hızla tüketiyor.
@@ -78,8 +74,8 @@
 
 #### TASK-006: Reduced Mode Review Kurallarının USAGE.md'ye Eklenmesi
 **Problem**: `review-chain.instructions.md`'deki reduced mode kuralları (x2, x3, x4) USAGE.md'de dokümante edilmemiş.
-**Önerilen Çözüm**: USAGE.md "Review Zinciri" bölümüne reduced mode tablosu ekle
-**Karmaşıklık**: Düşük
+**Durum**: ✅ v6.3.0'da çözüldü — "İndirgenmiş Mod Review Kuralları" bölümü USAGE.md'ye eklendi.
+**Önerilen Çözüm**: ~~USAGE.md "Review Zinciri" bölümüne reduced mode tablosu ekle~~ → Eklendi.
 
 #### TASK-007: AGENTS.md Mandatory Skills Koşulluluk Açıklaması
 **Problem**: AGENTS.md 8 "mandatory" skill listelerken bunların koşullu olduğunu (task type'a göre) yeterince açıklamıyor. Context-loading bütçesiyle çelişki izlenimi yaratabilir.
@@ -150,32 +146,38 @@
 
 ## Önceliklendirme Matrisi
 
-| Görev | Öncelik | Etki | Efor | Önerilen Sıralama |
-|-------|---------|------|------|-------------------|
-| TASK-001 | P0 | Yüksek | Yüksek | 1 |
-| TASK-002 | P0 | Yüksek | Orta | 2 |
-| TASK-003 | P1 | Yüksek | Yüksek | 3 |
-| TASK-006 | P2 | Düşük | Düşük | 4 |
-| TASK-007 | P2 | Düşük | Düşük | 5 |
-| TASK-004 | P1 | Orta | Orta | 6 |
-| TASK-005 | P1 | Orta | Orta | 7 |
-| TASK-008 | P2 | Orta | Orta | 8 |
-| TASK-009 | P2 | Orta | Orta | 9 |
-| TASK-010 | P3 | Yüksek | Yüksek | 10 |
-| TASK-012 | P3 | Orta | Orta | 11 |
-| TASK-013 | P3 | Orta | Orta | 12 |
-| TASK-011 | P3 | Orta | Yüksek | 13 |
-| TASK-014 | P3 | Yüksek | Yüksek | 14 |
+| Görev | Öncelik | Etki | Efor | Durum |
+|-------|---------|------|------|-------|
+| TASK-001 | P0 | Yüksek | Yüksek | ✅ v6.0.0 |
+| TASK-002 | P0 | Yüksek | Orta | ✅ v6.0.0 |
+| TASK-003 | P1 | Yüksek | Yüksek | ✅ v6.2.0 |
+| TASK-006 | P2 | Düşük | Düşük | ✅ v6.3.0 |
+| TASK-007 | P2 | Düşük | Düşük | ✅ v6.4.0 |
+| TASK-004 | P1 | Orta | Orta | Planlandı |
+| TASK-005 | P1 | Orta | Orta | Planlandı |
+| TASK-008 | P2 | Orta | Orta | Planlandı |
+| TASK-009 | P2 | Orta | Orta | Planlandı |
+| TASK-010 | P3 | Yüksek | Yüksek | Planlandı |
+| TASK-012 | P3 | Orta | Orta | Planlandı |
+| TASK-013 | P3 | Orta | Orta | Planlandı |
+| TASK-011 | P3 | Orta | Yüksek | Planlandı |
+| TASK-014 | P3 | Yüksek | Yüksek | Planlandı |
 
 ---
 
-## Tamamlanan Analizler (v5.0.0)
+## Tamamlanan Analizler
 
-| Analiz | Sonuç | Agent |
-|--------|-------|-------|
-| Yapısal Doğrulama (9 kural) | 9/9 ✅ PASS | AnalystAlpha (T3) |
-| Cross-Reference Tutarlılığı | 9/9 ✅ PASS | AnalystBeta (T3) |
-| Dokümantasyon Doğruluğu | 17 ✅ PASS, 6 bulgu (1 P1 + 3 P2 + 2 P3) | AnalystGamma (T3) |
+| Analiz | Versiyon | Sonuç | Agent |
+|--------|----------|-------|-------|
+| Yapısal Doğrulama (9 kural) | v5.0.0 | 9/9 ✅ PASS | Emre Kılıç (T3) |
+| Cross-Reference Tutarlılığı | v5.0.0 | 9/9 ✅ PASS | Ayşe Demir (T3) |
+| Dokümantasyon Doğruluğu | v5.0.0 | 17 ✅ PASS, 6 bulgu (1 P1 + 3 P2 + 2 P3) | Elif Özge Maksutoğlu (T3) |
+| x10 Derin Analiz (10 agent) | v6.0.0 | 15 bulgu → tamamı düzeltildi | 10 agent paralel |
+| x10 Post-Fix Doğrulama | v6.1.0 | 15 bulgu (5 P1 + 5 P2 + 5 P3) → tamamı düzeltildi | 10 agent paralel |
+| x10 Derin Re-Analiz | v6.2.1 | 19 bulgu (2 P0) → tamamı düzeltildi | 10 agent paralel |
+| x10 İkinci Derin Analiz | v6.2.2 | 12 bulgu → tamamı düzeltildi | 10 agent paralel |
+| x10 Kapsamlı Derin Analiz | v6.3.0 | 28+10 bulgu → tamamı düzeltildi | 10 agent paralel |
+| x10 Final Derin Analiz | v6.4.0 | Devam ediyor | 10 agent paralel |
 
 ### Düzeltilen Bulgular (v5.0.0)
 
@@ -186,4 +188,4 @@
 | F3 | USAGE.md FAQ'da `.vscode/settings.json` → `.vscode/` olmalı | P2 | Düzeltildi |
 | F4 | AGENTS.md mandatory skills koşulluluk açıklaması | P2 | TASK-007 olarak planlandı |
 | F5 | README'de scaffolding/validation feature eksik | P3 | TASK planına alındı |
-| F6 | Reduced mode review kuralları USAGE.md'de yok | P2 | TASK-006 olarak planlandı |
+| F6 | Reduced mode review kuralları USAGE.md'de yok | P2 | ✅ v6.3.0'da düzeltildi |

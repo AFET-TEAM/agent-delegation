@@ -5,6 +5,237 @@ Format [Keep a Changelog](https://keepachangelog.com/) standardına uygundur.
 
 ---
 
+> v6.1.0–v6.4.0: Sürekli kalite denetim döngüsü — aynı gün iteratif olarak yayınlandı.
+
+## [6.4.0] — 2026-03-19
+
+### Fixed
+
+#### Agent & Hook Düzeltmeleri
+- **P1: Stale PrincipalAlpha referansı** — `orchestrator.agent.md` satır 46'daki eski `PrincipalAlpha` → `TanerYilmaz` olarak düzeltildi
+- **P2: agent-lifecycle.json 3 rol uyumsuzluğu** — OyaKanat `Yazilim Mimari` → `Kidemli Yazilim Mimari`, TarikZiya `Kidemli Yazilim Muhendisi` → `Yazilim Muhendisi`, CananBirsen `Bas Analist` → `Kidemli Sistem Analisti`
+
+#### Skill Dosyası Düzeltmeleri (7 düzeltme)
+- **testing-standards**: Stale Next.js router mock → React Router, stale Redux mock → Zustand, nested folder yapısı → flat-folder
+- **frontend-development**: Wildcard `import * as yup` → named imports
+- **clean-code**: Java Checkstyle parameter limit (7) vs standard (3) reconciliation notu eklendi
+- **backend-development**: Node.js `ApiResponse<T>` → `ServiceResponse<T>` — api-integration canonical type ile çakışma giderildi
+- **backend-security**: `ApiResponse.success()` → `ServiceResponse.success()` — phantom method düzeltildi
+
+#### Instruction Dosyası Düzeltmeleri (6 düzeltme)
+- **shared-base**: Orchestrator tool set farkı (`agent, read, search` — `fetch` yok) belgelendi
+- **context-loading**: `code-review` ve `testing-standards` Required → Phase-Loaded'a taşındı; Java skill'leri Skip'e eklendi; Orchestrator budget satırı eklendi
+- **system-validation**: Rule 2 glob `*.instructions.md` → `**/*.instructions.md` — reference/ dosyalarını kapsayacak şekilde düzeltildi
+- **review-chain**: x5+ mode dokümanı eklendi
+- **AGENTS.md**: Dual authority → summary referans olarak değiştirildi
+- **session-memory**: Orchestrator delegation notu eklendi
+
+#### Dokümantasyon Düzeltmeleri
+- **USAGE.md**: L38 cp flag sırası, L544 stale applyTo rehberi, L561 stale auto-load iddiası, L547-551 skill ekleme rehberi tamamlandı
+- **ADR-001**: Stale ~45-55K → ~15-20K post-v6.0.0 token figürü, "tier/feature-specific" → "on-demand reference (5+11)", R-6 log rotation limitation eklendi
+- **task-planning**: Platform overhead ~8-12K terminoloji açıklaması eklendi
+- **PROGRESS.md**: 57/60 → 60/60 (denominatör açıklaması), v6.1.0 analiz kaydı, TASK-001/006 durum güncellemesi, öncelik matrisine Durum sütunu
+- **README.md**: v6.2.2 bulgu sayısı 12 → 10, skor hesaplama yöntemi bölümü, versiyonlama notu, reviews/ runtime artifact notu
+
+#### Principal Audit Düzeltmeleri (12 bulgu)
+- **context-loading**: Phantom skill count notları düzeltildi (6→4 Required, 5→3 Required — Phase-Loaded'a taşınan skill'ler)
+- **CHANGELOG**: 4 tarihsel sayı hatası düzeltildi (v4.8.0: 4→3, v1.1.0: 13→15, v6.0.0: 19→20, v3.0.0: 12→11)
+- **AGENTS.md**: Mandatory Skills → Universal (2) + Domain-Specific (6) ayrımı yapıldı
+- **safety-guard.json**: Variable quoting tutarlılığı (`AGENT="${...}"` — 2 satır düzeltildi)
+
+---
+
+## [6.3.0] — 2026-03-19
+
+### Fixed
+
+- **P1: delete_file hook coverage** — `safety-guard.json` ve `review-enforcer.json`'daki PreToolUse/PostToolUse tool listelerine `delete_file` eklendi. Dosya silme operasyonları artık izleniyor ve loglanıyor.
+- **P1: Scaffolding path regression** — `agent-scaffolding.instructions.md` şablonu yeni instruction dosyalarını `reference/` dizinine yönlendirecek şekilde düzeltildi. `applyTo: "**"` şablon frontmatter'dan kaldırıldı. Token overhead regresyonu önlendi.
+- **P1: Token estimate accuracy** — 13 skill dosyasının `estimated-tokens` YAML değerleri gerçek ölçümlerle kalibre edildi. `backend-security` 3500→4700 (+35%), `testing-standards` 5000→6600 (+32%), `api-integration` 4500→5200, `backend-development` 5500→4800, `analysis` 3000→2500, `code-review` 2500→1800, `clean-code` 3000→2700, `java-quality-tooling` 3500→2400, `pr-standards` 2000→1400.
+- **P1: Budget overflow documentation** — `context-loading.instructions.md`'ye Backend API'nin T1/T1.5 bütçesini (5 skill max) ve Frontend UI'ın T2 bütçesini (4 skill max) aştığına dair notlar eklendi.
+- **P1: Auto-load overhead correction** — `context-loading.instructions.md`'deki overhead iddiası ~8-12K'dan gerçek ölçüm ~4-5K'ya düzeltildi (3 occurrence).
+- **P2: safety-guard mkdir-p** — `safety-guard.json`'ın 4 handler'ına `mkdir -p .github/logs` eklendi. Fresh clone'da log yazma hatası önlendi.
+- **P2: review-enforcer SubagentStop mkdir-p** — SubagentStop handler'ına `mkdir -p .github/logs` eklendi.
+- **P2: Output format references** — 3 tier instruction dosyasındaki output format referansı `AGENTS.md`'den doğru kaynak `shared-base.instructions.md`'ye düzeltildi.
+- **P2: Orchestrator permission model** — `shared-base.instructions.md` section header'ı Orchestrator'ı read-only olarak dahil edecek şekilde güncellendi. 3 dosya arasındaki tutarsızlık giderildi.
+- **P2: ApiResponse alignment** — `api-integration/SKILL.md`'ye canonical `ApiResponse<T>` format notu eklendi. `backend-development/SKILL.md` Node.js section ile çapraz referans açıklandı.
+- **P2: File size limit clarification** — `clean-code/SKILL.md`'ye domain-specific override notları eklendi (frontend 300-satır, Java Checkstyle 2000-satır). `java-quality-tooling/SKILL.md`'ye Checkstyle-vs-team-standard açıklaması eklendi. `frontend-development/SKILL.md`'ye clean-code alignment notu eklendi.
+- **P2: Hook platform limitations documented** — `shared-base.instructions.md`'ye "Hook System: Known Platform Limitations" section'ı eklendi (advisory enforcement, hook ordering, log locking, convention-based ownership).
+- **P2: agent-lifecycle.json log sanitization** — SubagentStart/Stop/Error handler'larında `${COPILOT_AGENT:-unknown}` `tr -cd` ile sanitize ediliyor. Log injection önlendi.
+- **P3: AGENT_NAME→AGENT rename** — `safety-guard.json` PreToolUse handler'larında değişken ismi `AGENT_NAME`'den `AGENT`'a standardize edildi.
+- **P3: Duplicate counter-reset removed** — `agent-lifecycle.json`'daki duplicate `rm -f .edit-count` step'i kaldırıldı. Single source of truth: `review-enforcer.json`.
+- **P3: Skill used-by fields** — 10/13 skill dosyasına eksik `used-by` YAML alanı eklendi. Tier uygulanabilirliği artık machine-parseable.
+- **P3: README title corrections** — Oya Kanat "Kıdemli Yazılım Mimarı", Canan Birsen "Kıdemli Sistem Analisti" olarak agent dosyalarıyla tutarlı hale getirildi.
+- **P3: backend-development testing cross-reference** — Testing section'a `testing-standards/SKILL.md` çapraz referansı eklendi.
+- **P3: Path quoting** — `agent-lifecycle.json`'da active-plan.md path'i tırnaklandı.
+
+### Added (Post-Fix Review Cycle)
+
+- **P1: USAGE.md scaffolding path** — Agent oluşturma rehberindeki instructions dosya path'i `.github/instructions/reference/` dizinini içerecek şekilde düzeltildi. Kullanıcıların yanlışlıkla auto-load dosya oluşturması önlendi.
+- **P2: backend-security used-by fix** — `used-by` listesinden T2 (MidCoder) kaldırıldı. 3 otoriter kaynak (tier2-mid, scaffolding, USAGE.md) T2'yi desteklememektedir.
+- **P2: backend-development checklist** — "ApiResponse or ServiceResponse" ifadesi, doğru kullanımı açıklayan `ServiceResponse<T>` + `ApiResponse<T>` controller boundary açıklamasıyla güncellendi.
+- **P2: USAGE.md reduced mode review** — x2, x3, x4 modlarının review zinciri adaptasyonu USAGE.md'ye eklendi. TASK-006 kapatıldı.
+- **P2: active-plan.md completed** — Plan status'u `completed` olarak güncellendi. 14/14 phase tamamlandı.
+- **P2: Metrics v6.3.0 records** — `token-usage.md`'ye 10 yeni kayıt eklendi (PLAN-004 session). Toplam 16 kayıt. Calibration version 3. Deviation alerts güncellendi.
+- **P3: ADR-001 overhead clarification** — D-2 kararındaki ~8-12K token açıklaması, platform overhead dahil/hariç ayrımını netleştirecek şekilde güncellendi.
+- **P3: used-by format standardization** — `backend-security/SKILL.md` ve `api-integration/SKILL.md`'deki long-form `used-by` formatı (`Tier 1 (Principal)`) kısa form `[T1, T1.5]`'e standardize edildi. 13/13 skill artık tutarlı format kullanıyor.
+- **P3: Skill scaffolding guide** — `agent-scaffolding.instructions.md`'ye Section 9 eklendi: skill oluşturma şablonu, naming convention ve 7 adımlık post-creation checklist.
+- **P3: PROGRESS.md history** — "Tamamlanan Analizler" tablosu v6.0.0→v6.3.0 arasındaki tüm analizlerle güncellendi (8 kayıt). F6 (reduced mode) düzeltildi olarak işaretlendi.
+
+---
+
+## [6.2.2] — 2026-03-19
+
+### Fixed
+
+- **P1: run_in_terminal PostToolUse** — `safety-guard.json`'a `run_in_terminal` için PostToolUse handler eklendi. Terminal komut tamamlanması artık loglanıyor.
+- **P2: applyTo removal** — `.github/instructions/reference/` içindeki 16 dosyanın vestigial `applyTo: "**"` frontmatter'ı kaldırıldı. Platform davranışına bağlı olarak ~15K token/session tasarruf potansiyeli.
+- **P2: shared-base documentation accuracy** — `safety-guard.json` hook davranışı "blocks" yerine doğru şekilde "logs and warns" olarak güncellendi. VarolMaksutoglu (Orchestrator) read-only agent listesine eklendi.
+- **P2: Counter numeric validation** — `review-enforcer.json`'da corrupt counter dosya içeriği için `case` tabanlı numerik doğrulama eklendi. `[ -gt ]` shell hatası önlendi.
+- **P2: Log echo sanitization** — `safety-guard.json`'daki tüm log echo ifadelerinde `$COPILOT_AGENT` artık `tr -cd` ile sanitize ediliyor (log injection önlemi).
+- **P2: $(wc -c) quoting** — `agent-lifecycle.json` log rotation'da `$(wc -c)` tırnaklandı (defensive scripting).
+- **P2: mkdir -p in Stop/Error** — `agent-lifecycle.json` SubagentStop ve SubagentError handler'larına `mkdir -p .github/logs` eklendi. Start olmadan çalışma durumunda log yazma hatası önlendi.
+- **P2: README file tree** — `PROGRESS.md` ve `.github/reviews/` README dosya ağacına eklendi.
+- **P2: Backend API context budget** — `context-loading.instructions.md`'ye Backend API görevinin T2 bütçesini (4 skill) aştığına dair not eklendi.
+- **P3: PROGRESS.md Phase 14** — "Doğrulama bekliyor" stale durumu, v6.2.1 x10 audit sonuçlarıyla güncellendi (7/7 tutarlılık + 53/57 doküman doğruluğu).
+
+---
+
+## [6.2.1] — 2026-03-19
+
+### Fixed
+
+- **P0: Single-quote shell bug** — `agent-lifecycle.json` ve `safety-guard.json` içindeki 5 log echo ifadesi tek tırnak kullandığı için `${COPILOT_AGENT}` ve `$(date)` expansion yapamıyordu. Tüm log ifadeleri çift tırnağa çevrildi.
+- **P0: Terminal safety guard** — `run_in_terminal` PreToolUse hook'u read-only agent kontrolü yapmıyordu. T2.5/T3/Orchestrator için read-only guard eklendi.
+- **P1: Orchestrator read-only list** — VarolMaksutoglu (Orchestrator) safety-guard read-only listesinde yoktu, eklendi.
+- **P1: 5th review chain step** — `orchestrator.agent.md` review chain'inde "Principal outputs → Submitted to Orchestrator (final report)" adımı eksikti, eklendi.
+- **P1: Hook minimum stale** — `system-validation.instructions.md` Rule 2 hook minimum 2'ydi, gerçek değer 4'e güncellendi.
+- **P2: Agent name sanitization** — `review-enforcer.json` ve `agent-lifecycle.json`'da `$COPILOT_AGENT` counter dosya adında sanitize edilmeden kullanılıyordu (path injection riski). `tr -cd 'A-Za-z0-9_-'` ile sanitize edildi.
+- **P2: SubagentError handler** — `review-enforcer.json`'a SubagentError event handler eklendi, crash sonrası stale counter dosyaları temizleniyor.
+- **P2: Dead code removal** — `context-guard.json` PostToolUse PCD invalidation kodu hiçbir zaman çalışmayan dead code'du, kaldırıldı.
+- **P2: Log rotation** — `agent-lifecycle.json` SubagentStart'ta 1MB log rotation eklendi.
+- **P3: Log interleaving** — SubagentStop'ta 2 ayrı echo yerine tek `printf` ile atomic yazma.
+- **P3: Counter cleanup** — SubagentStart'ta önceki oturumdaki stale counter dosyaları temizleniyor.
+- **P3: x2 agent names** — Orchestrator xN tablosunda x2 satırında agent isimleri eksikti, eklendi.
+
+---
+
+## [6.2.0] — 2026-03-19
+
+### Added
+
+- **Hook: review-enforcer.json** — PostToolUse edit sayacı + SubagentStop review chain yönlendirmesi. Her agent'ın edit sayısını takip eder, görev bittiğinde hangi tier'in review yapması gerektiğini otomatik gösterir.
+- **Hook: context-guard.json** — SubagentStart'ta tier bazlı skill/PCD bütçe limitleri gösterimi. Agent'ların context bütçesini aşmasını önler.
+- **Agent identity banner** — `agent-lifecycle.json` SubagentStart'ta insan ismi + tier + rol gösterir. Terminal ekranında agent kimliği artık görünür.
+- **Active plan detection** — `agent-lifecycle.json` SubagentStart'ta `.github/todo/active-plan.md` varlığını kontrol eder.
+- **Session count warning** — `agent-lifecycle.json` session sayısı 20'yi aştığında arşivleme uyarısı verir.
+- Hook otomasyon referansları `shared-base.instructions.md`'e eklendi (Review Protocol, Read-Only Agents, Session Awareness).
+
+### Changed
+
+- **Agent dosya ağacında insan isimleri eklendi** — README.md agent dosya listesinde her dosyanın yanına insan ismi ve rol bilgisi eklendi. Dosya isimleri yapısal tanımlayıcı olarak korundu (VS Code Copilot dosya isimlerini agent çağrı ID'si olarak kullanır).
+- **Agent identity banner** — `agent-lifecycle.json` SubagentStart hook'u terminalde insan ismi + tier + rol banner'ı gösterir. Dosya ismi değişmeden terminal görünürlüğü sağlandı.
+- **safety-guard.json read-only tespiti düzeltildi** — Eski `*analyst*` pattern'i YAML agent isimleriyle (`EmreKilic`, `AyseDemir` vb.) eşleşmiyordu. Artık gerçek YAML isimlerine göre eşleşiyor. 🔴 Kritik güvenlik düzeltmesi.
+- `system-validation.instructions.md` Rule 7 agent tablosuna "Display Name" kolonu eklendi.
+- README.md agent dosya ağacı insan isimleri ve roller ile zenginleştirildi.
+- README.md hook dosya listesi 4 hook'a genişletildi (açıklamalarla).
+- USAGE.md'ye v6.2.0 hook otomasyon dokümantasyonu eklendi.
+- `shared-base.instructions.md`'e hook otomasyon referansları eklendi (Review Protocol, Read-Only Agents, Session Awareness).
+
+---
+
+## [6.1.0] — 2026-03-19
+
+### Fixed
+
+- **Review Chain Contradiction (P1)**: `tier1-principal` ve `tier1-5-staff-engineer` instruction dosyalarında Major findings handling kuralı `shared-base` ile çelişiyordu. Artık tüm dosyalar tutarlı: "Critical → reviewer düzeltir, Major → task owner düzeltir, round 2 sonrası reviewer devralır"
+- **SpotBugs Version Mismatch (P1)**: `pom-quality-plugins.xml.template` SpotBugs versiyonu 4.8.3.0'dan 4.8.6'ya güncellendi (`java-quality-tooling/SKILL.md` ile senkronize)
+- **Stale Config Path (P1)**: `pom-quality-plugins.xml.template` içindeki `project-standards/config` yolu `.github/config` olarak düzeltildi (2 lokasyon)
+- **ADR-001 Token Overhead (P1)**: `applyTo` broadcast davranışı dokümanı v6.0.0 reference/ migration'ını yansıtacak şekilde güncellendi (~30-40K → ~8-12K auto-load)
+- **JaCoCo Exclusion Sync (P1)**: Template ve SKILL arasındaki JaCoCo exclusion listesi uyumsuzluğu giderildi. SKILL kanonik kaynak olarak belirlendi, template senkronize edildi
+
+### Changed
+
+- **Token Overhead Documentation**: `context-loading.instructions.md` ve `task-planning.instructions.md` dosyalarındaki "19 instruction files (~45-55K)" referansları v6.0.0 gerçekliğini yansıtacak şekilde güncellendi ("3 auto-load files (~8-12K)")
+- **ServiceResponse vs ApiResponse Belgeleme (P2)**: `api-integration/SKILL.md` ve `backend-development/SKILL.md`'ye iki wrapper arasındaki farkı açıklayan notlar eklendi (ServiceResponse = internal traceId'li, ApiResponse = frontend contract)
+- **README Gelişim Skoru Tablosu (P2)**: v5.0.0, v6.0.0 ve v6.1.0 sütunları eklendi. Yeni "Konfigürasyon Tutarlılığı" boyutu eklendi
+- **VS Code Settings (P2)**: Mevcut olmayan `.github/prompts/` dizin referansı `settings.json`'dan kaldırıldı
+- **AGENTS.md JSDoc Exception (P3)**: Absolute Prohibitions bölümündeki "No comments" kuralına JSDoc/TSDoc public API interface exception notu eklendi
+- **Orchestrator Protocol (P3)**: `/architect` bypass davranışı eklendi, x2/x4 edge case dağılımları dağıtım tablosuna eklendi
+
+### Notes
+
+- x10 analiz oturumu ile tespit edilen 15 bulgunun tamamı (5 P1 + 5 P2 + 5 P3) düzeltildi
+- Versiyon: README, USAGE, CHANGELOG, PROGRESS tutarlı şekilde v6.1.0'a güncellendi
+
+---
+
+## [6.0.0] — 2026-03-16
+
+### Changed (BREAKING)
+
+- **Agent İsimleri Türkçe İnsan İsimlerine Dönüştürüldü**: Tüm 11 agent dosyası jenerik isimlerden gerçek Türkçe insan isimlerine güncellendi
+  - Orchestrator → Varol Maksutoğlu (Teknik Koordinatör)
+  - PrincipalAlpha → Taner Yılmaz (Baş Yazılım Mimarı)
+  - PrincipalBeta → Oya Kanat (Kıdemli Yazılım Mimarı)
+  - StaffEngineerAlpha → Barış Benli (Kıdemli Yazılım Mühendisi)
+  - StaffEngineerBeta → Tarık Ziya Yeşilçimen (Yazılım Mühendisi)
+  - MidCoderAlpha → Enis Sait Erken (Yazılım Geliştirici)
+  - MidCoderBeta → Selin Akar (Yazılım Geliştirici)
+  - LeadAnalyst → Canan Birsen (Kıdemli Sistem Analisti)
+  - AnalystAlpha → Emre Kılıç (Sistem Analisti)
+  - AnalystBeta → Ayşe Demir (Güvenlik ve Performans Analisti)
+  - AnalystGamma → Elif Özge Maksutoğlu (Test ve Kalite Analisti)
+- **Token Optimizasyonu — Instruction Dosya Yeniden Yapılandırması**: 19 instruction dosyasından 16'sı `.github/instructions/reference/` alt dizinine taşındı
+  - Sadece 3 evrensel dosya üst seviyede kaldı: `shared-base`, `clean-code-standards`, `git-safety`
+  - `.vscode/settings.json` glob pattern'i `".github/instructions/**/*.instructions.md"` → `".github/instructions/*.instructions.md"` olarak değiştirildi
+  - Taşınan dosyalar artık VS Code tarafından otomatik yüklenmez — agent'lar ihtiyaç halinde `reference/` dizininden okur
+  - Tahmini tasarruf: ~30-40K token/oturum (%60-70 instruction overhead azaltımı)
+
+### Changed
+
+- **shared-base.instructions.md**: Agent isim referans tablosu yeni Türkçe isimlerle güncellendi
+- **system-validation.instructions.md**: Kanonik model tablosu yeni agent display isimleriyle güncellendi
+- **agent-performance.md**: Tüm agent isimleri yeni isimlerle güncellendi
+- **token-usage.md**: Tüm agent isimleri yeni isimlerle güncellendi
+- **AGENTS.md**: Instruction dosya yol referansları `reference/` alt dizinine güncellendi
+- **copilot-instructions.md**: Instruction dosya yol referansları `reference/` alt dizinine güncellendi
+- **README.md**: v6.0.0 versiyon güncellemesi, dosya yapısı ağacı, instruction yol referansları, skor evrimi tablosu
+- **USAGE.md**: v6.0.0 versiyon güncellemesi, tüm agent isim tabloları, instruction yol referansları, FAQ bölümü
+- **frontend-development/SKILL.md**: 690 → 490 satıra optimize edildi — tekrarlanan Performance Rules birleştirildi, SEO/a11y birleştirildi, code example'lar kısaltıldı, estimated-tokens 8000 → 6000
+- **implementation/SKILL.md**: DRY ihlalleri giderildi — function rules, Result type, error handling clean-code referansına dönüştürüldü, estimated-tokens 3000 → 2500
+
+### Dosya Özeti
+
+**Taşınan (16):**
+
+- `.github/instructions/` → `.github/instructions/reference/` dizinine `git mv` ile taşınan dosyalar:
+  - `system-validation.instructions.md`, `delegation-rules.instructions.md`, `review-chain.instructions.md`
+  - `context-loading.instructions.md`, `task-planning.instructions.md`, `model-fallback.instructions.md`
+  - `session-memory.instructions.md`, `prompt-enrichment.instructions.md`, `project-context-discovery.instructions.md`
+  - `slash-commands.instructions.md`, `agent-scaffolding.instructions.md`
+  - `tier1-principal.instructions.md`, `tier1-5-staff-engineer.instructions.md`, `tier2-mid.instructions.md`
+  - `tier2-5-lead-analyst.instructions.md`, `tier3-analyst.instructions.md`
+
+**Değiştirilen (20):**
+
+- 11 agent dosyası (`.github/agents/*.agent.md`) — isim, başlık, cross-reference güncellemeleri
+- `.github/instructions/shared-base.instructions.md` — agent isim referansları
+- `.github/instructions/reference/system-validation.instructions.md` — model tablosu
+- `.github/metrics/agent-performance.md` — agent isimleri
+- `.github/metrics/token-usage.md` — agent isimleri
+- `.vscode/settings.json` — glob pattern
+- `AGENTS.md`, `README.md`, `USAGE.md`, `.github/copilot-instructions.md` — yol ve versiyon güncellemeleri
+
+### Notes
+
+- Bu sürüm **geriye dönük uyumsuz** (breaking) — agent YAML `name` alanları değiştiği için mevcut session dosyaları ve slash komut referansları güncellenmeli
+- Agent dosya isimleri (kebab-case) değişmedi — sadece YAML `name` ve içerik güncellendi
+- `reference/` dizinindeki instruction dosyalarının `applyTo: "**"` frontmatter'ı hâlâ mevcut — glob pattern değiştiği için etkisiz, temizlik opsiyonel
+- TASK-001 (Platform Context Overhead Azaltımı) bu sürümle büyük ölçüde çözüldü
+
+---
+
 ## [5.0.0] — 2026-03-05
 
 ### Removed (BREAKING)
@@ -76,7 +307,7 @@ Format [Keep a Changelog](https://keepachangelog.com/) standardına uygundur.
 
 ### Added
 
-- **4 Yeni Skill Dosyası**: `rules/` dizinindeki proje standartları multi-agent sistemine entegre edildi
+- **3 Yeni Skill Dosyası**: `rules/` dizinindeki proje standartları multi-agent sistemine entegre edildi
   - `backend-security/SKILL.md`: Spring Boot güvenlik standartları (SQL injection, XSS, input validation, BCrypt, JWT, rate limiting)
   - `java-quality-tooling/SKILL.md`: Maven kalite araçları (Checkstyle, SpotBugs, JaCoCo, SonarQube konfigürasyonu)
   - `api-integration/SKILL.md`: Frontend-backend entegrasyon kontratı (ApiResponse<T>, pagination, tarih/saat, hata yönetimi, CORS, auth)
@@ -706,7 +937,7 @@ Her oturum sonunda konuşma geçmişi, kararlar ve değişiklikler otomatik kayd
 
 ### Dosya Özeti
 
-**Oluşturulan (12):**
+**Oluşturulan (11):**
 
 - `.github/instructions/model-fallback.instructions.md`
 - `.github/instructions/shared-base.instructions.md`
@@ -847,7 +1078,7 @@ Tüm teknik dosyalar (agent, skill, instruction, prompt, AGENTS.md, copilot-inst
 - **Log dizini düzeltildi**: Hook log çıktıları `.github/hooks/` → `.github/logs/` dizinine taşındı
 - **`.github/logs/.gitkeep` eklendi**: Log dizininin Git'te takip edilmesi sağlandı
 
-### Etkilenen Dosyalar (13)
+### Etkilenen Dosyalar (15)
 
 - `.github/hooks/agent-lifecycle.json`
 - `.github/hooks/safety-guard.json`

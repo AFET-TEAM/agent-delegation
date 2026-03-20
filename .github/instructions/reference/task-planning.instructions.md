@@ -1,7 +1,3 @@
----
-applyTo: "**"
----
-
 # Token-Aware Task Planning
 
 Break tasks into token-budgeted subtasks to enable pause/resume workflows and efficient token usage.
@@ -45,10 +41,10 @@ Estimates in the matrix above are initial baselines. To improve accuracy over ti
 
 The 15K token budget per subtask refers to **work tokens** — the agent's reasoning, tool calls, and output generation. It does **not** include:
 
-- **Platform overhead** (~45–55K tokens): System prompts, 19 instruction files, skill definitions loaded via `applyTo: "**"`.
-- **Context loading**: Session files, active plan, referenced source files.
+- **Platform overhead** (~8–12K tokens): System prompts (~3-7K) + 3 auto-loaded instruction files (~4-5K per `context-loading.instructions.md`) + on-demand skill definitions. _(Pre-v6.0.0: ~45-55K with all 19 instruction files auto-loaded.)_
+- **Context loading**: Session files, active plan, referenced source files, on-demand `reference/` instruction files.
 
-Practical guideline: A subtask budgeted at 15K work tokens may consume 60–70K total tokens when platform context is included. The estimation matrix targets work tokens only.
+Practical guideline: A subtask budgeted at 15K work tokens may consume 25–30K total tokens when platform context is included (post-v6.0.0 optimization). The estimation matrix targets work tokens only.
 
 ## Planning Protocol
 
@@ -93,7 +89,7 @@ TASK-003 → TASK-004, TASK-005
 ### Resume Point
 
 Last completed: TASK-002
-Next up: TASK-003 (assigned to StaffEngineerAlpha)
+Next up: TASK-003 (assigned to BarisBenli)
 Context needed: Read TASK-001 and TASK-002 outputs first
 ```
 

@@ -1,7 +1,3 @@
----
-applyTo: "**"
----
-
 # Review Chain Instructions
 
 ## Review Flow
@@ -103,3 +99,7 @@ In configurations with fewer agents, the standard review chain adapts:
 - Review chain: `T3 → T1 → Orchestrator`
 
 > **Rule**: When a reviewer tier is absent from the configuration, the next available higher tier assumes that review responsibility. The substitute reviewer should apply the absent tier's review checklist from the `code-review` skill.
+
+### x5+ Modes (x5, x7, x10)
+
+All tiers are present — the full standard review chain from the "Review Flow" section applies without adaptation.

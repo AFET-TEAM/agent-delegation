@@ -4,7 +4,8 @@ description: >
   Code review, quality assurance, and review chain management skill.
   Used by Tier 1 (Principal), Tier 1.5 (Staff Engineer), Tier 2 (MidCoder), and Tier 2.5 (Lead Analyst) agents.
   Provides systematic review checklists, code smell detection, and feedback formats.
-estimated-tokens: 2500
+estimated-tokens: 1800
+used-by: [T1, T1.5, T2, T2.5]
 ---
 
 # Code Review Skill
