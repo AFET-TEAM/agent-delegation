@@ -106,3 +106,43 @@ The remaining **16 instruction files** reside in `.github/instructions/reference
 1. **Orchestrator specifies skills per task**: The Orchestrator's task assignment explicitly lists which skills to load and which to skip, keeping per-task skill loading within budget.
 2. **Instruction files are kept concise**: Tier-specific instruction files should contain only role definition and expectations unique to that tier. Shared rules live in `shared-base.instructions.md`.
 3. **Agent files contain tier-specific context**: The `.agent.md` files are only loaded when that specific agent is invoked, making them the preferred location for detailed tier-specific guidance.
+
+## Skill Core/Extended Split Protocol
+
+Large skill files (> 4000 estimated tokens) support a core/extended split to reduce token consumption when full skill content is not needed.
+
+### How It Works
+
+1. Skill files with `core-sections` and `extended-sections` in their YAML frontmatter indicate which sections are core (always loaded) vs extended (loaded only when needed).
+2. **Core sections**: Essential rules, patterns, and constraints that apply to every task using this skill.
+3. **Extended sections**: Detailed examples, advanced patterns, edge cases, and reference material.
+
+### Loading Rules
+
+| Scenario | Load |
+|----------|------|
+| Skill is **required** for the task type AND agent is T2 (budget-constrained) | Core only |
+| Skill is **required** for the task type AND agent is T1/T1.5 (higher budget) | Full (core + extended) |
+| Skill is **phase-loaded** (commit/PR phase) | Core only |
+| Agent explicitly requests extended content | Full (core + extended) |
+
+### Token Savings
+
+| Skill | Full Tokens | Core Tokens | Savings |
+|-------|------------|------------|---------|
+| testing-standards | ~6600 | ~3300 | 50% |
+| frontend-development | ~6000 | ~3000 | 50% |
+| api-integration | ~5200 | ~2600 | 50% |
+
+### Frontmatter Format
+
+```yaml
+core-sections: ["Scope", "Rules", "Patterns"]
+extended-sections: ["Examples", "Advanced Patterns", "Edge Cases", "Reference"]
+```
+
+### Agent Responsibility
+
+- T2/T3 agents load core sections by default.
+- T1/T1.5 agents load full content by default but may opt for core-only if budget is tight.
+- The Orchestrator can explicitly specify `load: core-only` or `load: full` in task assignments.

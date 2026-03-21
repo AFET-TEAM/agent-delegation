@@ -6,6 +6,12 @@ description: >
   and environment configuration for all full-stack tasks.
 used-by: [T1, T1.5, T2]
 estimated-tokens: 5200
+tiers:
+  T1: optional
+  T1.5: optional
+  T2: optional
+core-sections: ["Scope", "Response Format", "HTTP Standards", "Error Handling", "Authentication"]
+extended-sections: ["Pagination Patterns", "File Upload", "WebSocket", "Environment Configuration", "Examples"]
 ---
 
 # API Integration Skill

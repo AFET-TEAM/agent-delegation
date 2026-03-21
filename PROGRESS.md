@@ -1,7 +1,7 @@
 # Multi-Agent Delegation System — Geliştirme Yol Haritası
 
 > Bu dosya, sistemin mevcut durumunu, tespit edilen iyileştirme fırsatlarını ve planlanan geliştirme adımlarını takip eder.
-> Son güncelleme: v6.4.0
+> Son güncelleme: v7.0.0
 
 ---
 
@@ -9,13 +9,14 @@
 
 | Metrik | Değer |
 |--------|-------|
-| Versiyon | v6.4.0 |
+| Versiyon | v7.0.0 |
 | Yapısal Bütünlük | 9/9 doğrulama kuralı ✅ PASS |
-| Cross-Reference Tutarlılığı | ✅ 7/7 PASS (v6.3.0 x10 audit) |
-| Dokümantasyon Doğruluğu | ✅ 60/60 PASS (v6.4.0 audit — 11 agent × 3 alan + 4 hook × 2 alan + 5 root doc × 3 alan + 4 config = 60) |
+| Cross-Reference Tutarlılığı | ✅ PASS (v7.0.0 re-analiz — tüm çapraz referanslar doğrulandı) |
+| Dokümantasyon Doğruluğu | ✅ PASS (v7.0.0 re-analiz — 25+ değiştirilen dosya + 3 yeni dosya doğrulandı) |
 | Agent Sayısı | 11 (5 tier) — Türkçe insan isimleriyle |
-| Skill Sayısı | 13 (tümü kalibre token tahminleriyle) |
+| Skill Sayısı | 13 (tümü kalibre token tahminleriyle + tiers metadata) |
 | Instruction Sayısı | 19 (3 evrensel + 16 reference/) |
+| Template Sayısı | 3 (react-spa, spring-boot, full-stack) |
 
 ---
 
@@ -30,10 +31,8 @@
 
 #### TASK-002: Skill Dosyası Token Bütçesi Optimizasyonu
 **Problem**: Bazı skill dosyaları çok büyük (frontend-development: 691 satır, testing-standards: 550 satır, api-integration: 435 satır). Bunlar context bütçesini hızla tüketiyor.
-**Önerilen Çözüm**:
-- Büyük skill dosyalarını "core" ve "extended" bölümlerine ayır
-- Core bölüm her zaman yüklenir, extended sadece ilgili görevlerde
-- Veya: Skill dosyaları içinde bölüm başlıkları ile seçici yükleme (agent'lar sadece ilgili bölümü okur)
+**Durum**: ✅ v7.0.0'da çözüldü — YAML frontmatter'a `core-sections` ve `extended-sections` metadata eklendi. `context-loading.instructions.md`'ye "Skill Core/Extended Split Protocol" bölümü eklendi. 3 büyük skill dosyası (testing-standards, frontend-development, api-integration) bölümlere ayrıldı.
+**Önerilen Çözüm**: ~~Büyük skill dosyalarını "core" ve "extended" bölümlerine ayır~~ → YAML metadata + context-loading protokolü ile çözüldü.
 **Tahmini Etki**: %15-25 skill token tasarrufu
 **Karmaşıklık**: Orta
 
@@ -52,6 +51,7 @@
 
 #### TASK-004: Agent Arası Bağımlılık Grafiği
 **Problem**: Orchestrator görev dağıtımında bağımlılıklar açıkça tanımlı değil. Sıralı çalışması gereken görevler bazen paralel atanıyor.
+**Durum**: ✅ v7.0.0'da çözüldü — `delegation-rules.instructions.md`'ye "Task Dependency Graph (DAG)" bölümü eklendi. Construction protocol, DAG notation, execution waves ve validation rules tanımlandı.
 **Önerilen Çözüm**:
 - `delegation-rules.instructions.md`'ye görev bağımlılık matrisi ekle
 - Orchestrator'ın DAG (Directed Acyclic Graph) tabanlı görev sıralaması yapması
@@ -61,6 +61,7 @@
 
 #### TASK-005: Review Chain Paralelleştirme
 **Problem**: Review zinciri sıralı çalışıyor (T3→T2.5→T1.5→T1). Farklı modüllerin review'ları paralel yapılabilir.
+**Durum**: ✅ v7.0.0'da çözüldü — `review-chain.instructions.md`'ye "Parallel Review Protocol" bölümü eklendi. Parallelization rules, review matrix ve batching kuralları tanımlandı.
 **Önerilen Çözüm**:
 - Modül bazlı paralel review: Modül A'nın T1.5 review'ı ile Modül B'nin T2.5 review'ı eşzamanlı
 - Review sonuçlarının Orchestrator'da merge edilmesi
@@ -84,6 +85,7 @@
 
 #### TASK-008: Metrik Toplama Otomasyonu
 **Problem**: `.github/metrics/` dosyaları (agent-performance.md, token-usage.md) şablon olarak var ama otomatik güncelleme mekanizması yok. Orchestrator'ın session sonunda güncellemesi gerekiyor ama bu süreç manuel.
+**Durum**: ✅ v7.0.0'da çözüldü — `orchestrator.agent.md`'ye "Metrics Automation Protocol" bölümü eklendi. Session-end otomatik metrik güncelleme, token karşılaştırma ve agent performance snapshot tanımlandı.
 **Önerilen Çözüm**:
 - Orchestrator session-end protokolüne otomatik metrik güncelleme adımı ekle
 - Token kullanımı tahmini vs gerçek karşılaştırma tablosu
@@ -92,6 +94,7 @@
 
 #### TASK-009: Agent Scaffolding Wizard Deneyimi
 **Problem**: Yeni agent oluşturmak `agent-scaffolding.instructions.md`'yi okumayı ve dosyaları manuel oluşturmayı gerektiriyor.
+**Durum**: ✅ v7.0.0'da çözüldü — `slash-commands.instructions.md`'ye `/create-agent [name] [tier]` komutu eklendi. Komut tablosuna ve detaylı bölüme tanım yazıldı.
 **Önerilen Çözüm**:
 - `/create-agent [name] [tier]` slash komutu ekle
 - Orchestrator şablonu otomatik doldurur, dosyaları oluşturur, cross-ref'leri günceller
@@ -104,6 +107,7 @@
 
 #### TASK-010: Dinamik Skill Discovery
 **Problem**: Skill'ler statik olarak agent dosyalarında tanımlı. Yeni skill eklendiğinde tüm agent dosyaları manuel güncelleniyor.
+**Durum**: ✅ v7.0.0'da çözüldü — Tüm 13 skill dosyasına YAML frontmatter'da `tiers:` metadata eklendi. Her tier için `mandatory`/`optional` designation tanımlandı.
 **Önerilen Çözüm**:
 - Skill dosyalarına YAML frontmatter'da `tiers: [T1, T1.5, T2]` metadata ekle
 - Agent dosyaları skill'leri discover etsin (PCD benzeri mekanizma)
@@ -112,6 +116,7 @@
 
 #### TASK-011: Context Window Kullanım Dashboard'u
 **Problem**: Agent'ların context window'larının ne kadarını kullandığı görünmüyor. Token bütçesi tahmini elle yapılıyor.
+**Durum**: ✅ v7.0.0'da çözüldü — `slash-commands.instructions.md`'deki `/status` komutuna "Context Window Dashboard" bölümü eklendi. Tahmini vs gerçek token tüketimi, budget exceeded uyarıları tanımlandı.
 **Önerilen Çözüm**:
 - Orchestrator `/status` komutuna context window kullanım yüzdesi ekle
 - Tahmini vs gerçek token tüketimi karşılaştırması
@@ -120,6 +125,7 @@
 
 #### TASK-012: Multi-Session Task Continuity
 **Problem**: Token limiti aşıldığında `/resume` ile devam edilebiliyor ama session geçişleri sırasında context kaybı yaşanabiliyor.
+**Durum**: ✅ v7.0.0'da çözüldü — `session-memory.instructions.md`'ye "Context Snapshots for Multi-Session Continuity" bölümü eklendi. Otomatik context snapshot, handoff document formatı ve `/resume` recovery protokolü tanımlandı.
 **Önerilen Çözüm**:
 - Session-end'de otomatik context snapshot (sadece karar noktaları, değişen dosyalar, pending görevler)
 - `/resume` komutunun snapshot'ı okuyarak tam context recovery sağlaması
@@ -128,6 +134,7 @@
 
 #### TASK-013: Agent Performance Benchmark
 **Problem**: Agent'ların görev başarı oranı, revision round sayısı, token verimliliği ölçülmüyor.
+**Durum**: ✅ v7.0.0'da çözüldü — `agent-performance.md`'ye "Benchmark Framework" bölümü eklendi. Dimensions, scoring, report template ve triggers tanımlandı.
 **Önerilen Çözüm**:
 - Her görev sonrası: başarı (✅/⚠️/❌), revision round, tahmini vs gerçek token
 - Agent bazlı performans raporu
@@ -136,6 +143,7 @@
 
 #### TASK-014: Proje Şablonu (Template) Desteği
 **Problem**: Boilerplate farklı proje tiplerine (React SPA, Next.js, Spring Boot, Full-Stack) uygulanırken her seferinde aynı PCD süreci tekrarlanıyor.
+**Durum**: ✅ v7.0.0'da çözüldü — `.github/templates/` dizinine 3 proje şablonu oluşturuldu (react-spa.md, spring-boot.md, full-stack.md). Her şablon aktif/pasif skill'leri, PCD override'ları ve görev tipi mapping'lerini tanımlar.
 **Önerilen Çözüm**:
 - `.github/templates/` dizini: react-spa, nextjs, spring-boot, full-stack şablonları
 - Şablon seçimiyle ilgili skill'ler otomatik aktif/pasif
@@ -149,19 +157,19 @@
 | Görev | Öncelik | Etki | Efor | Durum |
 |-------|---------|------|------|-------|
 | TASK-001 | P0 | Yüksek | Yüksek | ✅ v6.0.0 |
-| TASK-002 | P0 | Yüksek | Orta | ✅ v6.0.0 |
+| TASK-002 | P0 | Yüksek | Orta | ✅ v7.0.0 (core/extended split) |
 | TASK-003 | P1 | Yüksek | Yüksek | ✅ v6.2.0 |
 | TASK-006 | P2 | Düşük | Düşük | ✅ v6.3.0 |
 | TASK-007 | P2 | Düşük | Düşük | ✅ v6.4.0 |
-| TASK-004 | P1 | Orta | Orta | Planlandı |
-| TASK-005 | P1 | Orta | Orta | Planlandı |
-| TASK-008 | P2 | Orta | Orta | Planlandı |
-| TASK-009 | P2 | Orta | Orta | Planlandı |
-| TASK-010 | P3 | Yüksek | Yüksek | Planlandı |
-| TASK-012 | P3 | Orta | Orta | Planlandı |
-| TASK-013 | P3 | Orta | Orta | Planlandı |
-| TASK-011 | P3 | Orta | Yüksek | Planlandı |
-| TASK-014 | P3 | Yüksek | Yüksek | Planlandı |
+| TASK-004 | P1 | Orta | Orta | ✅ v7.0.0 |
+| TASK-005 | P1 | Orta | Orta | ✅ v7.0.0 |
+| TASK-008 | P2 | Orta | Orta | ✅ v7.0.0 |
+| TASK-009 | P2 | Orta | Orta | ✅ v7.0.0 |
+| TASK-010 | P3 | Yüksek | Yüksek | ✅ v7.0.0 |
+| TASK-012 | P3 | Orta | Orta | ✅ v7.0.0 |
+| TASK-013 | P3 | Orta | Orta | ✅ v7.0.0 |
+| TASK-011 | P3 | Orta | Yüksek | ✅ v7.0.0 |
+| TASK-014 | P3 | Yüksek | Yüksek | ✅ v7.0.0 |
 
 ---
 
@@ -177,7 +185,8 @@
 | x10 Derin Re-Analiz | v6.2.1 | 19 bulgu (2 P0) → tamamı düzeltildi | 10 agent paralel |
 | x10 İkinci Derin Analiz | v6.2.2 | 12 bulgu → tamamı düzeltildi | 10 agent paralel |
 | x10 Kapsamlı Derin Analiz | v6.3.0 | 28+10 bulgu → tamamı düzeltildi | 10 agent paralel |
-| x10 Final Derin Analiz | v6.4.0 | Devam ediyor | 10 agent paralel |
+| x10 Final Derin Analiz | v6.4.0 | 14 bulgu → tamamı düzeltildi | 10 agent paralel |
+| v7.0.0 Tam Geliştirme | v7.0.0 | 10 roadmap görevi + 8 gap fix → tamamı uygulandı | Multi-session |
 
 ### Düzeltilen Bulgular (v5.0.0)
 

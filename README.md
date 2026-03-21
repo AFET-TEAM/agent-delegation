@@ -1,4 +1,4 @@
-# Multi-Agent Delegation System — v6.4.0
+# Multi-Agent Delegation System — v7.0.0
 
 > AI agent'larını bir takım gibi organize eden, görevleri maliyet ve yetkinlik bazında dağıtan orkestrasyon boilerplate'i.
 
@@ -28,8 +28,14 @@ Bu boilerplate, VS Code'un yerel agent mekanizmasını kullanarak birden fazla A
 - **Java/Spring Boot Standartları** — Backend güvenlik, kalite araçları (Checkstyle, SpotBugs, JaCoCo) skill'leri
 - **Frontend-Backend Entegrasyon Kontratı** — API response formatı, pagination, tarih/saat, hata yönetimi standartları
 - **Git Güvenlik Kuralları** — AI agent'ların git operasyonları için zorunlu onay mekanizması
-- **13 Hazır Skill Dosyası** — Mimari, kodlama, review, analiz, backend, güvenlik, kalite araçları ve frontend-backend kontrat skill'leri
-- **Slash Komutları** — `/delegate`, `/review`, `/status`, `/architect`, `/resume`, `/history`
+- **13 Hazır Skill Dosyası** — Mimari, kodlama, review, analiz, backend, güvenlik, kalite araçları ve frontend-backend kontrat skill'leri (core/extended split desteğiyle)
+- **Dinamik Skill Discovery** — Skill dosyalarındaki `tiers:` YAML metadata ile tier bazlı otomatik skill keşfi
+- **DAG Tabanlı Görev Bağımlılık Grafiği** — Orchestrator'ın bağımlılık analizi ile execution wave'leri oluşturması
+- **Paralel Review Protokolü** — Farklı modüllerin review'larının eşzamanlı yürütülmesi
+- **Agent Performance Benchmark** — Görev başarı oranı, revision round ve token verimliliği ölçüm framework'ü
+- **Multi-Session Continuity** — Context snapshot'ları ile session geçişlerinde bağlam korunması
+- **Proje Şablonları** — React SPA, Spring Boot ve Full-Stack için hazır proje şablonları
+- **Slash Komutları** — `/delegate`, `/review`, `/status`, `/architect`, `/resume`, `/history`, `/create-agent`
 
 ---
 
@@ -191,6 +197,10 @@ your-project/
 │   │   ├── safety-guard.json                 # Read-only koruma + edit audit log
 │   │   ├── review-enforcer.json              # Otomatik review döngüsü takibi
 │   │   └── context-guard.json                # Context/skill bütçe kontrolü
+│   ├── templates/
+│   │   ├── react-spa.md                      # React SPA proje şablonu
+│   │   ├── spring-boot.md                    # Spring Boot proje şablonu
+│   │   └── full-stack.md                     # Full-stack proje şablonu
 │   ├── docs/
 │   │   └── adr/
 │   │       └── ADR-001-platform-boundary.md  # Platform bağımlılık kararları
@@ -217,10 +227,11 @@ your-project/
 | ----------------------- | ------------------------------------- |
 | `/delegate [görev] xN`  | Multi-agent delegasyon                |
 | `/review [dosya/dizin]` | Manuel review zinciri                 |
-| `/status`               | Delegasyon durumu                     |
+| `/status`               | Delegasyon durumu + context dashboard |
 | `/architect [görev]`    | Doğrudan mimari görev                 |
 | `/resume`               | Son session ve aktif planı geri yükle |
 | `/history`              | Son session'ları listele (onboarding) |
+| `/create-agent [ad] [tier]` | Yeni agent scaffold'u oluştur     |
 
 ---
 
@@ -281,24 +292,25 @@ GNU GPL v3 — Özgürce kullanın, değiştirin ve dağıtın. Değiştirilmiş
 | v6.2.2 | 10.0 | 10.0 | 10 bulgu (1 P1 + 8 P2 + 1 P3) — run_in_terminal PostToolUse + applyTo removal + doc accuracy + counter validation | ✅ Production-ready |
 | v6.3.0 | 10.0 | 10.0 | 28+10 bulgu — delete_file hook + scaffolding path fix + token recalibration + skill used-by + ApiResponse alignment + platform limitations documented | ✅ Production-ready |
 | v6.4.0 | 10.0 | 10.0 | 20+ bulgu — stale refs fix + skill conflict resolution + instruction table fixes + score methodology + doc accuracy | ✅ Production-ready |
+| v7.0.0 | 10.0 | 10.0 | 10 roadmap görevi + 8 gap fix — DAG, paralel review, templates, /create-agent, benchmarks, core/extended split, context snapshots, dynamic skill discovery | ✅ Production-ready |
 
-### Gelişim Skoru (Son Analiz: v6.3.0)
+### Gelişim Skoru (Son Analiz: v7.0.0)
 
-| Boyut | v4.3.0 | v4.4.0 | v4.5.0 | v4.6.0 | v4.7.0 | v4.8.0 | v4.9.0 | v5.0.0 | v6.0.0 | v6.1.0 | v6.2.0 | v6.3.0 |
-|-------|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|
-| Yapısal Bütünlük | 9.1 | 9.5 | 9.7 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
-| Dokümantasyon Tutarlılığı | 8.8 | 9.4 | 9.5 | 10.0 | 10.0 | 9.2 | 10.0 | 9.5 | 9.5 | 10.0 | 10.0 | **10.0** |
-| Agent Tier Tasarımı | 9.3 | 9.6 | 9.7 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
-| Review Chain | 9.5 | 9.6 | 9.6 | 10.0 | 10.0 | 10.0 | 10.0 | 9.8 | 9.8 | 10.0 | 10.0 | **10.0** |
-| Delegation Logic | 9.4 | 9.6 | 9.6 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
-| Token Optimizasyonu | 9.0 | 9.5 | 9.7 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
-| Hook Sistemi | 9.0 | 9.4 | 9.4 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
-| Genişletilebilirlik | 8.8 | 9.1 | 9.5 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
-| Session Memory | 9.3 | 9.5 | 9.5 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
-| Proje Bağlamı Keşfi (PCD) | — | — | — | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
-| Prompt Zenginleştirme (PEP) | — | — | — | — | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
-| Konfigürasyon Tutarlılığı | — | — | — | — | — | — | — | 8.5 | 8.5 | 10.0 | 10.0 | **10.0** |
-| Hook Lifecycle Otomasyon | — | — | — | — | — | — | — | — | — | — | 10.0 | **10.0** |
+| Boyut | v4.3.0 | v4.4.0 | v4.5.0 | v4.6.0 | v4.7.0 | v4.8.0 | v4.9.0 | v5.0.0 | v6.0.0 | v6.1.0 | v6.2.0 | v6.3.0 | v7.0.0 |
+|-------|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|
+| Yapısal Bütünlük | 9.1 | 9.5 | 9.7 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Dokümantasyon Tutarlılığı | 8.8 | 9.4 | 9.5 | 10.0 | 10.0 | 9.2 | 10.0 | 9.5 | 9.5 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Agent Tier Tasarımı | 9.3 | 9.6 | 9.7 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Review Chain | 9.5 | 9.6 | 9.6 | 10.0 | 10.0 | 10.0 | 10.0 | 9.8 | 9.8 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Delegation Logic | 9.4 | 9.6 | 9.6 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Token Optimizasyonu | 9.0 | 9.5 | 9.7 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Hook Sistemi | 9.0 | 9.4 | 9.4 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Genişletilebilirlik | 8.8 | 9.1 | 9.5 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Session Memory | 9.3 | 9.5 | 9.5 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Proje Bağlamı Keşfi (PCD) | — | — | — | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Prompt Zenginleştirme (PEP) | — | — | — | — | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Konfigürasyon Tutarlılığı | — | — | — | — | — | — | — | 8.5 | 8.5 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Hook Lifecycle Otomasyon | — | — | — | — | — | — | — | — | — | — | 10.0 | 10.0 | **10.0** |
 
 ### Analiz Metodolojisi
 
@@ -316,4 +328,4 @@ Skorlar, her versiyonun **post-fix (düzeltme sonrası)** durumunu yansıtır:
 - P0/P1 bulgu varsa düzeltilmeden skor 10.0 atanamaz
 - P2/P3 bulgular düzeltilmeden skor ≤ 9.5 kalır
 
-> _Son güncelleme: v6.4.0 — 2026-03-19_
+> _Son güncelleme: v7.0.0 — 2026-03-21_

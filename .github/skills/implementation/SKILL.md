@@ -6,6 +6,10 @@ description: >
   Provides guidance on coding standards, patterns, error handling, and testing.
 estimated-tokens: 2500
 used-by: [T1, T1.5, T2]
+tiers:
+  T1: optional
+  T1.5: mandatory
+  T2: mandatory
 ---
 
 # Implementation Skill

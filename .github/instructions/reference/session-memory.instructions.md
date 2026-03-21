@@ -144,3 +144,68 @@ When a new developer starts working:
 2. Read `.github/todo/active-plan.md` — ongoing work status.
 3. Read `AGENTS.md` — system rules and conventions.
 4. The system provides a coherent picture of where the project stands.
+
+---
+
+## Context Snapshots for Multi-Session Continuity
+
+When a task spans multiple sessions (due to token limits or interruptions), context snapshots preserve the critical state needed to resume seamlessly.
+
+### When to Create Snapshots
+
+1. **Token budget warning**: When the Orchestrator detects token budget approaching the limit.
+2. **Session interruption**: When a session ends with incomplete tasks.
+3. **Explicit save**: When the user requests `/resume` preparation.
+
+### Snapshot Format
+
+Snapshots are appended to the active session file under a dedicated section:
+
+```markdown
+## Context Snapshot
+
+**Snapshot Time**: {ISO timestamp}
+**Reason**: token-limit | interruption | explicit-save
+
+### Active Agent States
+
+| Agent | Task | Progress | Key Decisions Made | Pending Actions |
+| ----- | ---- | -------- | ----------------- | -------------- |
+| ...   | ...  | 70%      | {list}            | {list}         |
+
+### File Ownership Map
+
+| File Path | Owner Agent | Status |
+| --------- | ----------- | ------ |
+| ...       | ...         | editing / completed / pending-review |
+
+### Critical Context
+
+{2-5 bullet points of information that the next session MUST know to continue correctly}
+
+### Dependency State
+
+{Current state of the task DAG — which tasks completed, which are in progress, which are blocked}
+
+### Resume Instructions
+
+1. Load this snapshot.
+2. Start with: {specific next action}.
+3. Context files to read first: {list of files}.
+```
+
+### Snapshot Recovery Protocol
+
+When `/resume` is invoked and a snapshot exists:
+
+1. Read the most recent snapshot from the active session file.
+2. Reconstruct the agent state from the snapshot.
+3. Validate that file states match (check if files were modified externally since snapshot).
+4. If external modifications detected, flag them to the user before proceeding.
+5. Resume from the documented next action.
+
+### Snapshot Retention
+
+- Only the **most recent snapshot per session** is kept.
+- When a session completes successfully, the snapshot section is removed (the final session summary replaces it).
+- Snapshots in archived sessions are preserved for audit purposes.

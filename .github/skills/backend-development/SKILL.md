@@ -6,6 +6,10 @@ description: >
   authentication, and server-side standards for all backend coding tasks.
 used-by: [T1, T1.5, T2]
 estimated-tokens: 4800
+tiers:
+  T1: optional
+  T1.5: optional
+  T2: optional
 ---
 
 # Backend Development Skill

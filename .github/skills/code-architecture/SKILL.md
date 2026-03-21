@@ -6,6 +6,8 @@ description: >
   scalability, and developer experience.
 estimated-tokens: 2000
 used-by: [T1]
+tiers:
+  T1: mandatory
 ---
 
 # Code Architecture Skill

@@ -6,6 +6,11 @@ description: >
   Enforces SOLID, DRY, KISS, YAGNI, and strict code hygiene rules.
 estimated-tokens: 2700
 used-by: [T1, T1.5, T2, T2.5]
+tiers:
+  T1: mandatory
+  T1.5: mandatory
+  T2: mandatory
+  T2.5: mandatory
 ---
 
 # Clean Code Skill
