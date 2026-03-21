@@ -8,6 +8,12 @@ description: >
   optimization, and Ant Design best practices.
 estimated-tokens: 6000
 used-by: [T1, T1.5, T2]
+tiers:
+  T1: optional
+  T1.5: optional
+  T2: optional
+core-sections: ["Scope", "Component Architecture", "State Management", "Hooks Rules", "Ant Design Standards"]
+extended-sections: ["Performance Optimization", "Advanced Patterns", "Micro-Frontend Integration", "Examples"]
 ---
 
 # Frontend Development Skill

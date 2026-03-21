@@ -6,6 +6,11 @@ description: >
   Provides systematic review checklists, code smell detection, and feedback formats.
 estimated-tokens: 1800
 used-by: [T1, T1.5, T2, T2.5]
+tiers:
+  T1: mandatory
+  T1.5: optional
+  T2: optional
+  T2.5: mandatory
 ---
 
 # Code Review Skill

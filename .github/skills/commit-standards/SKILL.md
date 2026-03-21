@@ -6,6 +6,10 @@ description: >
   version control practices across the team.
 estimated-tokens: 2000
 used-by: [T1, T1.5, T2]
+tiers:
+  T1: mandatory
+  T1.5: mandatory
+  T2: mandatory
 ---
 
 # Commit Standards Skill
@@ -22,9 +26,9 @@ Every commit must follow these standards — non-compliant commits are rejected.
 | Type         | Usage                                                         |
 | ------------ | ------------------------------------------------------------- |
 | `feat`       | New feature added                                             |
-| `feat!!`     | Critical feature or development requiring special attention   |
+| `feat!`      | Breaking change (Conventional Commits standard `!` suffix)    |
 | `fix`        | Bug fix (include repro steps, expected vs actual)             |
-| `add`        | Non-feature addition to existing code                         |
+| `add`        | Non-feature addition to existing code (project extension)     |
 | `refactor`   | Code restructuring without behavior change                    |
 | `redesign`   | UI/UX revision                                                |
 | `style`      | Minor formatting/punctuation changes (no logic change)        |

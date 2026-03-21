@@ -1,7 +1,7 @@
 {
   "chat.agentFilesLocations": [".github/agents"],
-  "chat.promptFilesLocations": [".github/prompts"],
-  "chat.instructionFilesPattern": ".github/instructions/**/*.instructions.md",
+
+  "chat.instructionFilesPattern": ".github/instructions/*.instructions.md",
   "files.exclude": {
     "**/.DS_Store": true,
     "**/node_modules": true
@@ -10,5 +10,14 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.codeActionsOnSave": {
     "source.organizeImports": "explicit"
+  },
+
+  "java.checkstyle.configuration": "${workspaceFolder}/.github/config/checkstyle.xml",
+  "java.checkstyle.version": "10.12.5",
+  "sonarlint.connectedMode.connections.sonarqube": [],
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "java.compile.nullAnalysis.mode": "automatic",
+  "[java]": {
+    "editor.defaultFormatter": "redhat.java"
   }
 }

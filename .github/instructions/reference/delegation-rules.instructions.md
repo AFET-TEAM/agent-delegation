@@ -159,3 +159,49 @@ Standard operation with a single agent (default model — Claude Opus 4.6).
 - Analysis tasks: scope to one concern (e.g., "dependency audit" not "full codebase analysis").
 - Coding tasks: scope to one feature or one module boundary.
 - If estimated token cost exceeds 15K for a sub-task, the Orchestrator must split before assigning.
+
+---
+
+## Task Dependency Graph (DAG)
+
+The Orchestrator constructs a Directed Acyclic Graph (DAG) before dispatching tasks. This ensures correct execution order and maximizes parallelism.
+
+### DAG Construction Protocol
+
+1. **List all sub-tasks** from the decomposed prompt.
+2. **Identify dependencies**: For each sub-task, determine which other sub-tasks must complete first.
+3. **Build the graph**: Each node is a sub-task; each edge represents a "depends-on" relationship.
+4. **Validate acyclicity**: If a cycle is detected, the Orchestrator must restructure tasks to break the cycle.
+5. **Identify parallel groups**: Sub-tasks with no unresolved dependencies can run concurrently.
+
+### DAG Notation
+
+Use the following format in task plans:
+
+```
+TASK-001 (T3, ~3K) → [no dependencies — can start immediately]
+TASK-002 (T3, ~3K) → [no dependencies — can start immediately]
+TASK-003 (T1.5, ~12K) → depends on: TASK-001, TASK-002
+TASK-004 (T2, ~8K) → depends on: TASK-003
+TASK-005 (T1, ~10K) → depends on: TASK-003
+TASK-004, TASK-005 → [parallel group — no mutual dependency]
+```
+
+### Execution Waves
+
+The Orchestrator groups tasks into execution waves based on the DAG:
+
+| Wave | Tasks | Execution Mode | Gate |
+|------|-------|---------------|------|
+| Wave 1 | All root nodes (no dependencies) | Parallel | — |
+| Wave 2 | Tasks whose dependencies completed in Wave 1 | Parallel | Wave 1 complete |
+| Wave 3 | Tasks whose dependencies completed in Wave 2 | Parallel | Wave 2 complete |
+| ... | Continue until all tasks are dispatched | ... | ... |
+
+### DAG Validation Rules
+
+1. **No orphan tasks**: Every task must appear in the graph.
+2. **No cycles**: The graph must be a valid DAG — topological sort must succeed.
+3. **Minimize critical path**: When splitting tasks, prefer splits that reduce the longest dependency chain.
+4. **Review dependencies**: Review tasks implicitly depend on the coding tasks they review (auto-added by Orchestrator).
+5. **Cross-tier dependencies**: Analysis tasks (T3) that feed into coding tasks (T2/T1.5) must complete in an earlier wave.

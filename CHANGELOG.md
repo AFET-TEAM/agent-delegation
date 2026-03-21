@@ -7,6 +7,72 @@ Format [Keep a Changelog](https://keepachangelog.com/) standardına uygundur.
 
 > v6.1.0–v6.4.0: Sürekli kalite denetim döngüsü — aynı gün iteratif olarak yayınlandı.
 
+## [7.0.0] — 2026-03-21
+
+### Added
+
+#### Roadmap Görevleri (10 TASK tamamlandı)
+
+- **TASK-002: Skill Core/Extended Split** — 3 büyük skill dosyasına (testing-standards, frontend-development, api-integration) YAML frontmatter'da `core-sections` ve `extended-sections` metadata eklendi. `context-loading.instructions.md`'ye "Skill Core/Extended Split Protocol" bölümü eklendi. Tahmini %15-25 skill token tasarrufu.
+- **TASK-004: DAG Tabanlı Görev Bağımlılık Grafiği** — `delegation-rules.instructions.md`'ye "Task Dependency Graph (DAG)" bölümü eklendi. Construction protocol, DAG notation, execution waves ve validation rules tanımlandı. Tahmini %20 daha az rework.
+- **TASK-005: Paralel Review Protokolü** — `review-chain.instructions.md`'ye "Parallel Review Protocol" bölümü eklendi. Modül bazlı paralel review, review matrix, batching ve conflict detection kuralları tanımlandı. Tahmini %25 review süre iyileştirmesi.
+- **TASK-008: Metrik Toplama Otomasyonu** — `orchestrator.agent.md`'ye "Metrics Automation Protocol" bölümü eklendi. Session-end otomatik metrik güncelleme, token karşılaştırma ve agent performance snapshot adımları tanımlandı.
+- **TASK-009: /create-agent Komutu** — `slash-commands.instructions.md`'ye `/create-agent [name] [tier]` slash komutu eklendi. Komut tablosuna ve detaylı bölüme tanım yazıldı.
+- **TASK-010: Dinamik Skill Discovery** — Tüm 13 skill dosyasına YAML frontmatter'da `tiers:` metadata eklendi. Her tier için `mandatory`/`optional` designation tanımlandı. Tek kaynak (SKILL.md metadata) → tüm referanslar otomatik.
+- **TASK-011: Context Window Dashboard** — `slash-commands.instructions.md`'deki `/status` komutuna "Context Window Dashboard" bölümü eklendi. Tahmini vs gerçek token tüketimi karşılaştırması ve budget exceeded uyarıları.
+- **TASK-012: Multi-Session Continuity** — `session-memory.instructions.md`'ye "Context Snapshots for Multi-Session Continuity" bölümü eklendi. Otomatik context snapshot, handoff document formatı ve `/resume` recovery protokolü.
+- **TASK-013: Agent Performance Benchmark** — `agent-performance.md`'ye "Benchmark Framework" bölümü eklendi. 5 boyutlu değerlendirme (accuracy, efficiency, autonomy, quality, collaboration), scoring ve report template.
+- **TASK-014: Proje Şablonları** — `.github/templates/` dizini oluşturuldu. 3 proje şablonu: `react-spa.md`, `spring-boot.md`, `full-stack.md`. Her şablon aktif/pasif skill'leri, PCD override'ları ve görev tipi mapping'lerini tanımlar.
+
+### Fixed
+
+#### Konfigürasyon Düzeltmeleri (8 Gap Fix)
+
+- **checkstyle.xml**: `CyclomaticComplexity` modülü eklendi (max=8). `TodoComment` severity `info`→`error`'a yükseltildi, `FIXME`/`HACK`/`XXX` pattern'leri eklendi.
+- **pom-quality-plugins.xml.template**: JaCoCo `check` execution eklendi (%80 line, %70 branch coverage kuralları). Nested XML comment hatası düzeltildi (`<!-- -->` → `~~~ ~~~` marker).
+- **spotbugs-exclude.xml**: Test/Config wildcard pattern'leri (`.*Test.*`, `.*Config.*`) suffix-based ve package-based eşleşmelere sıkılaştırıldı (`.*Test$`, `.*Tests$`, `.*TestCase$`, `.*Config$`, `.*Configuration$`).
+- **safety-guard.json**: `.env`/secrets/credentials/key dosya yolu koruması eklendi (PreToolUse edit hook'a).
+- **tier2-mid.instructions.md**: `console.log` ifadesi "ZERO tolerance" wording'ine güncellendi.
+- **commit-standards/SKILL.md**: `feat!!` → `feat!` düzeltildi (standart Conventional Commits). `add` tipi proje-specific extension olarak belgelendi.
+- **task-planning.instructions.md**: T3 baseline token bütçesi `2K-5K` → `3K-6K` olarak güncellendi.
+- **.vscode/settings.json**: Java tooling ayarları eklendi (Checkstyle config path, SonarLint, null analysis, Java formatter).
+
+### Changed
+
+- **Versiyon**: v6.4.0 → v7.0.0 (README, USAGE, CHANGELOG, PROGRESS)
+- **README.md**: Yeni özellikler (templates, /create-agent, DAG, paralel review, benchmarks, core/extended split, dynamic skill discovery, multi-session continuity), dosya ağacına `templates/` dizini, slash komutlar tablosu güncellendi, skor evrimi tablosuna v7.0.0 sütunu eklendi
+- **USAGE.md**: v7.0.0 versiyon güncellemesi, yeni özellikler dokümantasyonu (templates, /create-agent, context window dashboard, DAG, paralel review, core/extended split, benchmarks, multi-session continuity)
+- **PROGRESS.md**: 10 TASK durumu `Planlandı` → `✅ v7.0.0`, TASK-002 durumu düzeltildi, analiz tablosuna v7.0.0 kaydı eklendi
+
+### Dosya Özeti
+
+**Oluşturulan (3):**
+
+- `.github/templates/react-spa.md`
+- `.github/templates/spring-boot.md`
+- `.github/templates/full-stack.md`
+
+**Değiştirilen (25+):**
+
+- `.github/config/checkstyle.xml` — CyclomaticComplexity + TodoComment
+- `.github/config/pom-quality-plugins.xml.template` — JaCoCo check + nested comment fix
+- `.github/config/spotbugs-exclude.xml` — Pattern tightening
+- `.github/hooks/safety-guard.json` — .env/secrets guard
+- `.github/agents/orchestrator.agent.md` — Metrics Automation Protocol
+- `.github/instructions/reference/delegation-rules.instructions.md` — DAG section
+- `.github/instructions/reference/review-chain.instructions.md` — Parallel Review Protocol
+- `.github/instructions/reference/tier2-mid.instructions.md` — ZERO tolerance
+- `.github/instructions/reference/task-planning.instructions.md` — T3 baseline update
+- `.github/instructions/reference/slash-commands.instructions.md` — /create-agent + context dashboard
+- `.github/instructions/reference/session-memory.instructions.md` — Context Snapshots
+- `.github/instructions/reference/context-loading.instructions.md` — Core/Extended Split Protocol
+- `.github/skills/` (13 dosya) — tiers YAML metadata + core/extended sections (3 dosya)
+- `.github/metrics/agent-performance.md` — Benchmark Framework
+- `.vscode/settings.json` — Java tooling
+- `PROGRESS.md`, `README.md`, `CHANGELOG.md`, `USAGE.md` — versiyon ve dokümantasyon güncellemeleri
+
+---
+
 ## [6.4.0] — 2026-03-19
 
 ### Fixed

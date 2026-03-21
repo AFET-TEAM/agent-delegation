@@ -17,7 +17,7 @@ You are the mid-level developer on the team. Your responsibilities:
 - Function length should not exceed 20 lines, file length should not exceed 250 lines.
 - Pay attention to naming conventions and import ordering.
 - Error handling must always be included.
-- Do not leave unnecessary console.log or debug code.
+- ZERO tolerance for `console.log`, `console.*`, `debugger`, or any debug artifacts in code.
 
 ### Architecture
 

@@ -103,3 +103,37 @@ In configurations with fewer agents, the standard review chain adapts:
 ### x5+ Modes (x5, x7, x10)
 
 All tiers are present — the full standard review chain from the "Review Flow" section applies without adaptation.
+
+---
+
+## Parallel Review Protocol
+
+When multiple agents at the same tier produce independent outputs, their reviews can run in parallel to reduce total review time.
+
+### When to Parallelize
+
+- **x7+ modes**: Multiple Staff Engineers or Analysts produce outputs that are independently reviewable.
+- **Module-isolated tasks**: Outputs that affect different modules/files with no shared dependencies.
+- **Same-tier, different-reviewer not required**: Two T3 outputs can be reviewed by the single T2.5 (Lead Analyst) sequentially, but two T2 outputs can be reviewed by two different T1.5 agents in parallel.
+
+### Parallel Review Rules
+
+1. **Independent outputs only**: Two outputs can be reviewed in parallel only if they do not reference or depend on each other.
+2. **Reviewer availability**: A single reviewer cannot review two outputs simultaneously. Parallel review requires multiple reviewers at the reviewing tier, or outputs queued for sequential review by the same reviewer.
+3. **Conflict detection**: If parallel reviews produce conflicting feedback (e.g., two reviewers suggest incompatible patterns), the Orchestrator escalates to the next higher tier for resolution.
+
+### Parallel Review Matrix
+
+| Mode | T3 Outputs | T3 Reviewer (T2.5) | T2 Outputs | T2 Reviewer (T1.5) | T1.5 Outputs | T1.5 Reviewer (T1) |
+|------|-----------|--------------------|-----------|--------------------|-------------|-------------------|
+| x5   | 1         | 1 (sequential)     | 1         | 1 (sequential)     | 1           | 1 (sequential)    |
+| x7   | 2         | 1 (sequential)     | 1         | 1 of 2 (parallel-capable) | 2     | 1 (sequential)    |
+| x10  | 3         | 1 (sequential)     | 2         | 2 (parallel)       | 2           | 2 (parallel)      |
+
+### Review Batching
+
+When a single reviewer must handle multiple outputs sequentially:
+
+1. **Priority ordering**: Review outputs in dependency order (outputs that others depend on are reviewed first).
+2. **Batch feedback**: If multiple outputs share the same issue, the reviewer notes it once and references it in subsequent reviews.
+3. **Time budget**: Each review should target 3K-8K tokens. If a review exceeds this, the reviewer should flag it as unusually complex.

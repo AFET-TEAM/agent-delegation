@@ -6,6 +6,9 @@ description: >
   outputs, research formats, and risk assessment.
 estimated-tokens: 2500
 used-by: [T2.5, T3]
+tiers:
+  T2.5: mandatory
+  T3: mandatory
 ---
 
 # Analysis Skill

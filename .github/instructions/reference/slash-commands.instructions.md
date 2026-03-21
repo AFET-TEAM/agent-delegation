@@ -10,10 +10,11 @@ When the user's message starts with one of the following commands, route to the 
 |---------|-------------|----------|
 | `/delegate [task] xN` | Orchestrator | Multi-agent delegation |
 | `/review [scope]` | Orchestrator | Review chain trigger |
-| `/status` | Orchestrator | Delegation status report |
+| `/status` | Orchestrator | Delegation status report + context window dashboard |
 | `/architect [task]` | TanerYilmaz | Direct architecture task |
 | `/resume [task-id]` | Orchestrator | Resume previous work |
 | `/history [count]` | Orchestrator | Session history listing |
+| `/create-agent [name]` | Orchestrator | Scaffold a new agent definition |
 
 ---
 
@@ -85,6 +86,15 @@ Show the status of the current multi-agent session.
 | Source | Reviewer | Status   |
 | ------ | -------- | -------- |
 | ...    | ...      | ⏳/✅/⚠️ |
+
+### Context Window Dashboard
+
+| Agent | Tier | Platform Overhead | Skills Loaded | Work Tokens Used | Budget Remaining | Utilization |
+| ----- | ---- | ---------------- | ------------- | --------------- | --------------- | ----------- |
+| ...   | ...  | ~10K             | 3 (~4K)       | 8K              | 7K / 15K       | 53%         |
+
+**Total Session Tokens**: ~{N}K estimated / ~{N}K actual
+**Budget Health**: 🟢 On Track | 🟡 Approaching Limit | 🔴 Over Budget
 
 ### Cost Summary
 
@@ -189,3 +199,53 @@ View past session summaries, decisions, and changes.
 - New developer onboarding — understand what has been done and what's pending.
 - Context recovery — after a break, quickly catch up on project state.
 - Decision audit — review past architectural and technical decisions.
+
+---
+
+## /create-agent — Scaffold New Agent
+
+Create a new agent definition file from the standard template. This command guides the user through agent creation with sensible defaults.
+
+**Usage**:
+```
+/create-agent MehmetYilmaz
+/create-agent MehmetYilmaz --tier T2
+/create-agent MehmetYilmaz --tier T1.5 --skills "clean-code,backend-development"
+```
+
+**Steps**:
+1. Validate the agent name follows PascalCase convention.
+2. Check if an agent with the same name already exists in `.github/agents/`.
+3. Determine the tier (ask if not provided via `--tier`).
+4. Determine the skills (suggest defaults based on tier if not provided via `--skills`).
+5. Generate the agent file using the template from `agent-scaffolding.instructions.md`.
+6. Validate the generated file against the agent definition schema.
+7. Update `orchestrator.agent.md` to include the new agent in the `agents:` list.
+8. Report the created file path and next steps to the user.
+
+**Agent File Template**:
+```markdown
+---
+name: {AgentName}
+description: >
+  {Role description based on tier}
+tools:
+  - {tools based on tier}
+model: "{model based on tier}"
+modelFallback: "{fallback model based on tier}"
+---
+
+# {Agent Display Name} — {Role Title}
+
+{Instructions based on tier reference file}
+```
+
+**Tier Defaults**:
+
+| Tier | Tools | Model | Skills (Default) |
+|------|-------|-------|-----------------|
+| T1   | edit, read, search, agent, fetch | Claude Opus 4.6 | clean-code, code-review, code-architecture |
+| T1.5 | edit, read, search | Claude Sonnet 4.6 | clean-code, implementation, code-review |
+| T2   | edit, read, search | GPT-5.3-Codex | clean-code, implementation |
+| T2.5 | read, search | Gemini 3.1 Pro (Preview) | analysis, code-review |
+| T3   | read, search, fetch | Gemini 3 Flash | analysis |

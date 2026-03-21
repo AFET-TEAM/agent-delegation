@@ -6,6 +6,10 @@ description: >
   Defines quality gates, coverage targets, and IDE setup requirements.
 estimated-tokens: 2400
 used-by: [T1, T1.5, T2]
+tiers:
+  T1: optional
+  T1.5: optional
+  T2: optional
 ---
 
 # Java Quality Tooling Skill

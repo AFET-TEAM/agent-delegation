@@ -5,6 +5,9 @@ description: >
   password hashing, JWT handling, and rate limiting for all backend tasks.
 used-by: [T1, T1.5]
 estimated-tokens: 4700
+tiers:
+  T1: optional
+  T1.5: optional
 ---
 
 # Backend Security Skill

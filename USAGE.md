@@ -1,6 +1,6 @@
 # Multi-Agent Delegation System — Kullanım Kılavuzu
 
-> Versiyon: 6.4.0 | Son Güncelleme: 2026-03-19
+> Versiyon: 7.0.0 | Son Güncelleme: 2026-03-21
 
 ---
 
@@ -15,15 +15,16 @@
 7. [Proje Bağlamı Keşfi (PCD)](#proje-bağlamı-keşfi-pcd)
 8. [Prompt Zenginleştirme Protokolü (PEP)](#prompt-zenginleştirme-protokolü-pep)
 9. [Skill Dosyaları](#skill-dosyaları)
-10. [Maliyet Optimizasyonu](#maliyet-optimizasyonu)
-11. [Özelleştirme](#özelleştirme)
-12. [Model Fallback](#model-fallback)
-13. [Session Memory](#session-memory)
-14. [Çakışma Önleme Mekanizması](#çakışma-önleme-mekanizması)
-15. [Metrik Toplama Sistemi](#metrik-toplama-sistemi)
-16. [Token Optimizasyonu](#token-optimizasyonu)
-17. [Araçlar](#araçlar)
-18. [SSS](#sss)
+10. [Proje Şablonları](#proje-şablonları)
+11. [Maliyet Optimizasyonu](#maliyet-optimizasyonu)
+12. [Özelleştirme](#özelleştirme)
+13. [Model Fallback](#model-fallback)
+14. [Session Memory](#session-memory)
+15. [Çakışma Önleme Mekanizması](#çakışma-önleme-mekanizması)
+16. [Metrik Toplama Sistemi](#metrik-toplama-sistemi)
+17. [Token Optimizasyonu](#token-optimizasyonu)
+18. [Araçlar](#araçlar)
+19. [SSS](#sss)
 
 ---
 
@@ -250,10 +251,11 @@ x3, x5, x7, x10 dışındaki değerler oransal dağılır:
 | ------------ | ------------------------- | --------------------------------------- |
 | `/delegate`  | Multi-agent delegasyon    | `/delegate Auth modülü x7`              |
 | `/review`    | Review zinciri başlat     | `/review src/auth/`                     |
-| `/status`    | Delegasyon durumu         | `/status`                               |
+| `/status`    | Delegasyon durumu + context dashboard | `/status`                     |
 | `/architect` | Doğrudan Principal görevi | `/architect Hexagonal architecture kur` |
 | `/resume`    | Son session'ı geri yükle  | `/resume`                               |
 | `/history`   | Session geçmişi listele   | `/history`                              |
+| `/create-agent` | Yeni agent scaffold'u  | `/create-agent security-auditor t3`     |
 
 ### /delegate
 
@@ -265,7 +267,7 @@ Manuel review zinciri. Belirtilen dosya/dizini veya tüm son çıktıları revie
 
 ### /status
 
-Mevcut oturumun durumunu gösterir — hangi agent ne yapıyor, review durumları, maliyet özeti.
+Mevcut oturumun durumunu gösterir — hangi agent ne yapıyor, review durumları, maliyet özeti. **v7.0.0+**: Context Window Dashboard ile her agent'ın tahmini vs gerçek token tüketimini, bütçe durumunu ve aşım uyarılarını gösterir.
 
 ### /architect
 
@@ -278,6 +280,17 @@ Son session'ın bağlamını ve aktif planı (`active-plan.md`) geri yükler. To
 ### /history
 
 Son 20 session'ı listeler. Yeni bir geliştirici veya uzun aradan sonra projeye dönerken bağlam kazanmak için kullanılır.
+
+### /create-agent
+
+Yeni agent scaffold'u oluşturur. Agent dosyası (.agent.md), instruction dosyası ve gerekli cross-reference güncellemelerini otomatik yapar.
+
+```
+/create-agent security-auditor t3
+/create-agent performance-engineer t1.5
+```
+
+Detaylar: `.github/instructions/reference/slash-commands.instructions.md`
 
 ---
 
@@ -495,6 +508,52 @@ Her tier'ın kendine özgü skill dosyaları vardır:
 - **PR Standards**: 500 satır limiti, PR şablonu, review rehberi, checklist
 - **Testing Standards**: Vitest + RTL, coverage hedefleri, AAA pattern, Storybook gereksinimleri
 
+### Skill Core/Extended Split
+
+> **v7.0.0+** — Büyük skill dosyaları core ve extended bölümlerine ayrılmıştır.
+
+3 büyük skill dosyası (testing-standards, frontend-development, api-integration) YAML frontmatter'da `core-sections` ve `extended-sections` metadata içerir. Agent'lar görev tipine göre:
+
+- **Core bölümleri**: Her zaman yüklenir (temel kurallar, mutlak yasaklar)
+- **Extended bölümleri**: Yalnızca ilgili görevlerde yüklenir (detaylı rehberler, örnekler)
+
+Bu mekanizma `context-loading.instructions.md`'deki "Skill Core/Extended Split Protocol" ile yönetilir.
+
+### Dinamik Skill Discovery
+
+> **v7.0.0+** — Skill dosyaları `tiers:` YAML metadata ile tier uygulanabilirliğini tanımlar.
+
+Her skill dosyasının YAML frontmatter'ında `tiers:` alanı bulunur:
+
+```yaml
+tiers:
+  T1: mandatory
+  T1.5: mandatory
+  T2: optional
+```
+
+Agent'lar hangi skill'lerin kendileri için zorunlu/opsiyonel olduğunu bu metadata'dan keşfeder. Yeni skill eklendiğinde sadece SKILL.md dosyası güncellenir — agent dosyaları otomatik keşif yapar.
+
+---
+
+## Proje Şablonları
+
+> **v7.0.0+** — Farklı proje tipleri için hazır şablonlar `.github/templates/` dizininde bulunur.
+
+Boilerplate'i farklı proje tiplerine uygularken proje şablonları, hangi skill'lerin aktif/pasif olacağını, PCD override'larını ve görev tipi mapping'lerini önceden tanımlar.
+
+### Mevcut Şablonlar
+
+| Şablon | Dosya | Açıklama |
+|--------|-------|----------|
+| React SPA | `.github/templates/react-spa.md` | React tek sayfa uygulamaları — frontend skill'leri aktif, Java skill'leri pasif |
+| Spring Boot | `.github/templates/spring-boot.md` | Java/Spring Boot arka uç — backend + Java skill'leri aktif, frontend skill'leri pasif |
+| Full-Stack | `.github/templates/full-stack.md` | Frontend + Backend — tüm skill'ler aktif |
+
+### Kullanım
+
+Şablon dosyasını okuyarak projenize uygun skill konfigürasyonunu belirleyin. Orchestrator, PCD taraması sırasında şablon dosyalarını da dikkate alır.
+
 ---
 
 ## Maliyet Optimizasyonu
@@ -622,6 +681,19 @@ Her oturum sonunda konuşma geçmişi, alınan kararlar ve yapılan değişiklik
 - `/resume` komutuyla son session ve aktif plan geri yüklenir.
 - `/history` komutuyla son session'lar listelenir.
 
+### Multi-Session Continuity
+
+> **v7.0.0+** — Session geçişlerinde context kaybını önleyen snapshot mekanizması.
+
+Token limiti aşıldığında veya session sonlandığında otomatik context snapshot oluşturulur. Snapshot şunları içerir:
+
+- Alınan karar noktaları
+- Değişen dosya listesi
+- Pending görevler ve bağımlılıkları
+- Devam noktası (resume point)
+
+`/resume` komutu snapshot'ı okuyarak tam context recovery sağlar. Detaylar: `.github/instructions/reference/session-memory.instructions.md`
+
 ---
 
 ## Çakışma Önleme Mekanizması
@@ -647,6 +719,20 @@ Sistem, agent performansını ve token kullanımını sürekli olarak takip eder
 - **Agent Performansı** (`.github/metrics/agent-performance.md`): Tamamlanan/başarısız görev sayıları, ortalama review turları, maliyet dağılımı ve fallback aktivasyonları.
 
 Bu metrikler, Orchestrator tarafından her oturum sonunda otomatik olarak güncellenir.
+
+### Agent Performance Benchmark
+
+> **v7.0.0+** — Agent performansını 5 boyutta değerlendiren framework.
+
+Her agent'ın performansı şu boyutlarda ölçülür:
+
+1. **Accuracy**: Görev gereksinimlerine uyum, review bulgu sayısı
+2. **Efficiency**: Token verimliliği (tahmini vs gerçek), tamamlanma süresi
+3. **Autonomy**: Eskalasyon oranı, bağımsız karar sayısı
+4. **Quality**: Kod kalitesi, test coverage, dokümantasyon
+5. **Collaboration**: Review katkısı, cross-reference doğruluğu
+
+Detaylar: `.github/metrics/agent-performance.md`
 
 ---
 
@@ -731,6 +817,25 @@ Rehber içerikleri:
 Platform bağımlılıkları ve tasarım kararları `.github/docs/adr/` dizininde belgelenir:
 
 - **ADR-001**: VS Code + GitHub Copilot platform sınırları, `applyTo` kısıtlaması, dosya sahipliği konvansiyonu, token bütçesi danışmanlık niteliği
+
+### Görev Bağımlılık Grafiği (DAG)
+
+> **v7.0.0+** — Orchestrator, görevler arası bağımlılıkları DAG (Directed Acyclic Graph) olarak modelleyerek execution wave'leri oluşturur.
+
+DAG, sıralı ve paralel çalışabilecek görevleri belirler:
+- **Wave 1**: Bağımsız görevler (paralel)
+- **Wave 2**: Wave 1'e bağımlı görevler
+- **Wave N**: Önceki wave'lere bağımlı görevler
+
+Detaylar: `.github/instructions/reference/delegation-rules.instructions.md`
+
+### Paralel Review Protokolü
+
+> **v7.0.0+** — Farklı modüllerin review'ları eşzamanlı olarak yürütülebilir.
+
+Aynı tier'daki farklı modül review'ları paralel yapılabilir. Aynı dosyaya dokunan modüller için conflict detection aktiftir.
+
+Detaylar: `.github/instructions/reference/review-chain.instructions.md`
 
 ---
 

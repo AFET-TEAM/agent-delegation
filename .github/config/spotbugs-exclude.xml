@@ -35,16 +35,31 @@
 
     <!-- ==================== TEST CLASSES ==================== -->
     
-    <!-- Test sınıfları analiz dışı -->
+    <!-- Test sınıfları analiz dışı (suffix-based, not substring) -->
     <Match>
-        <Class name="~.*Test.*"/>
+        <Class name="~.*Test$"/>
+    </Match>
+    <Match>
+        <Class name="~.*Tests$"/>
+    </Match>
+    <Match>
+        <Class name="~.*TestCase$"/>
+    </Match>
+    <Match>
+        <Class name="~.*\.test\..*"/>
     </Match>
 
     <!-- ==================== CONFIGURATION CLASSES ==================== -->
     
-    <!-- Spring Configuration sınıfları -->
+    <!-- Spring Configuration sınıfları (package-based + suffix-based) -->
     <Match>
-        <Class name="~.*Config.*"/>
+        <Class name="~.*\.config\..*"/>
+    </Match>
+    <Match>
+        <Class name="~.*Config$"/>
+    </Match>
+    <Match>
+        <Class name="~.*Configuration$"/>
     </Match>
 
     <!-- ==================== SPRING MANAGED BEANS ==================== -->

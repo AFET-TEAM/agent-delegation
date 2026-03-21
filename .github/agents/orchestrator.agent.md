@@ -179,6 +179,25 @@ When all tasks and reviews are completed:
 5. Delegate to a coding agent: write a resume summary so the next session can continue seamlessly.
 6. Check session count — if > 20, delegate archiving protocol from `session-memory.instructions.md`.
 
+### Metrics Automation Protocol
+
+At the end of every multi-agent session, the Orchestrator ensures metrics are updated. This is mandatory, not optional.
+
+#### Auto-Update Checklist
+
+| Metric File | What to Update | Source |
+|-------------|---------------|--------|
+| `token-usage.md` | Add session row: date, mode, agent, estimated tokens, actual tokens, delta | Orchestrator's running tally during session |
+| `agent-performance.md` | Increment task counts, update review round averages, log fallback activations | Task reports from each agent |
+
+#### Update Protocol
+
+1. **Collect data**: As each agent completes a task, the Orchestrator records the agent name, task type, estimated tokens, and actual tokens consumed.
+2. **Calculate deltas**: Compare estimated vs. actual. Flag any deviation > 30%.
+3. **Delegate writes**: At Session End, delegate metric file updates to a T2 agent (single atomic task).
+4. **Validate**: After delegation, read the updated files to confirm correctness.
+5. **Calibration trigger**: If 3+ tasks in a session deviate > 30% from estimates, add a calibration note to `task-planning.instructions.md` suggesting baseline adjustment.
+
 ### Token Budget Awareness
 
 1. Estimate total token cost before starting (use `task-planning.instructions.md` matrix).

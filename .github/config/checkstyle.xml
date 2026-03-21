@@ -205,9 +205,16 @@
         <!-- Array declaration: String[] args (String args[] değil) -->
         <module name="ArrayTypeStyle"/>
         
-        <!-- TODO comment uyarısı -->
+        <!-- TODO/FIXME comment yasak (absolute prohibition) -->
         <module name="TodoComment">
-            <property name="severity" value="info"/>
+            <property name="severity" value="error"/>
+            <property name="format" value="(TODO)|(FIXME)|(HACK)|(XXX)"/>
+        </module>
+        
+        <!-- Cyclomatic Complexity: max 8 -->
+        <module name="CyclomaticComplexity">
+            <property name="max" value="8"/>
+            <property name="severity" value="error"/>
         </module>
         
         <!-- Long literal için L kullan (l değil) -->

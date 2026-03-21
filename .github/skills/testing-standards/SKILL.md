@@ -7,6 +7,12 @@ description: >
   Used by Tier 1 (Principal), Tier 1.5 (Staff Engineer), and Tier 2 (MidCoder) agents.
 estimated-tokens: 6600
 used-by: [T1, T1.5, T2]
+tiers:
+  T1: optional
+  T1.5: optional
+  T2: optional
+core-sections: ["Scope", "Testing Pyramid", "General Rules", "Frontend Testing Standards", "Backend Testing Standards"]
+extended-sections: ["Advanced Patterns", "Mocking Strategy", "Test Data Management", "Performance Testing", "Examples"]
 ---
 
 # Testing Standards Skill

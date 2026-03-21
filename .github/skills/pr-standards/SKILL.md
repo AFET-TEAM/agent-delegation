@@ -6,6 +6,10 @@ description: >
   consistent and reviewable pull requests.
 estimated-tokens: 1400
 used-by: [T1, T1.5, T2]
+tiers:
+  T1: optional
+  T1.5: optional
+  T2: optional
 ---
 
 # PR Standards Skill

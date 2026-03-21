@@ -48,6 +48,31 @@
                 <goal>report</goal>
             </goals>
         </execution>
+        <execution>
+            <id>check</id>
+            <goals>
+                <goal>check</goal>
+            </goals>
+            <configuration>
+                <rules>
+                    <rule>
+                        <element>BUNDLE</element>
+                        <limits>
+                            <limit>
+                                <counter>LINE</counter>
+                                <value>COVEREDRATIO</value>
+                                <minimum>0.80</minimum>
+                            </limit>
+                            <limit>
+                                <counter>BRANCH</counter>
+                                <value>COVEREDRATIO</value>
+                                <minimum>0.70</minimum>
+                            </limit>
+                        </limits>
+                    </rule>
+                </rules>
+            </configuration>
+        </execution>
     </executions>
 </plugin>
 
@@ -140,7 +165,7 @@
         </activation>
         <build>
             <plugins>
-                <!-- Checkstyle Plugin -->
+                ~~~ Checkstyle Plugin ~~~
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-checkstyle-plugin</artifactId>
@@ -163,7 +188,7 @@
                     </executions>
                 </plugin>
                 
-                <!-- SpotBugs Plugin -->
+                ~~~ SpotBugs Plugin ~~~
                 <plugin>
                     <groupId>com.github.spotbugs</groupId>
                     <artifactId>spotbugs-maven-plugin</artifactId>
@@ -184,7 +209,7 @@
                     </executions>
                 </plugin>
                 
-                <!-- JaCoCo Check -->
+                ~~~ JaCoCo Check ~~~
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
@@ -208,10 +233,10 @@
 
 <!--
 <properties>
-    <!-- Quality directory - .github/config klasörünün path'i -->
+    ~~~ Quality directory - .github/config klasorunun path'i ~~~
     <quality.dir>${project.basedir}/.github/config</quality.dir>
     
-    <!-- Quality Tool Versions -->
+    ~~~ Quality Tool Versions ~~~
     <lombok.version>1.18.34</lombok.version>
     <mapstruct.version>1.6.3</mapstruct.version>
 </properties>

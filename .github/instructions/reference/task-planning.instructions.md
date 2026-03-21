@@ -6,7 +6,7 @@ Break tasks into token-budgeted subtasks to enable pause/resume workflows and ef
 
 | Task Type                       | Estimated Tokens | Max Files | Tier    | Confidence |
 | ------------------------------- | ---------------- | --------- | ------- | ---------- |
-| Codebase analysis               | 2K–5K            | 1 report  | T3      | 🟢 High    |
+| Codebase analysis               | 3K–6K            | 1 report  | T3      | 🟢 High    |
 | Dependency audit                | 2K–4K            | 1 report  | T3      | 🟢 High    |
 | Simple coding (utility, config) | 5K–10K           | 1–2 files | T2      | 🟡 Medium  |
 | Component scaffolding           | 8K–15K           | 2–4 files | T2      | 🟡 Medium  |
