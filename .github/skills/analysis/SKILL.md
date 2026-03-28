@@ -29,15 +29,25 @@ This skill is used by Lead Analyst (Tier 2.5) and Analyst (Tier 3) agents for th
 
 ## ⚠️ Core Constraint
 
-> **Analyst agents NEVER edit files.**
-> They operate in read-only mode: `read`, `search`, `fetch` tools are used.
-> When edits are needed, findings are reported to the upper tier.
+> **Analyst agents have scoped write access.**
+> T3 Analysts write to `.github/analysis/raw/` only. T2.5 Lead Analyst writes to `.github/analysis/consolidated/` only.
+> Tools available: `read`, `search`, `fetch`, `edit` (scoped to analysis output directories).
+> Writing to any other directory is prohibited — findings for other directories are reported to the upper tier.
 
 ---
 
 ## Analysis Output Format
 
-Every analysis report is presented in the following structure:
+Every analysis report is presented in the following structure. **T3 Analysts must write this report to `.github/analysis/raw/`** using the file naming convention below.
+
+### File Naming Convention
+
+- **T3 Analyst raw reports**: `.github/analysis/raw/{agent-name}-{topic}.md`
+  - Example: `emre-kilic-dependency-audit.md`, `ayse-demir-security-scan.md`
+- **T2.5 Lead Analyst consolidated reports**: `.github/analysis/consolidated/{topic}-consolidated.md`
+  - Example: `auth-module-consolidated.md`, `dependency-audit-consolidated.md`
+
+### Report Template
 
 ```markdown
 ## Analysis Report — [Topic Title]

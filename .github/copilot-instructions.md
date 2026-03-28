@@ -39,11 +39,12 @@ The user activates multi-agent mode by appending the `xN` parameter to the end o
 
 1. All agents comply with the rules in `AGENTS.md`.
 2. Each agent uses its own skill files.
-3. File editing permission belongs only to Tier 1, Tier 1.5, and Tier 2.
-4. Tier 2.5 and Tier 3 operate in read-only mode.
+3. File editing permission belongs to Tier 1, Tier 1.5, and Tier 2 for application code. Tier 2.5 and Tier 3 have scoped write access to analysis output directories only.
+4. Tier 2.5 writes consolidated reports to `.github/analysis/consolidated/`. Tier 3 writes raw analysis to `.github/analysis/raw/`. Neither tier may edit application code or other system files.
 5. Code quality standard: Principal-level clean code.
-6. **Project Context Discovery (PCD)**: Agents automatically scan the host project's root `README.md`, other `*.md` files, and `docs/` folder. These documents are treated as system context — all development follows project-specific rules. See `reference/project-context-discovery.instructions.md`.
-7. **Prompt Enrichment Protocol (PEP)**: For non-trivial tasks, the Orchestrator asks targeted clarification questions before implementation. This enriches the prompt, produces detailed implementation plans, and reduces rework. See `reference/prompt-enrichment.instructions.md`.
+6. **Model Name Resolution**: When referencing model names, use the canonical model registry at `reference/model-registry.instructions.md` for alias resolution and name normalization.
+7. **Project Context Discovery (PCD)**: Agents automatically scan the host project's root `README.md`, other `*.md` files, and `docs/` folder. These documents are treated as system context — all development follows project-specific rules. See `reference/project-context-discovery.instructions.md`.
+8. **Prompt Enrichment Protocol (PEP)**: For non-trivial tasks, the Orchestrator asks targeted clarification questions before implementation. This enriches the prompt, produces detailed implementation plans, and reduces rework. See `reference/prompt-enrichment.instructions.md`.
 
 ## Model Fallback
 

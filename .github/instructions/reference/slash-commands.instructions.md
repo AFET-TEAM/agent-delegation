@@ -11,7 +11,7 @@ When the user's message starts with one of the following commands, route to the 
 | `/delegate [task] xN` | Orchestrator | Multi-agent delegation |
 | `/review [scope]` | Orchestrator | Review chain trigger |
 | `/status` | Orchestrator | Delegation status report + context window dashboard |
-| `/architect [task]` | TanerYilmaz | Direct architecture task |
+| `/architect [task]` | PrincipalAlpha | Direct architecture task |
 | `/resume [task-id]` | Orchestrator | Resume previous work |
 | `/history [count]` | Orchestrator | Session history listing |
 | `/create-agent [name]` | Orchestrator | Scaffold a new agent definition |
@@ -109,7 +109,7 @@ Show the status of the current multi-agent session.
 
 ## /architect — Direct Architecture Task
 
-Assign an architecture task directly to Taner Yılmaz (TanerYilmaz) without needing the xN parameter.
+Assign an architecture task directly to PrincipalAlpha without needing the xN parameter.
 
 **Usage**:
 ```
@@ -118,7 +118,7 @@ Assign an architecture task directly to Taner Yılmaz (TanerYilmaz) without need
 /architect Refactor the API layer
 ```
 
-> **Orchestrator Bypass**: This command sends tasks directly to Taner Yılmaz (TanerYilmaz), bypassing the Orchestrator. The Orchestrator's delegation overhead is unnecessary when only one Principal-level task is needed. No xN parameter should be used with this command.
+> **Orchestrator Bypass**: This command sends tasks directly to PrincipalAlpha, bypassing the Orchestrator. The Orchestrator's delegation overhead is unnecessary when only one Principal-level task is needed. No xN parameter should be used with this command.
 
 ---
 
@@ -245,7 +245,7 @@ modelFallback: "{fallback model based on tier}"
 | Tier | Tools | Model | Skills (Default) |
 |------|-------|-------|-----------------|
 | T1   | edit, read, search, agent, fetch | Claude Opus 4.6 | clean-code, code-review, code-architecture |
-| T1.5 | edit, read, search | Claude Sonnet 4.6 | clean-code, implementation, code-review |
+| T1.5 | edit, read, search, fetch | Claude Sonnet 4.6 | clean-code, implementation, code-review |
 | T2   | edit, read, search | GPT-5.3-Codex | clean-code, implementation |
-| T2.5 | read, search | Gemini 3.1 Pro (Preview) | analysis, code-review |
-| T3   | read, search, fetch | Gemini 3 Flash | analysis |
+| T2.5 | edit, read, search, fetch | Gemini 3.1 Pro (Preview) | analysis, code-review |
+| T3   | edit, read, search, fetch | Gemini 3 Flash | analysis |

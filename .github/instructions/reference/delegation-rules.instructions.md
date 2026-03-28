@@ -111,15 +111,15 @@ Standard operation with a single agent (default model — Claude Opus 4.6).
 | API endpoint implementation    | Tier 2        | Templated work, medium complexity       |
 | Utility function               | Tier 2        | Simple, repetitive                      |
 | Component scaffolding          | Tier 2        | Boilerplate generation                  |
-| Analyst output review          | Tier 2.5      | Lead Analyst consolidation              |
-| Dependency analysis            | Tier 3        | Research, read-only                     |
-| Codebase mapping               | Tier 3        | Analysis, read-only                     |
+| Analyst output review          | Tier 2.5      | Lead Analyst consolidation (writes to `.github/analysis/consolidated/`) |
+| Dependency analysis            | Tier 3        | Research, writes raw report to `.github/analysis/raw/` |
+| Codebase mapping               | Tier 3        | Analysis, writes raw report to `.github/analysis/raw/` |
 | Document reading/summarizing   | Tier 3        | Low complexity                          |
 | Test scenario generation       | Tier 3        | Analysis-based                          |
 | Performance profiling          | Tier 3        | Research                                |
 | Spring Boot service implementation | Tier 1.5  | Complex domain logic, backend integration   |
 | Spring Boot entity/DTO creation | Tier 2       | Boilerplate-heavy, templated            |
-| Backend security audit         | Tier 3        | Read-only analysis                      |
+| Backend security audit         | Tier 3        | Analysis, writes raw report to `.github/analysis/raw/` |
 | Frontend-backend contract alignment | Tier 2   | Templated, well-documented              |
 | Java quality gate setup        | Tier 2        | Maven plugin configuration              |
 | Code review (Tier 2 output)    | Tier 1.5      | Staff Engineer reviews MidCoder         |
@@ -144,6 +144,23 @@ Standard operation with a single agent (default model — Claude Opus 4.6).
 - In `x5` mode with 1 Principal, all Tier 1 tasks go to that agent.
 - Lead Analyst is always a single agent — no parallel Lead Analysts.
 - Balance workload when assigning tasks to agents within the same tier.
+
+### Merit-Based Display Name Selection
+
+When the Orchestrator assigns display names at session start (Step 0.5), it uses score-weighted random selection from the name pool:
+
+1. **Read scores**: Load cumulative scores from `.github/metrics/leaderboard.md`.
+2. **Calculate weights**: For each name, `weight = max(score + 101, 1)`. This ensures even the lowest-scoring names retain minimal selection probability.
+3. **Apply tier multipliers**: Performance tiers provide additional selection advantage:
+   - **S-Tier** (50+ points): weight x 2.0
+   - **A-Tier** (20-49 points): weight x 1.5
+   - **B-Tier** (0-19 points): weight x 1.0 (baseline)
+   - **C-Tier** (-20 to -1 points): weight x 0.8
+   - **D-Tier** (below -20 points): weight x 0.5
+4. **Select without replacement**: Pick 10 names for 10 agent slots using weighted random selection. Each name can only be used once per session.
+5. **Record selections**: Log name-to-slot assignments in the session file.
+
+See `dynamic-naming.instructions.md` for the full protocol and scoring criteria.
 
 ### Result Collection
 

@@ -1,6 +1,6 @@
 # Multi-Agent Delegation System — Kullanım Kılavuzu
 
-> Versiyon: 7.0.0 | Son Güncelleme: 2026-03-21
+> Versiyon: 7.0.1 | Son Güncelleme: 2026-03-28
 
 ---
 
@@ -105,8 +105,8 @@ MidCoder çıktısı ──review──▶ Staff Engineer ──review──▶ 
 
 | Agent                    | Rol                                   | Tool Erişimi                     |
 | ------------------------ | ------------------------------------- | -------------------------------- |
-| Taner Yılmaz             | Birincil mimari, quality gate, review | edit, search, read, fetch, agent |
-| Oya Kanat                | İkincil mimari (x10 modunda aktif)    | edit, search, read, fetch, agent |
+| PrincipalAlpha           | Birincil mimari, quality gate, review | edit, search, read, fetch, agent |
+| PrincipalBeta            | İkincil mimari (x10 modunda aktif)    | edit, search, read, fetch, agent |
 
 **Ne yapar?**
 
@@ -124,8 +124,8 @@ MidCoder çıktısı ──review──▶ Staff Engineer ──review──▶ 
 
 | Agent                    | Rol                                       | Tool Erişimi              |
 | ------------------------ | ----------------------------------------- | ------------------------- |
-| Barış Benli              | Birincil kodlama, feature implementasyonu | edit, search, read, fetch |
-| Tarık Ziya Yeşilçimen    | İkincil kodlama (x7+ modunda aktif)       | edit, search, read, fetch |
+| StaffEngineerAlpha       | Birincil kodlama, feature implementasyonu | edit, search, read, fetch |
+| StaffEngineerBeta        | İkincil kodlama (x7+ modunda aktif)       | edit, search, read, fetch |
 
 **Ne yapar?**
 
@@ -143,8 +143,8 @@ MidCoder çıktısı ──review──▶ Staff Engineer ──review──▶ 
 
 | Agent                    | Rol                                 | Tool Erişimi       |
 | ------------------------ | ----------------------------------- | ------------------ |
-| Enis Sait Erken          | Birincil basit kodlama              | edit, search, read |
-| Selin Akar               | İkincil kodlama (x10 modunda aktif) | edit, search, read |
+| MidCoderAlpha            | Birincil basit kodlama              | edit, search, read |
+| MidCoderBeta             | İkincil kodlama (x10 modunda aktif) | edit, search, read |
 
 **Ne yapar?**
 
@@ -157,32 +157,33 @@ MidCoder çıktısı ──review──▶ Staff Engineer ──review──▶ 
 - Mimari kararlar almaz (belirsizlikte Staff Engineer veya Principal'a yönlendirir)
 - Dış kaynak erişimi (`fetch` yok)
 
-### Tier 2.5 — Lead Analyst (Gemini 3.1 Pro Preview)
+### Tier 2.5 — Lead Analyst (Gemini 3.1 Pro (Preview))
 
-| Agent                    | Rol                                 | Tool Erişimi        |
-| ------------------------ | ----------------------------------- | ------------------- |
-| Canan Birsen             | Analyst çıktı review, konsolidasyon | read, search, fetch |
+| Agent                    | Rol                                 | Tool Erişimi             |
+| ------------------------ | ----------------------------------- | ------------------------ |
+| LeadAnalyst              | Analyst çıktı review, konsolidasyon | edit, read, search, fetch |
 
 **Ne yapar?**
 
 - Analyst (Tier 3) çıktılarını review eder ve kalite kontrolü yapar
 - Birden fazla Analyst raporunu tek bir tutarlı raporda birleştirir
+- Konsolide raporları `.github/analysis/consolidated/` dizinine yazar
 - Bulguları öncelik sırasına koyar (P0 > P1 > P2)
 - Eksik veya hatalı analizler için düzeltme talep eder (maks 2 tur)
 
 **Ne yapmaz?**
 
-- ❌ ASLA dosya düzenlemez (salt okunur)
+- ❌ ASLA uygulama kodu veya sistem dosyaları düzenlemez (yalnızca `.github/analysis/consolidated/` dizinine yazar)
 - ❌ Alt-agent çalıştıramaz
 - ❌ Kodlama agent'larının kararlarını override edemez
 
 ### Tier 3 — Analyst (Gemini 3 Flash)
 
-| Agent                    | Rol                                     | Tool Erişimi        |
-| ------------------------ | --------------------------------------- | ------------------- |
-| Emre Kılıç               | Kod tabanı analizi, bağımlılık auditi   | read, search, fetch |
-| Ayşe Demir               | Performans analizi, güvenlik auditi     | read, search, fetch |
-| Elif Özge Maksutoğlu     | Test senaryosu üretimi, doküman analizi | read, search, fetch |
+| Agent                    | Rol                                     | Tool Erişimi             |
+| ------------------------ | --------------------------------------- | ------------------------ |
+| AnalystAlpha             | Kod tabanı analizi, bağımlılık auditi   | edit, read, search, fetch |
+| AnalystBeta              | Performans analizi, güvenlik auditi     | edit, read, search, fetch |
+| AnalystGamma             | Test senaryosu üretimi, doküman analizi | edit, read, search, fetch |
 
 **Ne yapar?**
 
@@ -190,10 +191,11 @@ MidCoder çıktısı ──review──▶ Staff Engineer ──review──▶ 
 - Bağımlılık ve güvenlik auditi
 - Doküman okuma ve özetleme
 - Test senaryosu üretimi
+- Ham analiz raporlarını `.github/analysis/raw/` dizinine yazar
 
 **Ne yapmaz?**
 
-- ❌ ASLA dosya düzenlemez (salt okunur)
+- ❌ ASLA uygulama kodu veya sistem dosyaları düzenlemez (yalnızca `.github/analysis/raw/` dizinine yazar)
 - ❌ Alt-agent çalıştıramaz
 
 ---
@@ -271,7 +273,7 @@ Mevcut oturumun durumunu gösterir — hangi agent ne yapıyor, review durumlar�
 
 ### /architect
 
-Orchestrator'ı atlayarak doğrudan Taner Yılmaz'a (Principal) mimari görev atar. Tek başına çözülebilecek mimari işler için idealdir.
+Orchestrator'ı atlayarak doğrudan PrincipalAlpha'ya mimari görev atar. Tek başına çözülebilecek mimari işler için idealdir.
 
 ### /resume
 
@@ -643,6 +645,7 @@ Her agent'ın birincil modeli erişilemez olduğunda otomatik olarak yedek model
 - Agent, fallback'e geçtiğini task raporunda belirtmelidir.
 - Analyst tier'ı için ek fallback: Haiku 4.5 de erişilemezse `auto` modeline düşer.
 - Detaylar: `.github/instructions/reference/model-fallback.instructions.md`
+- Model isim çözümleme ve alias'lar: `.github/instructions/reference/model-registry.instructions.md`
 
 ---
 
@@ -673,11 +676,12 @@ Her oturum sonunda konuşma geçmişi, alınan kararlar ve yapılan değişiklik
 - Yalnızca **Orchestrator** session dosyası oluşturur/düzenler.
 - Diğer agent'lar session dosyalarını **salt okunur** olarak kullanır.
 - **v4.1.0+**: `SubagentStop` hook'u otomatik olarak `.github/logs/agent-activity.log` dosyasına session marker yazar. `.github/logs/` dizini çalışma zamanında hook'lar tarafından otomatik oluşturulur (`mkdir -p`). Bu, Orchestrator'ın açıkça kaydetmediği durumlarda bile oturum izlenebilirliğini sağlar.
-- **v6.2.0+**: 4 hook dosyası döngüsel işlemleri otomatize eder:
+- **v6.2.0+**: 5 hook dosyası döngüsel işlemleri otomatize eder:
   - `agent-lifecycle.json` — Agent kimlik banner'ı (isim + tier + rol), aktif plan kontrolü, session sayısı uyarısı
-  - `safety-guard.json` — Read-only agent koruması (YAML isimlerine göre), edit audit log
+  - `safety-guard.json` — Analyst scoped write koruma (T3→raw/, T2.5→consolidated/), edit audit log
   - `review-enforcer.json` — Edit sayacı takibi, SubagentStop'ta review chain yönlendirmesi
   - `context-guard.json` — Tier bazlı skill/PCD bütçe gösterimi
+  - `post-dev-analysis.json` — >5 edit veya >10 dosya değişikliğinde otomatik T3 analiz tetikleme
 - `/resume` komutuyla son session ve aktif plan geri yüklenir.
 - `/history` komutuyla son session'lar listelenir.
 
@@ -776,10 +780,10 @@ Görevler maksimum **15K token bütçesiyle** alt-görevlere bölünür. Bütçe
 
 Boilerplate bütünlüğünü doğrulamak için `.github/instructions/reference/system-validation.instructions.md` dosyasındaki kurallar kullanılır. Script yerine agent'lar bu kuralları read/search araçlarıyla manuel olarak uygular.
 
-Kontrol edilen 9 kural:
+Kontrol edilen 10 kural:
 
 - **Kural 1 — Versiyon tutarlılığı**: README, USAGE ve CHANGELOG'daki versiyon eşleşmesi
-- **Kural 2 — Dosya sayıları**: Agent, instruction, skill ve hook dosyası minimum sayıları
+- **Kural 2 — Dosya sayıları**: Agent, instruction, skill ve hook dosyası minimum sayıları (instructions ≥ 20)
 - **Kural 3 — Yasak referanslar**: x10 üzeri xN referansları (x12, x15 vb.)
 - **Kural 4 — Code fence kontrolü**: 4+ backtick hataları
 - **Kural 5 — Unicode kontrolü**: Bozuk karakter (U+FFFD) tespiti
@@ -787,6 +791,7 @@ Kontrol edilen 9 kural:
 - **Kural 7 — Model tutarlılığı**: Agent YAML model/modelFallback değerlerinin kanonik tabloyla eşleşmesi
 - **Kural 8 — PCD dosyası**: Project Context Discovery instruction dosyasının varlığı ve gerekli bölümlerin kontrolü
 - **Kural 9 — PEP dosyası**: Prompt Enrichment Protocol instruction dosyasının varlığı ve gerekli bölümlerin kontrolü
+- **Kural 10 — Analiz dizin bütünlüğü**: `.github/analysis/raw/` ve `.github/analysis/consolidated/` dizinlerinin varlığı ve dosya adlandırma kuralları
 
 Doğrulama zamanlaması: Her versiyon bumplanmasından sonra, agent eklenip çıkarıldığında, hook dosyaları değiştirildiğinde ve PCD/PEP dosyaları değiştirildiğinde Orchestrator veya Principal bu kuralları çalıştırır.
 
@@ -817,6 +822,7 @@ Rehber içerikleri:
 Platform bağımlılıkları ve tasarım kararları `.github/docs/adr/` dizininde belgelenir:
 
 - **ADR-001**: VS Code + GitHub Copilot platform sınırları, `applyTo` kısıtlaması, dosya sahipliği konvansiyonu, token bütçesi danışmanlık niteliği
+- **ADR-002**: Analyst katmanlarına (T2.5, T3) kapsamlı yazma izni — analiz çıktılarının dosyaya kalıcı olarak yazılması, token maliyeti optimizasyonu
 
 ### Görev Bağımlılık Grafiği (DAG)
 
@@ -843,7 +849,7 @@ Detaylar: `.github/instructions/reference/review-chain.instructions.md`
 
 ### Q: xN parametresi olmadan da agent'ları kullanabilir miyim?
 
-**A**: Evet. `/architect` komutuyla doğrudan Taner Yılmaz'a (Principal) görev atayabilirsiniz. Veya Copilot Chat'te agent picker'dan istediğiniz agent'ı seçebilirsiniz (Varol Maksutoğlu / Orchestrator `user-invokable: true`).
+**A**: Evet. `/architect` komutuyla doğrudan PrincipalAlpha'ya görev atayabilirsiniz. Veya Copilot Chat'te agent picker'dan istediğiniz agent'ı seçebilirsiniz (Varol Maksutoğlu / Orchestrator `user-invokable: true`).
 
 ### Q: Kaç adet x parametresi verilebilir?
 
@@ -853,9 +859,9 @@ Detaylar: `.github/instructions/reference/review-chain.instructions.md`
 
 **A**: Hayır. `AGENTS.md` kuralları bunu yasaklar. Her agent yalnızca kendisine atanan dosyalar üzerinde çalışır.
 
-### Q: Analyst ve Lead Analyst neden dosya düzenleyemiyor?
+### Q: Analyst ve Lead Analyst neden uygulama kodu düzenleyemiyor?
 
-**A**: Maliyet optimizasyonu ve güvenlik. Gemini 3 Flash ve Gemini 3.1 Pro düşük maliyetli modellerdir, hatalı düzenleme riski daha yüksektir. Bu nedenle salt okunur modda çalışırlar. Analyst çıktıları Lead Analyst tarafından, Lead Analyst çıktıları ise kodlama agent'ları tarafından kullanılır.
+**A**: Maliyet optimizasyonu ve güvenlik. Gemini 3 Flash ve Gemini 3.1 Pro düşük maliyetli modellerdir, hatalı düzenleme riski daha yüksektir. Bu nedenle yalnızca analiz çıktı dizinlerine (`.github/analysis/raw/` ve `.github/analysis/consolidated/`) yazabilirler — uygulama kodu veya sistem dosyaları düzenleyemezler. Analyst ham raporlarını doğrudan dosyaya yazar, Lead Analyst bunları konsolide eder ve kodlama agent'ları bu konsolide raporları okuyarak implementasyona geçer.
 
 ### Q: Review zinciri kaç tur sürer?
 

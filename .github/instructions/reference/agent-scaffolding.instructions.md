@@ -31,8 +31,8 @@ Agent names **must** be kebab-case, matching the pattern `^[a-z][a-z0-9]*(-[a-z0
 | Description | Tier 1 Principal Agent | Tier 1.5 Staff Engineer Agent | Tier 2 MidCoder Agent | Tier 2.5 Lead Analyst Agent | Tier 3 Analyst Agent |
 | Model | Claude Opus 4.6 (copilot) | Claude Sonnet 4.6 (copilot) | GPT-5.3-Codex (copilot) | Gemini 3.1 Pro (Preview) (copilot) | Gemini 3 Flash (copilot) |
 | Fallback | Claude Opus 4.5 (copilot) | Claude Sonnet 4.5 (copilot) | GPT-5.2-Codex (copilot) | Gemini 3.0 Pro (Preview) (copilot) | Claude Haiku 4.5 (copilot) |
-| Tools | edit, search, read, fetch, agent | edit, search, read, fetch | edit, search, read | read, search, fetch | read, search, fetch |
-| Edit Permission | ✅ Yes | ✅ Yes | ✅ Yes | ❌ Read-only | ❌ Read-only |
+| Tools | edit, search, read, fetch, agent | edit, search, read, fetch | edit, search, read | edit, read, search, fetch | edit, read, search, fetch |
+| Edit Permission | ✅ Full | ✅ Full | ✅ Full | ⚠️ Scoped — `.github/analysis/consolidated/` only | ⚠️ Scoped — `.github/analysis/raw/` only |
 | Can Review | ✅ Staff Eng outputs | ✅ MidCoder outputs | Self-review only | ✅ Analyst outputs | ❌ No |
 
 ## 3. Agent File Template
@@ -74,11 +74,11 @@ agents: []
 
 **Tool description values** (use verbatim in the Tool Access section):
 
-| Tool | Write Tiers (T1, T1.5, T2) | Read-only Tiers (T2.5, T3) |
-|------|----------------------------|----------------------------|
-| edit | File creation and editing | N/A |
-| search | Codebase search and navigation | Codebase search and navigation (read-only) |
-| read | File reading | File reading (read-only) |
+| Tool | Write Tiers (T1, T1.5, T2) | Scoped Write Tiers (T2.5, T3) |
+|------|----------------------------|-------------------------------|
+| edit | File creation and editing | Scoped file creation — analysis output directories only |
+| search | Codebase search and navigation | Codebase search and navigation |
+| read | File reading | File reading |
 | fetch | External resource access | External resource access |
 | agent | Running sub-agents (delegation) — T1 only | N/A |
 
@@ -141,7 +141,8 @@ After creating both files, the creating agent **must** complete every applicable
 | Tiers | Rule |
 |-------|------|
 | T1, T1.5, T2 | Only edit files assigned to you by the Orchestrator. Report conflicts rather than editing unowned files. |
-| T2.5, T3 | Read-only access. You can NEVER edit files. Present findings in report format for upper tiers to implement. |
+| T2.5 | Scoped write access — may only write to `.github/analysis/consolidated/`. Never edit application code or other system files. |
+| T3 | Scoped write access — may only write to `.github/analysis/raw/`. Never edit application code or other system files. |
 
 ## 8. Validation Guards
 

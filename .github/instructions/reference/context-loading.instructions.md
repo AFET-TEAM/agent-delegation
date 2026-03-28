@@ -15,6 +15,8 @@ Before reading any skill file, determine the task type:
 | Java Backend | clean-code, backend-development, java-quality-tooling, backend-security | frontend-development, code-architecture, analysis | commit-standards, pr-standards |
 | Architecture | clean-code, code-architecture, code-review, backend-development | implementation, frontend-development, analysis, testing-standards, java-quality-tooling, backend-security | commit-standards, pr-standards |
 | Analysis     | analysis | clean-code, code-architecture, code-review, backend-development, implementation, frontend-development, testing-standards, commit-standards, pr-standards, java-quality-tooling, backend-security | — |
+
+> **Analysis Output Directories**: Analysis task outputs are persisted to `.github/analysis/raw/` (T3 raw reports) and `.github/analysis/consolidated/` (T2.5 consolidated reports). Coding agents read consolidated reports from `.github/analysis/consolidated/` as input for implementation tasks.
 | Review       | code-review, clean-code, commit-standards, pr-standards | code-architecture, frontend-development, backend-development, analysis, implementation, testing-standards, java-quality-tooling, backend-security | — |
 | Testing      | testing-standards, clean-code, implementation | code-architecture, analysis, frontend-development, backend-development, code-review, commit-standards, pr-standards, java-quality-tooling, backend-security | — |
 | PR/Commit    | commit-standards, pr-standards, clean-code, code-review | code-architecture, analysis, frontend-development, backend-development, implementation, testing-standards, java-quality-tooling, backend-security | — |
@@ -53,7 +55,7 @@ If an agent detects it needs more skills than its budget allows:
 When the Orchestrator assigns a task, it specifies which skills to load:
 
 ```markdown
-**Agent**: BarisBenli
+**Agent**: StaffEngineerAlpha
 **Task**: Implement login form component
 **Load Skills**: clean-code, frontend-development, testing-standards
 **Skip Skills**: code-architecture, analysis, commit-standards, pr-standards
@@ -93,7 +95,7 @@ As of v6.0.0, only **3 universal instruction files** auto-load via `applyTo: "**
 - `clean-code-standards.instructions.md` — Mandatory code quality
 - `git-safety.instructions.md` — Git consent protocol
 
-The remaining **16 instruction files** reside in `.github/instructions/reference/` and are **not** auto-loaded. They are loaded on-demand by agents when referenced. This reduces per-session platform overhead from ~45-55K to ~4-5K tokens.
+The remaining **17 instruction files** reside in `.github/instructions/reference/` and are **not** auto-loaded. They are loaded on-demand by agents when referenced. This reduces per-session platform overhead from ~45-55K to ~4-5K tokens.
 
 ### Impact (Post-Migration)
 

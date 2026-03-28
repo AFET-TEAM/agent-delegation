@@ -3,8 +3,9 @@
 ## Review Flow
 
 ```
-Tier 3 (Analyst) → Tier 2.5 (Lead Analyst) reviews
-Tier 2.5 (Lead Analyst) consolidated report → Available to coding agents
+Tier 3 (Analyst) writes raw reports to .github/analysis/raw/
+  → Tier 2.5 (Lead Analyst) reviews and consolidates to .github/analysis/consolidated/
+  → Consolidated reports available to coding agents (file-based handoff)
 Tier 2 (MidCoder) → Tier 1.5 (Staff Engineer) reviews
 Tier 1.5 (Staff Engineer) → Tier 1 (Principal) reviews
 Tier 1 (Principal) → Submits final report to Orchestrator
@@ -23,11 +24,12 @@ Tier 1 (Principal) → Submits final report to Orchestrator
 ### Lead Analyst → Analyst Review
 
 - Does the analysis report format conform to standards?
+- Is the raw report correctly written to `.github/analysis/raw/` with proper naming (`{agent-name}-{topic}.md`)?
 - Are findings backed by source references?
 - Is the confidence level specified?
 - Are recommendations actionable?
 - Is there missing coverage — is the analyzed scope sufficient?
-- Lead Analyst consolidates multiple Analyst reports into a single coherent output.
+- Lead Analyst consolidates multiple Analyst reports into a single coherent output in `.github/analysis/consolidated/`.
 
 ### Staff Engineer → MidCoder Review
 
