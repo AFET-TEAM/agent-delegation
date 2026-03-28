@@ -49,15 +49,26 @@ Every agent presents its output in this format:
 4. 🟡 Minor / 🔵 Suggestion → Feedback only, not a blocker.
 5. Maximum **2 revision rounds** — then upper tier takes over.
 
-## Read-Only Agents (T2.5 Lead Analyst, T3 Analyst, Orchestrator)
+## Analyst Agents — Scoped Write Access (T2.5 Lead Analyst, T3 Analyst)
 
-> **Hook enforced**: `safety-guard.json` logs and warns when read-only agents (EmreKilic, AyseDemir, ElifOzgeMaksutoglu, CananBirsen, VarolMaksutoglu) attempt edit or terminal tool calls. Primary enforcement is the YAML `tools` field (platform-level). The Orchestrator (VarolMaksutoglu) is also read-only — it delegates and coordinates but never edits files directly.
+> **Hook enforced**: `safety-guard.json` allows T2.5/T3 edit operations targeting `.github/analysis/` paths and logs+warns when they attempt edits outside this directory. Primary enforcement is the YAML `tools` field (platform-level) combined with instruction-based scoping.
 
-- **NEVER edit files.** Operate in read-only mode.
-- Present findings in report format — let upper tiers implement changes.
-- Available tools: `read`, `search`, `fetch` only.
+- **T3 Analyst** (AnalystAlpha, AnalystBeta, AnalystGamma): May write to `.github/analysis/raw/` only.
+- **T2.5 Lead Analyst** (LeadAnalyst): May write to `.github/analysis/consolidated/` only.
+- **All other directories**: Read-only. Present findings in report format — let upper tiers implement changes.
+- Available tools: `read`, `search`, `fetch`, `edit` (scoped).
 
-> **Orchestrator exception**: VarolMaksutoglu's tools are `agent`, `read`, `search` (no `edit`, no `fetch`). The Orchestrator delegates all file writes via the `agent` tool. It is read-only by design but has different tools than T2.5/T3.
+### Analysis Output Pipeline
+
+```
+T3 writes raw report → .github/analysis/raw/{agent-name}-{topic}.md
+T2.5 reads raw/, consolidates → .github/analysis/consolidated/{topic}-consolidated.md
+Coding agents read consolidated/ as input for implementation tasks
+```
+
+## Orchestrator — Read-Only Coordinator (VarolMaksutoglu)
+
+> The Orchestrator (VarolMaksutoglu) is read-only — it delegates and coordinates but never edits files directly. Tools: `agent`, `read`, `search` (no `edit`, no `fetch`).
 
 ## Hook System: Known Platform Limitations
 
@@ -82,7 +93,7 @@ Every agent presents its output in this format:
 When the Orchestrator distributes tasks, it **must** specify file ownership for each agent:
 
 ```markdown
-**Agent**: Barış Benli (Staff Engineer Alpha)
+**Agent**: StaffEngineerAlpha [Display Name]
 **Owned Files**: src/auth/login-service.ts, src/auth/login-controller.ts
 **Read-Only Access**: src/shared/types.ts
 ```

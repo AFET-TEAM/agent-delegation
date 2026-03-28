@@ -7,6 +7,92 @@ Format [Keep a Changelog](https://keepachangelog.com/) standardına uygundur.
 
 > v6.1.0–v6.4.0: Sürekli kalite denetim döngüsü — aynı gün iteratif olarak yayınlandı.
 
+## [7.0.1] — 2026-03-28
+
+### Added
+
+#### Dinamik Agent İsimlendirme Sistemi
+
+- **Dynamic Naming Protocol** — `.github/instructions/reference/dynamic-naming.instructions.md` oluşturuldu. Orchestrator Step 0.5 olarak entegre edildi — her oturumda 20 isimlik havuzdan skor-ağırlıklı random seçim ile 10 agent'a display name atanır. Ağırlık formülü: `weight = max(score + 101, 1)`, tier çarpanları (S: 1.5x, A: 1.3x, B: 1.0x, C: 0.7x, D: 0.5x).
+- **Name Pool** — `.github/config/name-pool.md` oluşturuldu. 20 isimlik havuz (10 orijinal + 10 yeni). Performans puanlama sistemi: +5 görev tamamlama, +3 ilk geçiş onayı, -5 başarısızlık, -3 çoklu revizyon. Skor aralığı -100 ile +100.
+- **Leaderboard** — `.github/metrics/leaderboard.md` oluşturuldu. Kümülatif skor takibi, S/A/B/C/D tier sıralaması, oturum geçmişi. Tüm 20 isim varsayılan 0 puanla başlatıldı.
+- **Post-Development Auto-Analysis Hook** — `.github/hooks/post-dev-analysis.json` oluşturuldu. >5 edit veya >10 dosya değişikliği sonrasında otomatik analiz tetikleme. Hook sayısı 4 → 5.
+- **System Validation Rule 11** — `system-validation.instructions.md`'ye "Dynamic Naming System Integrity" kuralı eklendi. Name pool boyutu, skor tutarlılığı, tier ataması, agent dosyaları role-based ID doğrulaması, hook case statement doğrulaması ve Orchestrator Step 0.5 kontrolü. Toplam kural sayısı 10 → 11.
+- **Merit-Based Selection** — `delegation-rules.instructions.md`'ye "Merit-Based Agent Selection" bölümü eklendi. Skor-ağırlıklı seçim algoritması, tier çarpanları ve performans etkisi belgelendi.
+
+### Changed
+
+#### Agent Dosyaları — Role-Based YAML ID Dönüşümü (11 dosya)
+
+- **Tüm 10 non-orchestrator agent dosyası**: İnsan isimli YAML `name` alanları role-based tanımlayıcılara dönüştürüldü. Dynamic naming callout blokları eklendi. Çapraz referanslar güncellendi.
+  - TanerYilmaz → PrincipalAlpha, OyaKanat → PrincipalBeta
+  - BarisBenli → StaffEngineerAlpha, TarikZiyaYesilcimen → StaffEngineerBeta
+  - EnisSaitErken → MidCoderAlpha, SelinAkar → MidCoderBeta
+  - CananBirsen → LeadAnalyst
+  - EmreKilic → AnalystAlpha, AyseDemir → AnalystBeta, ElifOzgeMaksutoglu → AnalystGamma
+- **orchestrator.agent.md**: `agents:` listesi role-based ID'lere güncellendi, xN dağıtım tablosu güncellendi, review chain güncellendi, output format şablonları güncellendi, görev atama örnekleri güncellendi, **Step 0.5 (Dynamic Name Assignment)** eklendi, Session End Protocol'e performans puanlama adımı eklendi.
+
+#### Hook Dosyaları (4 mevcut + 1 yeni = 5 toplam)
+
+- **agent-lifecycle.json**: Tüm `case` ifadeleri role-based ID'lere dönüştürüldü.
+- **context-guard.json**: Tüm `case` ifadeleri role-based ID'lere dönüştürüldü.
+- **review-enforcer.json**: Tüm `case` ifadeleri role-based ID'lere dönüştürüldü.
+- **safety-guard.json**: Tüm `case` ifadeleri role-based ID'lere dönüştürüldü.
+
+#### Instruction Dosyaları (8 dosya güncellendi + 1 yeni = 21 toplam)
+
+- **shared-base.instructions.md**: Agent isim referansları role-based ID'lere güncellendi.
+- **system-validation.instructions.md**: Model tablosu role-based ID'lere güncellendi. Rule 11 eklendi. Kural sayısı 10 → 11.
+- **slash-commands.instructions.md**: Agent referansları role-based ID'lere güncellendi.
+- **context-loading.instructions.md**: Agent referansları güncellendi.
+- **model-fallback.instructions.md**: Agent referansları güncellendi.
+- **task-planning.instructions.md**: Agent referansları güncellendi.
+- **project-context-discovery.instructions.md**: Agent referansları güncellendi.
+- **delegation-rules.instructions.md**: Merit-based selection bölümü eklendi.
+
+#### Metrik Dosyaları (2 dosya + 1 yeni)
+
+- **agent-performance.md**: Tüm agent isimleri role-based ID'lere güncellendi.
+- **token-usage.md**: Tüm agent isimleri role-based ID'lere güncellendi.
+
+#### Dokümantasyon (4 dosya)
+
+- **README.md**: Agent dosya ağacı role-based ID'lere güncellendi. Versiyon v7.0.0 → v7.0.1.
+- **USAGE.md**: Tüm agent tabloları role-based ID'lere güncellendi. Versiyon v7.0.0 → v7.0.1.
+- **PROGRESS.md**: Agent referansları güncellendi, dosya/kural sayıları güncellendi. Versiyon v7.0.0 → v7.0.1.
+- **CHANGELOG.md**: v7.0.0 girişindeki dosya sayıları düzeltildi.
+
+### Dosya Özeti
+
+**Oluşturulan (4):**
+
+- `.github/config/name-pool.md` — 20 isimlik havuz, puanlama sistemi
+- `.github/metrics/leaderboard.md` — Kümülatif skor takibi ve sıralama
+- `.github/instructions/reference/dynamic-naming.instructions.md` — Dinamik isimlendirme protokolü (instruction #21)
+- `.github/hooks/post-dev-analysis.json` — Post-development otomatik analiz hook'u (hook #5)
+
+**Değiştirilen (~30):**
+
+- `.github/agents/` (11 dosya) — Role-based YAML ID dönüşümü, dynamic naming callout
+- `.github/hooks/` (4 dosya) — Role-based case statements
+- `.github/instructions/` (8 dosya) — Agent referansları, Rule 11, merit-based selection
+- `.github/metrics/` (2 dosya) — Agent isim güncellemeleri
+- `README.md`, `USAGE.md`, `PROGRESS.md`, `CHANGELOG.md` — Versiyon ve referans güncellemeleri
+
+### Teknik Detay
+
+- **234+ hardcoded insan ismi referansı** role-based ID'lere migrate edildi.
+- VarolMaksutoglu (Orchestrator) sabit kaldı — diğer 10 agent artık role-based.
+- Eski insan isimleri `name-pool.md`'de havuz üyesi olarak korundu (by-design).
+- CHANGELOG tarihsel girişlerindeki eski isimler korundu (versiyon geçmişi).
+
+### Fixed
+
+- **CHANGELOG.md v7.0.0 dosya sayıları**: Instruction ve hook sayıları düzeltildi.
+- **x10-final-principal-review.md stale referansları**: 22 stale referans düzeltildi, skorlar yeniden hesaplandı.
+
+---
+
 ## [7.0.0] — 2026-03-21
 
 ### Added
@@ -23,6 +109,13 @@ Format [Keep a Changelog](https://keepachangelog.com/) standardına uygundur.
 - **TASK-012: Multi-Session Continuity** — `session-memory.instructions.md`'ye "Context Snapshots for Multi-Session Continuity" bölümü eklendi. Otomatik context snapshot, handoff document formatı ve `/resume` recovery protokolü.
 - **TASK-013: Agent Performance Benchmark** — `agent-performance.md`'ye "Benchmark Framework" bölümü eklendi. 5 boyutlu değerlendirme (accuracy, efficiency, autonomy, quality, collaboration), scoring ve report template.
 - **TASK-014: Proje Şablonları** — `.github/templates/` dizini oluşturuldu. 3 proje şablonu: `react-spa.md`, `spring-boot.md`, `full-stack.md`. Her şablon aktif/pasif skill'leri, PCD override'ları ve görev tipi mapping'lerini tanımlar.
+
+#### Model Registry & Analyst Scoped Write
+
+- **Model Name Registry** — `.github/instructions/reference/model-registry.instructions.md` oluşturuldu. Kanonik model tablosu (10 model), 4 kategori alias çözümleme tablosu, 5 adımlı çözümleme protokolü, YAML↔kanonik dönüşüm kuralları. `AGENTS.md`, `copilot-instructions.md`, `model-fallback.instructions.md` ve `system-validation.instructions.md` dosyalarına çapraz referans eklendi.
+- **Analyst Scoped Write Access** — T3 Analyst (Emre, Ayşe, Elif Özge) ve T2.5 Lead Analyst (Canan) agent'larına `.github/analysis/` dizinine kapsamlı yazma izni verildi. T3 → `.github/analysis/raw/`, T2.5 → `.github/analysis/consolidated/`. Mimari karar kaydı: `ADR-002-analyst-write-permission.md`. `safety-guard.json` kapsamlı yazma enforcement'ı, `context-guard.json` EDIT alanı güncellendi. 4 analyst agent dosyası, `shared-base.instructions.md`, `tier3-analyst.instructions.md`, `tier2-5-lead-analyst.instructions.md` ve 12+ çapraz referans dosyası güncellendi.
+- **Analysis Output Directories** — `.github/analysis/raw/` ve `.github/analysis/consolidated/` dizinleri oluşturuldu. T3 Analyst ham raporları `raw/`'a, T2.5 Lead Analyst konsolide raporları `consolidated/`'a yazılır. Dosya tabanlı handoff mekanizması.
+- **System Validation Rule 10** — `system-validation.instructions.md`'ye "Analysis Directory Integrity" kuralı eklendi. Dizin varlığı, dosya adlandırma kuralları ve uygulama kodu yasağı doğrulaması. Toplam kural sayısı 9 → 10.
 
 ### Fixed
 
@@ -46,13 +139,17 @@ Format [Keep a Changelog](https://keepachangelog.com/) standardına uygundur.
 
 ### Dosya Özeti
 
-**Oluşturulan (3):**
+**Oluşturulan (7):**
 
 - `.github/templates/react-spa.md`
 - `.github/templates/spring-boot.md`
 - `.github/templates/full-stack.md`
+- `.github/instructions/reference/model-registry.instructions.md`
+- `.github/analysis/raw/.gitkeep`
+- `.github/analysis/consolidated/.gitkeep`
+- `.github/docs/adr/ADR-002-analyst-write-permission.md`
 
-**Değiştirilen (25+):**
+**Değiştirilen (30+):**
 
 - `.github/config/checkstyle.xml` — CyclomaticComplexity + TodoComment
 - `.github/config/pom-quality-plugins.xml.template` — JaCoCo check + nested comment fix
@@ -69,6 +166,15 @@ Format [Keep a Changelog](https://keepachangelog.com/) standardına uygundur.
 - `.github/skills/` (13 dosya) — tiers YAML metadata + core/extended sections (3 dosya)
 - `.github/metrics/agent-performance.md` — Benchmark Framework
 - `.vscode/settings.json` — Java tooling
+- `.github/instructions/reference/model-fallback.instructions.md` — model-registry çapraz referans
+- `.github/instructions/reference/system-validation.instructions.md` — Rule 10, model-registry referans
+- `.github/instructions/shared-base.instructions.md` — scoped write access, analysis handoff
+- `.github/instructions/reference/tier3-analyst.instructions.md` — scoped write kuralları
+- `.github/instructions/reference/tier2-5-lead-analyst.instructions.md` — scoped write kuralları
+- `.github/agents/` (4 analyst agent dosyası) — edit tool, analysis dizin erişimi
+- `.github/hooks/safety-guard.json` — scoped write enforcement
+- `.github/hooks/context-guard.json` — EDIT alanı güncelleme
+- `AGENTS.md` — model-registry referans, scoped write kuralları
 - `PROGRESS.md`, `README.md`, `CHANGELOG.md`, `USAGE.md` — versiyon ve dokümantasyon güncellemeleri
 
 ---

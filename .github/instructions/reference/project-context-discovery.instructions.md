@@ -169,7 +169,7 @@ PCD context counts **within** the agent's existing context budget (see `context-
 When assigning tasks with PCD active, the Orchestrator includes project context references:
 
 ```markdown
-**Agent**: BarisBenli
+**Agent**: StaffEngineerAlpha
 **Task**: Implement user authentication
 **Load Skills**: clean-code, backend-development, implementation
 **Project Context**: README.md (Section: Authentication), docs/api-design.md

@@ -11,16 +11,16 @@ Tracks agent success rates, review efficiency, cost distribution, and fallback a
 
 | Agent                    | Tier | Tasks Assigned | Completed | Failed | Avg Review Rounds | Fallback Used |
 | ------------------------ | ---- | -------------- | --------- | ------ | ----------------- | ------------- |
-| Taner Yılmaz             | T1   | 4              | 4         | 0      | —                 | No            |
-| Oya Kanat                | T1   | 4              | 4         | 0      | —                 | No            |
-| Barış Benli              | T1.5 | 4              | 4         | 0      | 1.0               | No            |
-| Tarık Ziya Yeşilçimen    | T1.5 | 3              | 3         | 0      | 1.0               | No            |
-| Enis Sait Erken          | T2   | 3              | 3         | 0      | 1.0               | No            |
-| Selin Akar               | T2   | 3              | 3         | 0      | 1.0               | No            |
-| Canan Birsen             | T2.5 | 4              | 4         | 0      | 1.0               | No            |
-| Emre Kılıç               | T3   | 4              | 4         | 0      | —                 | No            |
-| Ayşe Demir               | T3   | 4              | 4         | 0      | —                 | No            |
-| Elif Özge Maksutoğlu     | T3   | 4              | 4         | 0      | —                 | No            |
+| PrincipalAlpha           | T1   | 4              | 4         | 0      | —                 | No            |
+| PrincipalBeta            | T1   | 4              | 4         | 0      | —                 | No            |
+| StaffEngineerAlpha       | T1.5 | 4              | 4         | 0      | 1.0               | No            |
+| StaffEngineerBeta        | T1.5 | 3              | 3         | 0      | 1.0               | No            |
+| MidCoderAlpha            | T2   | 3              | 3         | 0      | 1.0               | No            |
+| MidCoderBeta             | T2   | 3              | 3         | 0      | 1.0               | No            |
+| LeadAnalyst              | T2.5 | 4              | 4         | 0      | 1.0               | No            |
+| AnalystAlpha             | T3   | 4              | 4         | 0      | —                 | No            |
+| AnalystBeta              | T3   | 4              | 4         | 0      | —                 | No            |
+| AnalystGamma             | T3   | 4              | 4         | 0      | —                 | No            |
 
 ## Cost Distribution
 
@@ -38,7 +38,7 @@ Tracks agent success rates, review efficiency, cost distribution, and fallback a
 | ---------------------------------- | ------------ | ------------------ | ------------------ | -------- |
 | Principal → Staff Engineer         | 4            | 4                  | 0                  | 0        |
 | Staff Engineer → MidCoder          | 4            | 3                  | 1                  | 0        |
-| Canan Birsen → Analyst             | 4            | 3                  | 1                  | 0        |
+| LeadAnalyst → Analyst               | 4            | 3                  | 1                  | 0        |
 
 ## Fallback Activations
 
@@ -49,7 +49,7 @@ _No fallback activations recorded._
 
 ## Recording Instructions
 
-The Orchestrator (Varol Maksutoğlu) updates this file at the end of each multi-agent session:
+The Orchestrator updates this file at the end of each multi-agent session:
 
 1. Increment task counts per agent.
 2. Record review round averages.

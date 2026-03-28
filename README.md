@@ -1,4 +1,4 @@
-# Multi-Agent Delegation System — v7.0.0
+# Multi-Agent Delegation System — v7.0.1
 
 > AI agent'larını bir takım gibi organize eden, görevleri maliyet ve yetkinlik bazında dağıtan orkestrasyon boilerplate'i.
 
@@ -100,9 +100,9 @@ Bu fonksiyonu refactor et
      │Claude││Claude││GPT   ││Gemini││Gemini  │
      │Opus  ││Sonnet││5.3   ││3.1   ││3 Flash │
      │4.6   ││4.6   ││Codex ││Pro   ││        │
-     │      ││      ││      ││      ││ READ   │
-     │WRITE ││WRITE ││WRITE ││ READ ││ ONLY   │
-     │REVIEW││REVIEW││      ││ ONLY ││        │
+     │      ││      ││      ││      ││ SCOPED │
+     │WRITE ││WRITE ││WRITE ││SCOPED││ WRITE  │
+     │REVIEW││REVIEW││      ││WRITE ││        │
      └──────┘└──────┘└──────┘└──────┘└────────┘
        $$$$$   $$$$    $$$     $$       $
 
@@ -131,16 +131,16 @@ your-project/
 │   ├── copilot-instructions.md              # Always-on proje bağlamı
 │   ├── agents/
 │   │   ├── orchestrator.agent.md            # Koordinatör — Varol Maksutoğlu (Claude Opus 4.6)
-│   │   ├── principal-alpha.agent.md         # T1: Baş Yazılım Mimarı — Taner Yılmaz (Claude)
-│   │   ├── principal-beta.agent.md          # T1: Kıdemli Yazılım Mimarı — Oya Kanat (Claude)
-│   │   ├── staff-engineer-alpha.agent.md    # T1.5: Kıdemli Müh. — Barış Benli (Sonnet)
-│   │   ├── staff-engineer-beta.agent.md     # T1.5: Yazılım Müh. — Tarık Ziya Yeşilçimen (Sonnet)
-│   │   ├── mid-coder-alpha.agent.md         # T2: Geliştirici — Enis Sait Erken (GPT-5.3)
-│   │   ├── mid-coder-beta.agent.md          # T2: Geliştirici — Selin Akar (GPT-5.3)
-│   │   ├── lead-analyst.agent.md            # T2.5: Kıdemli Sistem Analisti — Canan Birsen (Gemini Pro)
-│   │   ├── analyst-alpha.agent.md           # T3: Analist — Emre Kılıç (Gemini Flash)
-│   │   ├── analyst-beta.agent.md            # T3: Analist — Ayşe Demir (Gemini Flash)
-│   │   └── analyst-gamma.agent.md           # T3: Analist — Elif Özge Maksutoğlu (Gemini Flash)
+│   │   ├── principal-alpha.agent.md         # T1: Baş Yazılım Mimarı — PrincipalAlpha (Claude)
+│   │   ├── principal-beta.agent.md          # T1: Kıdemli Yazılım Mimarı — PrincipalBeta (Claude)
+│   │   ├── staff-engineer-alpha.agent.md    # T1.5: Kıdemli Müh. — StaffEngineerAlpha (Sonnet)
+│   │   ├── staff-engineer-beta.agent.md     # T1.5: Yazılım Müh. — StaffEngineerBeta (Sonnet)
+│   │   ├── mid-coder-alpha.agent.md         # T2: Geliştirici — MidCoderAlpha (GPT-5.3)
+│   │   ├── mid-coder-beta.agent.md          # T2: Geliştirici — MidCoderBeta (GPT-5.3)
+│   │   ├── lead-analyst.agent.md            # T2.5: Kıdemli Sistem Analisti — LeadAnalyst (Gemini 3.1 Pro (Preview))
+│   │   ├── analyst-alpha.agent.md           # T3: Analist — AnalystAlpha (Gemini Flash)
+│   │   ├── analyst-beta.agent.md            # T3: Analist — AnalystBeta (Gemini Flash)
+│   │   └── analyst-gamma.agent.md           # T3: Analist — AnalystGamma (Gemini Flash)
 │   ├── skills/
 │   │   ├── clean-code/SKILL.md              # Tüm kodlama + T2.5 (awareness): Kod hijyeni
 │   │   ├── code-architecture/SKILL.md       # T1: Mimari rehber
@@ -175,7 +175,9 @@ your-project/
 │   │       ├── agent-scaffolding.instructions.md
 │   │       ├── project-context-discovery.instructions.md
 │   │       ├── prompt-enrichment.instructions.md
-│   │       └── slash-commands.instructions.md
+│   │       ├── model-registry.instructions.md
+│   │       ├── slash-commands.instructions.md
+│   │       └── dynamic-naming.instructions.md
 │   ├── todo/
 │   │   ├── _template.md
 │   │   └── active-plan.md
@@ -183,30 +185,37 @@ your-project/
 │   │   ├── sessions/
 │   │   │   └── _session-template.md
 │   │   └── history/
-│   │       ├── archive.md
-│   │       └── refaktor-v4.0.0.md              # Arşivlenmiş v4.0.0 refaktör notları
+│   │       └── archive.md
 │   ├── config/
 │   │   ├── checkstyle.xml                   # Checkstyle kuralları
 │   │   ├── spotbugs-exclude.xml             # SpotBugs istisnalar
-│   │   └── pom-quality-plugins.xml.template # Maven kalite plugin şablonu
+│   │   ├── pom-quality-plugins.xml.template # Maven kalite plugin şablonu
+│   │   └── name-pool.md                     # 20 isimlik dinamik isimlendirme havuzu
 │   ├── metrics/
 │   │   ├── agent-performance.md             # Agent başarı ve maliyet metrikleri
-│   │   └── token-usage.md                   # Token tüketim kalibrasyon logları
+│   │   ├── token-usage.md                   # Token tüketim kalibrasyon logları
+│   │   └── leaderboard.md                   # Dinamik isimlendirme skor sıralaması
 │   ├── hooks/
 │   │   ├── agent-lifecycle.json              # Agent kimlik banner'ı + session yönetimi
 │   │   ├── safety-guard.json                 # Read-only koruma + edit audit log
 │   │   ├── review-enforcer.json              # Otomatik review döngüsü takibi
-│   │   └── context-guard.json                # Context/skill bütçe kontrolü
+│   │   ├── context-guard.json                # Context/skill bütçe kontrolü
+│   │   └── post-dev-analysis.json            # Post-development otomatik analiz tetikleme
 │   ├── templates/
 │   │   ├── react-spa.md                      # React SPA proje şablonu
 │   │   ├── spring-boot.md                    # Spring Boot proje şablonu
 │   │   └── full-stack.md                     # Full-stack proje şablonu
 │   ├── docs/
 │   │   └── adr/
-│   │       └── ADR-001-platform-boundary.md  # Platform bağımlılık kararları
-│   ├── logs/
-│   │   └── .gitkeep
-│   └── reviews/                              # Analiz review çıktıları (runtime artifact)
+│   │       ├── ADR-001-platform-boundary.md  # Platform bağımlılık kararları
+│   │       └── ADR-002-analyst-write-permission.md  # Analyst scoped write izni
+│   ├── analysis/
+│   │   ├── raw/                               # T3 Analyst ham raporları
+│   │   │   └── .gitkeep
+│   │   └── consolidated/                      # T2.5 Lead Analyst konsolide raporları
+│   │       └── .gitkeep
+│   └── logs/
+│       └── .gitkeep
 ├── .gitignore                               # Git dışlama kuralları
 ├── .vscode/
 │   ├── settings.json                       # VS Code yapılandırması
@@ -293,24 +302,26 @@ GNU GPL v3 — Özgürce kullanın, değiştirin ve dağıtın. Değiştirilmiş
 | v6.3.0 | 10.0 | 10.0 | 28+10 bulgu — delete_file hook + scaffolding path fix + token recalibration + skill used-by + ApiResponse alignment + platform limitations documented | ✅ Production-ready |
 | v6.4.0 | 10.0 | 10.0 | 20+ bulgu — stale refs fix + skill conflict resolution + instruction table fixes + score methodology + doc accuracy | ✅ Production-ready |
 | v7.0.0 | 10.0 | 10.0 | 10 roadmap görevi + 8 gap fix — DAG, paralel review, templates, /create-agent, benchmarks, core/extended split, context snapshots, dynamic skill discovery | ✅ Production-ready |
+| v7.0.1 | 10.0 | 10.0 | Dinamik agent isimlendirme sistemi — 234+ hardcoded isim → role-based ID, name pool, leaderboard, merit-based selection, post-dev analysis hook | ✅ Production-ready |
 
-### Gelişim Skoru (Son Analiz: v7.0.0)
+### Gelişim Skoru (Son Analiz: v7.0.1)
 
-| Boyut | v4.3.0 | v4.4.0 | v4.5.0 | v4.6.0 | v4.7.0 | v4.8.0 | v4.9.0 | v5.0.0 | v6.0.0 | v6.1.0 | v6.2.0 | v6.3.0 | v7.0.0 |
-|-------|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|
-| Yapısal Bütünlük | 9.1 | 9.5 | 9.7 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
-| Dokümantasyon Tutarlılığı | 8.8 | 9.4 | 9.5 | 10.0 | 10.0 | 9.2 | 10.0 | 9.5 | 9.5 | 10.0 | 10.0 | 10.0 | **10.0** |
-| Agent Tier Tasarımı | 9.3 | 9.6 | 9.7 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
-| Review Chain | 9.5 | 9.6 | 9.6 | 10.0 | 10.0 | 10.0 | 10.0 | 9.8 | 9.8 | 10.0 | 10.0 | 10.0 | **10.0** |
-| Delegation Logic | 9.4 | 9.6 | 9.6 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
-| Token Optimizasyonu | 9.0 | 9.5 | 9.7 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
-| Hook Sistemi | 9.0 | 9.4 | 9.4 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
-| Genişletilebilirlik | 8.8 | 9.1 | 9.5 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
-| Session Memory | 9.3 | 9.5 | 9.5 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
-| Proje Bağlamı Keşfi (PCD) | — | — | — | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
-| Prompt Zenginleştirme (PEP) | — | — | — | — | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
-| Konfigürasyon Tutarlılığı | — | — | — | — | — | — | — | 8.5 | 8.5 | 10.0 | 10.0 | 10.0 | **10.0** |
-| Hook Lifecycle Otomasyon | — | — | — | — | — | — | — | — | — | — | 10.0 | 10.0 | **10.0** |
+| Boyut | v4.3.0 | v4.4.0 | v4.5.0 | v4.6.0 | v4.7.0 | v4.8.0 | v4.9.0 | v5.0.0 | v6.0.0 | v6.1.0 | v6.2.0 | v6.3.0 | v7.0.0 | v7.0.1 |
+|-------|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|
+| Yapısal Bütünlük | 9.1 | 9.5 | 9.7 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Dokümantasyon Tutarlılığı | 8.8 | 9.4 | 9.5 | 10.0 | 10.0 | 9.2 | 10.0 | 9.5 | 9.5 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Agent Tier Tasarımı | 9.3 | 9.6 | 9.7 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Review Chain | 9.5 | 9.6 | 9.6 | 10.0 | 10.0 | 10.0 | 10.0 | 9.8 | 9.8 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Delegation Logic | 9.4 | 9.6 | 9.6 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Token Optimizasyonu | 9.0 | 9.5 | 9.7 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Hook Sistemi | 9.0 | 9.4 | 9.4 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Genişletilebilirlik | 8.8 | 9.1 | 9.5 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Session Memory | 9.3 | 9.5 | 9.5 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Proje Bağlamı Keşfi (PCD) | — | — | — | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Prompt Zenginleştirme (PEP) | — | — | — | — | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Konfigürasyon Tutarlılığı | — | — | — | — | — | — | — | 8.5 | 8.5 | 10.0 | 10.0 | 10.0 | 10.0 | **10.0** |
+| Hook Lifecycle Otomasyon | — | — | — | — | — | — | — | — | — | — | 10.0 | 10.0 | 10.0 | **10.0** |
+| Dinamik Naming Sistemi | — | — | — | — | — | — | — | — | — | — | — | — | — | **10.0** |
 
 ### Analiz Metodolojisi
 
@@ -324,8 +335,8 @@ Her analiz döngüsü **x10 multi-agent** mode ile çalıştırılır:
 
 Skorlar, her versiyonun **post-fix (düzeltme sonrası)** durumunu yansıtır:
 - Analiz → Bulgu tespiti → Düzeltme → Doğrulama → Skor atanır
-- 10.0 = Tespit edilen tüm bulgular düzeltilmiş, 9/9 yapısal doğrulama PASS
+- 10.0 = Tespit edilen tüm bulgular düzeltilmiş, 11/11 yapısal doğrulama PASS
 - P0/P1 bulgu varsa düzeltilmeden skor 10.0 atanamaz
 - P2/P3 bulgular düzeltilmeden skor ≤ 9.5 kalır
 
-> _Son güncelleme: v7.0.0 — 2026-03-21_
+> _Son güncelleme: v7.0.1 — 2026-03-28_

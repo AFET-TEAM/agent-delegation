@@ -2,6 +2,8 @@
 
 When a primary model is unavailable, the system automatically falls back to the next model in the chain.
 
+> **Model Name Resolution**: For alias resolution, short names, and format normalization, see `.github/instructions/reference/model-registry.instructions.md`.
+
 ## Fallback Table
 
 | Tier              | Primary                  | Fallback (YAML)          | Last Resort           |
@@ -23,7 +25,7 @@ Gemini 3 Flash (primary)
        └─► Auto: system selects best available model
 ```
 
-When Auto mode activates, the system selects the most cost-effective available model while maintaining read-only constraints.
+When Auto mode activates, the system selects the most cost-effective available model while maintaining scoped write constraints (T3 analysts may only write to `.github/analysis/raw/`).
 
 ## Fallback Rules
 
@@ -41,5 +43,5 @@ When any agent runs on a fallback model, the Orchestrator must include a `### Mo
 
 | Agent        | Expected Model | Actual Model     | Reason              |
 | ------------ | -------------- | ---------------- | ------------------- |
-| EmreKilic    | Gemini 3 Flash | Claude Haiku 4.5 | Primary unavailable |
+| AnalystAlpha | Gemini 3 Flash | Claude Haiku 4.5 | Primary unavailable |
 ```

@@ -71,8 +71,8 @@ Every agent presents its output in the following format:
 ### Escalation Rules
 
 - If an agent encounters a task beyond its capacity, it explicitly states so.
-- Tier 3 agents never edit files — they only produce analysis output.
-- Tier 2.5 (Lead Analyst) never edits files — read-only mode, reviews analyst outputs.
+- Tier 3 agents have **scoped write access** — they write analysis output only to `.github/analysis/raw/`. They never edit application code or other system files.
+- Tier 2.5 (Lead Analyst) has **scoped write access** — writes consolidated reports only to `.github/analysis/consolidated/`. Never edits application code or other system files.
 - Tier 2 agents do not make architectural decisions — they escalate to Tier 1.5 or Tier 1 when uncertain.
 - Tier 1.5 (Staff Engineer) handles all coding tasks but does not make architectural decisions — escalates to Tier 1.
 - Tier 1 agents are the final decision authority.
@@ -133,6 +133,7 @@ Violation of these rules is a 🔴 Critical review finding.
 - **Exclusive Write**: Each file is owned by exactly one agent during a task session.
 - **No Concurrent Edits**: Two agents never receive write ownership of the same file.
 - **Read Access**: Any agent can read any file.
+- **Scoped Write (Analysis Agents)**: Tier 3 Analysts may only write to `.github/analysis/raw/`. Tier 2.5 Lead Analyst may only write to `.github/analysis/consolidated/`. Writing outside these directories is a violation.
 - **Conflict Resolution**: If an agent needs to modify a file it does not own, it reports the need in its task output. The Orchestrator reassigns ownership or merges the change request. The agent **never** edits the file directly.
 
 ---
@@ -161,6 +162,7 @@ When a primary model is unavailable, the system automatically falls back:
 | Tier 3 — Analyst          | Gemini 3 Flash           | Claude Haiku 4.5         |
 
 - Full fallback chain details: `.github/instructions/reference/model-fallback.instructions.md`
+- Model name resolution and aliases: `.github/instructions/reference/model-registry.instructions.md`
 - Agents must report fallback activation in their task report.
 - Fallback does not change tier permissions or tool access.
 

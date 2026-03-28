@@ -1,7 +1,7 @@
 # Multi-Agent Delegation System — Geliştirme Yol Haritası
 
 > Bu dosya, sistemin mevcut durumunu, tespit edilen iyileştirme fırsatlarını ve planlanan geliştirme adımlarını takip eder.
-> Son güncelleme: v7.0.0
+> Son güncelleme: v7.0.1
 
 ---
 
@@ -9,13 +9,13 @@
 
 | Metrik | Değer |
 |--------|-------|
-| Versiyon | v7.0.0 |
-| Yapısal Bütünlük | 9/9 doğrulama kuralı ✅ PASS |
-| Cross-Reference Tutarlılığı | ✅ PASS (v7.0.0 re-analiz — tüm çapraz referanslar doğrulandı) |
-| Dokümantasyon Doğruluğu | ✅ PASS (v7.0.0 re-analiz — 25+ değiştirilen dosya + 3 yeni dosya doğrulandı) |
-| Agent Sayısı | 11 (5 tier) — Türkçe insan isimleriyle |
+| Versiyon | v7.0.1 |
+| Yapısal Bütünlük | 11/11 doğrulama kuralı ✅ PASS |
+| Cross-Reference Tutarlılığı | ✅ PASS (v7.0.1 re-analiz — tüm çapraz referanslar doğrulandı) |
+| Dokümantasyon Doğruluğu | ✅ PASS (v7.0.1 re-analiz — 30+ değiştirilen dosya + 4 yeni dosya doğrulandı) |
+| Agent Sayısı | 11 (5 tier) — Dinamik isim atamalı |
 | Skill Sayısı | 13 (tümü kalibre token tahminleriyle + tiers metadata) |
-| Instruction Sayısı | 19 (3 evrensel + 16 reference/) |
+| Instruction Sayısı | 21 (3 evrensel + 18 reference/) |
 | Template Sayısı | 3 (react-spa, spring-boot, full-stack) |
 
 ---
@@ -177,9 +177,9 @@
 
 | Analiz | Versiyon | Sonuç | Agent |
 |--------|----------|-------|-------|
-| Yapısal Doğrulama (9 kural) | v5.0.0 | 9/9 ✅ PASS | Emre Kılıç (T3) |
-| Cross-Reference Tutarlılığı | v5.0.0 | 9/9 ✅ PASS | Ayşe Demir (T3) |
-| Dokümantasyon Doğruluğu | v5.0.0 | 17 ✅ PASS, 6 bulgu (1 P1 + 3 P2 + 2 P3) | Elif Özge Maksutoğlu (T3) |
+| Yapısal Doğrulama (9 kural) | v5.0.0 | 9/9 ✅ PASS | AnalystAlpha (T3) |
+| Cross-Reference Tutarlılığı | v5.0.0 | 9/9 ✅ PASS | AnalystBeta (T3) |
+| Dokümantasyon Doğruluğu | v5.0.0 | 17 ✅ PASS, 6 bulgu (1 P1 + 3 P2 + 2 P3) | AnalystGamma (T3) |
 | x10 Derin Analiz (10 agent) | v6.0.0 | 15 bulgu → tamamı düzeltildi | 10 agent paralel |
 | x10 Post-Fix Doğrulama | v6.1.0 | 15 bulgu (5 P1 + 5 P2 + 5 P3) → tamamı düzeltildi | 10 agent paralel |
 | x10 Derin Re-Analiz | v6.2.1 | 19 bulgu (2 P0) → tamamı düzeltildi | 10 agent paralel |
