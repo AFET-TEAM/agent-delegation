@@ -1,0 +1,39 @@
+{
+  "agent_id": "T4-1",
+  "display_name": "T4-1 Lead Analyst",
+  "tier": "T4",
+  "role": "Lead Analyst",
+  "wave": "wave2-consolidation",
+  "prompt": "PCD smoke auth module x5",
+  "task_summary": "Consolidate T5 evidence into actionable analysis for: PCD smoke auth module x5",
+  "owned_scope": [
+    "analysis consolidation",
+    "evidence de-duplication",
+    "review of T5",
+    "pcd",
+    "smoke",
+    "auth",
+    "module"
+  ],
+  "required_skills": [
+    "Context Mode",
+    "Graphify",
+    "Analysis"
+  ],
+  "skipped_skills": [
+    "Implementation"
+  ],
+  "context_files": [
+    "README.md",
+    "AGENTS.md",
+    ".cursor/config/delegation-rules.md",
+    ".cursor/config/tier-definitions.md",
+    ".cursor/instructions/reference/review-chain.instructions.md",
+    ".cursor/contracts/review-report.md"
+  ],
+  "review_target": null,
+  "expected_output_format": "task-report",
+  "expected_model": "gemini-3.1-pro",
+  "reasoning_effort": "high",
+  "edit_permission": "Scoped consolidated"
+}

@@ -1,0 +1,11 @@
+{
+  "timestamp": "2026-05-22T11:27:42Z",
+  "results": [
+    {
+      "target": "AGENTS.md",
+      "mirror": "workspace-mirror/AGENTS.md",
+      "applied": true,
+      "reason": "applied from approved mirror"
+    }
+  ]
+}

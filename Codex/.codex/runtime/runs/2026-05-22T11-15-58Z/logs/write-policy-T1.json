@@ -1,0 +1,9 @@
+{
+  "tier": "T1",
+  "allowed": [
+    "README.md",
+    "AGENTS.md"
+  ],
+  "blocked": [],
+  "reason": "scoped tier whitelist enforced"
+}

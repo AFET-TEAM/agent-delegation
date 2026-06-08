@@ -1,0 +1,8 @@
+--- README.md
++++ README.md (mirror)
+@@ -963,3 +963,5 @@
+ - any related contracts, wrappers, checks, runtime helpers, or verification docs
+ 
+ This keeps the package lean at the root while preserving depth internally.
++
++<!-- runtime mirror update by T3 -->

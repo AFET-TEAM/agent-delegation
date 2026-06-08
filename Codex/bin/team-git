@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+set -euo pipefail
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+python3 - "$ROOT" "$@" <<'PY'
+import sys
+from pathlib import Path
+root = Path(sys.argv[1])
+args = sys.argv[2:]
+if len(args) < 2:
+    raise SystemExit('Usage: ./bin/team-git <stage|commit|pr> <run_id> [args...]')
+mode, run_id, *rest = args
+sys.path.append(str(root / '.codex'))
+from runtime.git_ops import stage_targets, commit_targets, create_pr
+run_root = root / '.codex' / 'runtime' / 'runs' / run_id
+if mode == 'stage':
+    if not rest:
+        raise SystemExit('Usage: ./bin/team-git stage <run_id> <target...>')
+    print(stage_targets(root, run_root, rest))
+elif mode == 'commit':
+    if not rest:
+        raise SystemExit('Usage: ./bin/team-git commit <run_id> <message>')
+    print(commit_targets(root, run_root, ' '.join(rest)))
+elif mode == 'pr':
+    if len(rest) < 2:
+        raise SystemExit('Usage: ./bin/team-git pr <run_id> <title> <body> [base] [head]')
+    title, body, *extra = rest
+    base = extra[0] if len(extra) > 0 else None
+    head = extra[1] if len(extra) > 1 else None
+    print(create_pr(root, run_root, title, body, base=base, head=head, dry_run=True))
+else:
+    raise SystemExit(f'Unknown mode: {mode}')
+PY

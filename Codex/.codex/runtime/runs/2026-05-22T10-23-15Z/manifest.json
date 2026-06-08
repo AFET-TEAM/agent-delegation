@@ -1,0 +1,109 @@
+[
+  {
+    "agent_id": "T5-1",
+    "display_name": "T5-1 Analyst",
+    "tier": "T5",
+    "role": "Analyst",
+    "wave": "wave1-discovery",
+    "prompt": "auth feature x3",
+    "task_summary": "Analyze repository context and produce raw evidence for: auth feature x3",
+    "owned_scope": [
+      "repo discovery",
+      "risk extraction",
+      "test scenarios"
+    ],
+    "required_skills": [
+      "Context Mode",
+      "Graphify",
+      "Analysis"
+    ],
+    "skipped_skills": [
+      "Implementation"
+    ],
+    "context_files": [
+      "README.md",
+      "AGENTS.md",
+      ".codex/config/delegation-rules.md",
+      ".codex/config/tier-definitions.md",
+      ".codex/instructions/reference/review-chain.instructions.md",
+      ".codex/contracts/review-report.md"
+    ],
+    "review_target": "T4",
+    "expected_output_format": "task-report",
+    "expected_model": "gpt-5.2",
+    "reasoning_effort": "high",
+    "edit_permission": "Scoped raw only"
+  },
+  {
+    "agent_id": "T2-1",
+    "display_name": "T2-1 Staff Engineer",
+    "tier": "T2",
+    "role": "Staff Engineer",
+    "wave": "wave4-review",
+    "prompt": "auth feature x3",
+    "task_summary": "Handle complex implementation and/or review T3 output for: auth feature x3",
+    "owned_scope": [
+      "complex implementation",
+      "review of T3",
+      "integration validation"
+    ],
+    "required_skills": [
+      "Context Mode",
+      "Graphify",
+      "Implementation",
+      "Testing Standards"
+    ],
+    "skipped_skills": [
+      "Analysis-only long-form discovery"
+    ],
+    "context_files": [
+      "README.md",
+      "AGENTS.md",
+      ".codex/config/delegation-rules.md",
+      ".codex/config/tier-definitions.md",
+      ".codex/instructions/reference/review-chain.instructions.md",
+      ".codex/contracts/review-report.md"
+    ],
+    "review_target": "T1",
+    "expected_output_format": "task-report",
+    "expected_model": "gpt-5.3-codex",
+    "reasoning_effort": "high",
+    "edit_permission": "Full"
+  },
+  {
+    "agent_id": "T1-1",
+    "display_name": "T1-1 Principal",
+    "tier": "T1",
+    "role": "Principal",
+    "wave": "wave4-review",
+    "prompt": "auth feature x3",
+    "task_summary": "Perform principal review and architecture validation for: auth feature x3",
+    "owned_scope": [
+      "architecture review",
+      "final high-risk review",
+      "escalation handling"
+    ],
+    "required_skills": [
+      "Context Mode",
+      "Graphify",
+      "Architect",
+      "Code Review"
+    ],
+    "skipped_skills": [
+      "Scoped coding unless escalation requires it"
+    ],
+    "context_files": [
+      "README.md",
+      "AGENTS.md",
+      ".codex/config/delegation-rules.md",
+      ".codex/config/tier-definitions.md",
+      ".codex/instructions/reference/review-chain.instructions.md",
+      ".codex/contracts/review-report.md"
+    ],
+    "review_target": null,
+    "expected_output_format": "task-report",
+    "expected_model": "gpt-5.4",
+    "reasoning_effort": "high",
+    "edit_permission": "Full"
+  }
+]

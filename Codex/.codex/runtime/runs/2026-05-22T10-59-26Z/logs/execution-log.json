@@ -1,0 +1,44 @@
+[
+  {
+    "packet": "T5-1.json",
+    "output": "/Users/tcvmaksutoglu/Dev/w/crm/mayacore-mfe-context/Codex/.codex/runtime/runs/2026-05-22T10-59-26Z/agents/T5-1.md",
+    "returncode": "0",
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "packet": "T4-1.json",
+    "output": "/Users/tcvmaksutoglu/Dev/w/crm/mayacore-mfe-context/Codex/.codex/runtime/runs/2026-05-22T10-59-26Z/agents/T4-1.md",
+    "returncode": "0",
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "packet": "T2-1.json",
+    "output": "/Users/tcvmaksutoglu/Dev/w/crm/mayacore-mfe-context/Codex/.codex/runtime/runs/2026-05-22T10-59-26Z/agents/T2-1.md",
+    "returncode": "0",
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "packet": "T3-1.json",
+    "output": "/Users/tcvmaksutoglu/Dev/w/crm/mayacore-mfe-context/Codex/.codex/runtime/runs/2026-05-22T10-59-26Z/agents/T3-1.md",
+    "returncode": "0",
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "packet": "T1-1.json",
+    "output": "/Users/tcvmaksutoglu/Dev/w/crm/mayacore-mfe-context/Codex/.codex/runtime/runs/2026-05-22T10-59-26Z/agents/T1-1.md",
+    "returncode": "0",
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "packet": "T2-1.json",
+    "output": "/Users/tcvmaksutoglu/Dev/w/crm/mayacore-mfe-context/Codex/.codex/runtime/runs/2026-05-22T10-59-26Z/agents/T2-1.md",
+    "returncode": "0",
+    "stdout": "",
+    "stderr": ""
+  }
+]

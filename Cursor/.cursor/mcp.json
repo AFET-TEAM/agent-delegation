@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "context-mode": {
+      "command": "npx",
+      "args": ["-y", "@context-mode/mcp@1.0.146"],
+      "env": {
+        "CTX_FETCH_STRICT": "1",
+        "CTX_DENY_PATHS": "~/.ssh,~/.aws,~/.kube,~/.gnupg,./.env,./.env.*,./secrets",
+        "CTX_DB_PATH": ".cursor/analysis/knowledge.db",
+        "CTX_MAX_CONCURRENCY": "4",
+        "CTX_OUTPUT_CAP": "102400000",
+        "CTX_SEARCH_RATE_LIMIT": "10",
+        "CTX_TIMEOUT_DEFAULT": "30000",
+        "CTX_DB_ENCRYPTION": "true"
+      }
+    }
+  }
+}

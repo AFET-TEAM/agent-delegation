@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-05-22T11:38:55Z",
+  "results": [
+    {
+      "target": "README.md",
+      "mirror": "workspace-mirror/README.md",
+      "applied": true,
+      "reason": "applied from approved mirror",
+      "validation": "passed",
+      "rollback_snapshot": "rollback/README.md"
+    }
+  ]
+}

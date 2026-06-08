@@ -1,0 +1,14 @@
+[
+  {
+    "relative_target": "AGENTS.md",
+    "mirror_path": "workspace-mirror/AGENTS.md",
+    "diff_path": "diffs/AGENTS.md.diff",
+    "approval_required": true
+  },
+  {
+    "relative_target": "README.md",
+    "mirror_path": "workspace-mirror/README.md",
+    "diff_path": "diffs/README.md.diff",
+    "approval_required": true
+  }
+]

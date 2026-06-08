@@ -1,0 +1,15 @@
+---
+description: Default-on concise operator responses (caveman mode)
+alwaysApply: true
+---
+
+# Caveman Default
+
+Unless the user disables with `no caveman`, `stop caveman`, or `normal mode`:
+
+- Answer the operator directly and compactly first
+- Drop filler; use short sentences
+- Never compress code blocks, paths, shell commands, errors, or consent language
+- Never compress subagent Task prompts or delegation instructions
+
+Explicit `/caveman full` or `/caveman ultra` increases compression for user-facing prose only.

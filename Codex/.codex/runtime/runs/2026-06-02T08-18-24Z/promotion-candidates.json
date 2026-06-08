@@ -1,0 +1,8 @@
+[
+  {
+    "relative_target": "AGENTS.md",
+    "mirror_path": "workspace-mirror/AGENTS.md",
+    "diff_path": "diffs/AGENTS.md.diff",
+    "approval_required": true
+  }
+]

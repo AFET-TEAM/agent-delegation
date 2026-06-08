@@ -1,0 +1,39 @@
+{
+  "agent_id": "T5-1",
+  "display_name": "T5-1 Analyst",
+  "tier": "T5",
+  "role": "Analyst",
+  "wave": "wave1-discovery",
+  "prompt": "update README.md and AGENTS.md x5",
+  "task_summary": "Analyze repository context and produce raw evidence for: update README.md and AGENTS.md x5",
+  "owned_scope": [
+    "repo discovery",
+    "risk extraction",
+    "test scenarios",
+    "update",
+    "readme",
+    "and",
+    "agents"
+  ],
+  "required_skills": [
+    "Context Mode",
+    "Graphify",
+    "Analysis"
+  ],
+  "skipped_skills": [
+    "Implementation"
+  ],
+  "context_files": [
+    "README.md",
+    "AGENTS.md",
+    ".codex/config/delegation-rules.md",
+    ".codex/config/tier-definitions.md",
+    ".codex/instructions/reference/review-chain.instructions.md",
+    ".codex/contracts/review-report.md"
+  ],
+  "review_target": "T4",
+  "expected_output_format": "task-report",
+  "expected_model": "gpt-5.2",
+  "reasoning_effort": "high",
+  "edit_permission": "Scoped raw only"
+}

@@ -1,0 +1,12 @@
+{
+  "tier": "T1",
+  "allowed": [
+    "AGENTS.md"
+  ],
+  "blocked": [
+    "spaces.md",
+    "bin/team-git",
+    "README.md"
+  ],
+  "reason": "scoped tier whitelist enforced"
+}

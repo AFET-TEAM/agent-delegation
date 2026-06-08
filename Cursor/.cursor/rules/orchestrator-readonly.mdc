@@ -1,0 +1,12 @@
+---
+description: Orchestrator does not edit application code in multi-agent mode
+alwaysApply: true
+---
+
+# Orchestrator Read-Only
+
+When `x2`–`x10` or `/delegate` is active:
+
+- Main session coordinates only; spawn Task subagents for implementation
+- Do not edit host application source unless user explicitly overrides
+- Allowed writes: `.cursor/analysis/`, `.cursor/memory/`, `.cursor/metrics/`, `.cursor/todo/`, runtime artifacts

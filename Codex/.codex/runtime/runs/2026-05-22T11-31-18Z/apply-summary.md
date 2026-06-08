@@ -1,0 +1,109 @@
+# Apply Summary
+
+- timestamp: 2026-05-22T11:55:37Z
+
+- target: README.md | mirror: workspace-mirror/README.md | applied: no | reason: blocked by global lock | validation: failed | rollback_snapshot: none
+
+## Git Status Snapshot
+```text
+ M ../Claude/.claude/agents/analyst.md
+ M ../Claude/.claude/config/context-budget.md
+ M ../Claude/.claude/config/tier-definitions.md
+ M ../Claude/.claude/hooks/update-leaderboard.sh
+ M ../Claude/.claude/metrics/.edit-counter
+ M ../Claude/.claude/metrics/.edit-log
+ M ../Claude/.claude/metrics/.session-edits-20260521.log
+ M ../Claude/.claude/scripts/setup.sh
+ M ../Claude/.claude/todo/active-plan.md
+ M ../Claude/CLAUDE.md
+ M .codex/docs/caveman-measurement.md
+ M .codex/docs/caveman.md
+ M .codex/docs/context-efficiency.md
+ M .codex/docs/context-mode-integration-design.md
+ M .codex/docs/enterprise-onboarding.md
+ M .codex/docs/graphify-integration-design.md
+ M .codex/docs/graphify.md
+ M .codex/docs/principal-architect-review.md
+ M .codex/docs/usage-guide.md
+ M .codex/instructions/reference/slash-commands.instructions.md
+ M .codex/memory/resume/last-session.md
+ M .codex/metrics/agent-performance.md
+ M .codex/metrics/fallback-log.md
+ M .codex/metrics/leaderboard.md
+ M .codex/metrics/token-usage.md
+ M .codex/rules/caveman.md
+ M .codex/skills/caveman/SKILL.md
+ M .codex/todo/active-plan.md
+ D ACCEPTANCE_AUDIT.md
+M  AGENTS.md
+ D CHANGELOG.md
+ D INDEX.md
+ D ONE_PAGE_QUICKSTART.md
+ D OPERATIONS_RUNBOOK.md
+ D PACKAGE_MANIFEST.md
+ D PROGRESS.md
+MM README.md
+ D SEMANTIC_PARITY_CHECKLIST.md
+ D START_HERE.md
+ D USAGE.md
+ D docs/codex-multi-agent-guide.html
+?? ../Claude/.claude/analysis/consolidated/G04-use-case-catalog.md
+?? ../Claude/.claude/analysis/consolidated/G09-T3A-review.md
+?? ../Claude/.claude/analysis/consolidated/G10-T3B-review.md
+?? ../Claude/.claude/analysis/consolidated/G12-final-review.md
+?? ../Claude/.claude/analysis/consolidated/H03-translation-scope.md
+?? ../Claude/.claude/analysis/consolidated/H04-example-catalog.md
+?? ../Claude/.claude/analysis/consolidated/H09-T3A-review.md
+?? ../Claude/.claude/analysis/consolidated/H10-T3B-review.md
+?? ../Claude/.claude/analysis/raw/H01-html-english-audit.md
+?? ../Claude/.claude/analysis/raw/H02-feature-example-catalog.md
+?? ../Claude/.claude/analysis/raw/H07-tr-sections-1-4.md
+?? ../Claude/.claude/analysis/raw/H08-tr-sections-5-8-examples.md
+?? ../Claude/.claude/docs/ARCHITECTURE.md
+?? ../Claude/.claude/docs/FAQ.md
+?? ../Claude/.claude/docs/GETTING_STARTED.md
+?? ../Claude/.claude/docs/TROUBLESHOOTING.md
+?? ../Claude/.claude/docs/example-sections-design.md
+?? ../Claude/.claude/docs/hook-exit-codes.md
+?? ../Claude/.claude/docs/html-doc-architecture.md
+?? ../Claude/.claude/docs/improvement-plan.md
+?? ../Claude/.claude/docs/turkish-content-plan.md
+?? ../Claude/.claude/memory/learned-patterns/LP-2026-05-21-01-html-hook-exclusion.md
+?? ../Claude/.claude/memory/sessions/session-2026-05-21-deep-analysis-html-docs-x10.md
+?? ../Claude/.claude/metrics/fallback-log.md
+?? ../Claude/.claude/scripts/verify-install.sh
+?? ../Claude/.claude/skills/test-gen/
+?? ../Claude/docs/
+?? .codex/checklists/agents-contract-checklist.md
+?? .codex/config/wrapper-settings.md
+?? .codex/contracts/promotion-approval.md
+?? .codex/contracts/run-summary.md
+?? .codex/contracts/task-packet.md
+?? .codex/docs/context-graphify-wrapper.md
+?? .codex/docs/context-mode-wrapper.md
+?? .codex/docs/delegation-engine.md
+?? .codex/docs/minimum-viable-doc-set.md
+?? .codex/docs/readme-agents-consistency.md
+?? .codex/docs/team-entrypoint-wrapper.md
+?? .codex/logs/
+?? .codex/memory/sessions/session-2026-05-22-local-runtime.md
+?? .codex/memory/sessions/session-2026-05-22-runtime-auto-2026-05-22T11-10-57Z.md
+?? .codex/memory/sessions/session-2026-05-22-runtime-auto-2026-05-22T11-11-13Z.md
+?? .codex/memory/sessions/session-2026-05-22-runtime-auto-2026-05-22T11-15-58Z.md
+?? .codex/memory/sessions/session-2026-05-22-runtime-auto-2026-05-22T11-31-18Z.md
+?? .codex/memory/sessions/session-2026-05-22-runtime-auto-2026-05-22T11-55-36Z.md
+?? .codex/metrics/wrapper-mode-counts.md
+?? .codex/runtime/
+?? .codex/scripts/delegation_plan.py
+?? .codex/scripts/install_simple_cli.sh
+?? .codex/scripts/wrapper_dashboard_report.py
+?? .codex/scripts/wrapper_flow_validator.py
+?? .codex/scripts/wrapper_health_check.py
+?? .codex/scripts/wrapper_usage_analyzer.py
+?? .codex/scripts/wrapper_usage_markdown_report.py
+?? .codex/scripts/wrapper_usage_summary.py
+?? .codex/scripts/wrapper_usage_trend_analyzer.py
+?? .codex/wrappers/
+?? bin/
+?? ../Cursor/
+```

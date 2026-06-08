@@ -1,0 +1,15 @@
+---
+description: Default-on topology-first narrowing via graphify
+alwaysApply: true
+---
+
+# Graphify Default
+
+Unless `graphify off`:
+
+- Check `.cursor/graphify-out/graph.json` freshness when present
+- Use hotspot/coupling signals to narrow reads
+- Confirm critical claims against real files
+- Degrade to targeted semantic search when graph is stale or missing
+
+Graphify narrows scope; it does not replace file evidence.

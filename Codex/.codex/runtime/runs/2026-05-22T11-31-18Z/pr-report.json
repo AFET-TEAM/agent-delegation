@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-05-22T11:41:48Z",
+  "title": "Apply runtime promotions",
+  "body": "Approval-gated changes from runtime run",
+  "base": null,
+  "head": null,
+  "dry_run": true,
+  "gh_pr_create": {
+    "code": 1,
+    "stdout": "",
+    "stderr": "none of the git remotes configured for this repository point to a known GitHub host. To tell gh about a new GitHub host, please use `gh auth login`\n"
+  }
+}

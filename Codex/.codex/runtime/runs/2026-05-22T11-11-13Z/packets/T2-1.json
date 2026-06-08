@@ -1,0 +1,40 @@
+{
+  "agent_id": "T2-1",
+  "display_name": "T2-1 Staff Engineer",
+  "tier": "T2",
+  "role": "Staff Engineer",
+  "wave": "wave4-staff-review",
+  "prompt": "force-revision runtime write update README.md x5",
+  "task_summary": "Handle complex implementation and/or review T3 output for: force-revision runtime write update README.md x5",
+  "owned_scope": [
+    "complex implementation",
+    "review of T3",
+    "integration validation",
+    "force-revision",
+    "runtime",
+    "write",
+    "update"
+  ],
+  "required_skills": [
+    "Context Mode",
+    "Graphify",
+    "Implementation",
+    "Testing Standards"
+  ],
+  "skipped_skills": [
+    "Analysis-only long-form discovery"
+  ],
+  "context_files": [
+    "README.md",
+    "AGENTS.md",
+    ".codex/config/delegation-rules.md",
+    ".codex/config/tier-definitions.md",
+    ".codex/instructions/reference/review-chain.instructions.md",
+    ".codex/contracts/review-report.md"
+  ],
+  "review_target": "T1",
+  "expected_output_format": "task-report",
+  "expected_model": "gpt-5.3-codex",
+  "reasoning_effort": "high",
+  "edit_permission": "Full"
+}

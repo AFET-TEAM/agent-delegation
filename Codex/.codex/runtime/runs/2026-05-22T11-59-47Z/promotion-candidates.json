@@ -1,0 +1,8 @@
+[
+  {
+    "relative_target": "README.md",
+    "mirror_path": "workspace-mirror/README.md",
+    "diff_path": "diffs/README.md.diff",
+    "approval_required": true
+  }
+]

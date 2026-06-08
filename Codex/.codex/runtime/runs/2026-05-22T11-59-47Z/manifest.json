@@ -1,0 +1,398 @@
+[
+  {
+    "agent_id": "T5-1",
+    "display_name": "T5-1 Analyst",
+    "tier": "T5",
+    "role": "Analyst",
+    "wave": "wave1-discovery",
+    "prompt": "approval-based live apply pipeline ekle x10",
+    "task_summary": "Analyze repository context and produce raw evidence for: approval-based live apply pipeline ekle x10",
+    "owned_scope": [
+      "repo discovery",
+      "risk extraction",
+      "test scenarios",
+      "approval-based",
+      "live",
+      "apply",
+      "pipeline"
+    ],
+    "required_skills": [
+      "Context Mode",
+      "Graphify",
+      "Analysis"
+    ],
+    "skipped_skills": [
+      "Implementation"
+    ],
+    "context_files": [
+      "README.md",
+      "AGENTS.md",
+      ".codex/config/delegation-rules.md",
+      ".codex/config/tier-definitions.md",
+      ".codex/instructions/reference/review-chain.instructions.md",
+      ".codex/contracts/review-report.md"
+    ],
+    "review_target": "T4",
+    "expected_output_format": "task-report",
+    "expected_model": "gpt-5.2",
+    "reasoning_effort": "high",
+    "edit_permission": "Scoped raw only"
+  },
+  {
+    "agent_id": "T5-2",
+    "display_name": "T5-2 Analyst",
+    "tier": "T5",
+    "role": "Analyst",
+    "wave": "wave1-discovery",
+    "prompt": "approval-based live apply pipeline ekle x10",
+    "task_summary": "Analyze repository context and produce raw evidence for: approval-based live apply pipeline ekle x10",
+    "owned_scope": [
+      "repo discovery",
+      "risk extraction",
+      "test scenarios",
+      "approval-based",
+      "live",
+      "apply",
+      "pipeline"
+    ],
+    "required_skills": [
+      "Context Mode",
+      "Graphify",
+      "Analysis"
+    ],
+    "skipped_skills": [
+      "Implementation"
+    ],
+    "context_files": [
+      "README.md",
+      "AGENTS.md",
+      ".codex/config/delegation-rules.md",
+      ".codex/config/tier-definitions.md",
+      ".codex/instructions/reference/review-chain.instructions.md",
+      ".codex/contracts/review-report.md"
+    ],
+    "review_target": "T4",
+    "expected_output_format": "task-report",
+    "expected_model": "gpt-5.2",
+    "reasoning_effort": "high",
+    "edit_permission": "Scoped raw only"
+  },
+  {
+    "agent_id": "T4-1",
+    "display_name": "T4-1 Lead Analyst",
+    "tier": "T4",
+    "role": "Lead Analyst",
+    "wave": "wave2-consolidation",
+    "prompt": "approval-based live apply pipeline ekle x10",
+    "task_summary": "Consolidate T5 evidence into actionable analysis for: approval-based live apply pipeline ekle x10",
+    "owned_scope": [
+      "analysis consolidation",
+      "evidence de-duplication",
+      "review of T5",
+      "approval-based",
+      "live",
+      "apply",
+      "pipeline"
+    ],
+    "required_skills": [
+      "Context Mode",
+      "Graphify",
+      "Analysis"
+    ],
+    "skipped_skills": [
+      "Implementation"
+    ],
+    "context_files": [
+      "README.md",
+      "AGENTS.md",
+      ".codex/config/delegation-rules.md",
+      ".codex/config/tier-definitions.md",
+      ".codex/instructions/reference/review-chain.instructions.md",
+      ".codex/contracts/review-report.md"
+    ],
+    "review_target": null,
+    "expected_output_format": "task-report",
+    "expected_model": "gpt-5.2",
+    "reasoning_effort": "high",
+    "edit_permission": "Scoped consolidated"
+  },
+  {
+    "agent_id": "T4-2",
+    "display_name": "T4-2 Lead Analyst",
+    "tier": "T4",
+    "role": "Lead Analyst",
+    "wave": "wave2-consolidation",
+    "prompt": "approval-based live apply pipeline ekle x10",
+    "task_summary": "Consolidate T5 evidence into actionable analysis for: approval-based live apply pipeline ekle x10",
+    "owned_scope": [
+      "analysis consolidation",
+      "evidence de-duplication",
+      "review of T5",
+      "approval-based",
+      "live",
+      "apply",
+      "pipeline"
+    ],
+    "required_skills": [
+      "Context Mode",
+      "Graphify",
+      "Analysis"
+    ],
+    "skipped_skills": [
+      "Implementation"
+    ],
+    "context_files": [
+      "README.md",
+      "AGENTS.md",
+      ".codex/config/delegation-rules.md",
+      ".codex/config/tier-definitions.md",
+      ".codex/instructions/reference/review-chain.instructions.md",
+      ".codex/contracts/review-report.md"
+    ],
+    "review_target": null,
+    "expected_output_format": "task-report",
+    "expected_model": "gpt-5.2",
+    "reasoning_effort": "high",
+    "edit_permission": "Scoped consolidated"
+  },
+  {
+    "agent_id": "T3-1",
+    "display_name": "T3-1 Mid Coder",
+    "tier": "T3",
+    "role": "Mid Coder",
+    "wave": "wave3-implementation",
+    "prompt": "approval-based live apply pipeline ekle x10",
+    "task_summary": "Implement bounded scoped changes for: approval-based live apply pipeline ekle x10",
+    "owned_scope": [
+      "bounded implementation",
+      "scoped edits",
+      "local validation",
+      "approval-based",
+      "live",
+      "apply",
+      "pipeline"
+    ],
+    "required_skills": [
+      "Context Mode",
+      "Graphify",
+      "Implementation",
+      "Testing Standards"
+    ],
+    "skipped_skills": [
+      "Analysis-only long-form discovery"
+    ],
+    "context_files": [
+      "README.md",
+      "AGENTS.md",
+      ".codex/config/delegation-rules.md",
+      ".codex/config/tier-definitions.md",
+      ".codex/instructions/reference/review-chain.instructions.md",
+      ".codex/contracts/review-report.md"
+    ],
+    "review_target": "T2",
+    "expected_output_format": "task-report",
+    "expected_model": "gpt-5.2",
+    "reasoning_effort": "medium",
+    "edit_permission": "Full"
+  },
+  {
+    "agent_id": "T3-2",
+    "display_name": "T3-2 Mid Coder",
+    "tier": "T3",
+    "role": "Mid Coder",
+    "wave": "wave3-implementation",
+    "prompt": "approval-based live apply pipeline ekle x10",
+    "task_summary": "Implement bounded scoped changes for: approval-based live apply pipeline ekle x10",
+    "owned_scope": [
+      "bounded implementation",
+      "scoped edits",
+      "local validation",
+      "approval-based",
+      "live",
+      "apply",
+      "pipeline"
+    ],
+    "required_skills": [
+      "Context Mode",
+      "Graphify",
+      "Implementation",
+      "Testing Standards"
+    ],
+    "skipped_skills": [
+      "Analysis-only long-form discovery"
+    ],
+    "context_files": [
+      "README.md",
+      "AGENTS.md",
+      ".codex/config/delegation-rules.md",
+      ".codex/config/tier-definitions.md",
+      ".codex/instructions/reference/review-chain.instructions.md",
+      ".codex/contracts/review-report.md"
+    ],
+    "review_target": "T2",
+    "expected_output_format": "task-report",
+    "expected_model": "gpt-5.2",
+    "reasoning_effort": "medium",
+    "edit_permission": "Full"
+  },
+  {
+    "agent_id": "T2-1",
+    "display_name": "T2-1 Staff Engineer",
+    "tier": "T2",
+    "role": "Staff Engineer",
+    "wave": "wave4-staff-review",
+    "prompt": "approval-based live apply pipeline ekle x10",
+    "task_summary": "Handle complex implementation and/or review T3 output for: approval-based live apply pipeline ekle x10",
+    "owned_scope": [
+      "complex implementation",
+      "review of T3",
+      "integration validation",
+      "approval-based",
+      "live",
+      "apply",
+      "pipeline"
+    ],
+    "required_skills": [
+      "Context Mode",
+      "Graphify",
+      "Implementation",
+      "Testing Standards"
+    ],
+    "skipped_skills": [
+      "Analysis-only long-form discovery"
+    ],
+    "context_files": [
+      "README.md",
+      "AGENTS.md",
+      ".codex/config/delegation-rules.md",
+      ".codex/config/tier-definitions.md",
+      ".codex/instructions/reference/review-chain.instructions.md",
+      ".codex/contracts/review-report.md"
+    ],
+    "review_target": "T1",
+    "expected_output_format": "task-report",
+    "expected_model": "gpt-5.3-codex",
+    "reasoning_effort": "high",
+    "edit_permission": "Full"
+  },
+  {
+    "agent_id": "T2-2",
+    "display_name": "T2-2 Staff Engineer",
+    "tier": "T2",
+    "role": "Staff Engineer",
+    "wave": "wave4-staff-review",
+    "prompt": "approval-based live apply pipeline ekle x10",
+    "task_summary": "Handle complex implementation and/or review T3 output for: approval-based live apply pipeline ekle x10",
+    "owned_scope": [
+      "complex implementation",
+      "review of T3",
+      "integration validation",
+      "approval-based",
+      "live",
+      "apply",
+      "pipeline"
+    ],
+    "required_skills": [
+      "Context Mode",
+      "Graphify",
+      "Implementation",
+      "Testing Standards"
+    ],
+    "skipped_skills": [
+      "Analysis-only long-form discovery"
+    ],
+    "context_files": [
+      "README.md",
+      "AGENTS.md",
+      ".codex/config/delegation-rules.md",
+      ".codex/config/tier-definitions.md",
+      ".codex/instructions/reference/review-chain.instructions.md",
+      ".codex/contracts/review-report.md"
+    ],
+    "review_target": "T1",
+    "expected_output_format": "task-report",
+    "expected_model": "gpt-5.3-codex",
+    "reasoning_effort": "high",
+    "edit_permission": "Full"
+  },
+  {
+    "agent_id": "T1-1",
+    "display_name": "T1-1 Principal",
+    "tier": "T1",
+    "role": "Principal",
+    "wave": "wave5-principal-review",
+    "prompt": "approval-based live apply pipeline ekle x10",
+    "task_summary": "Perform principal review and architecture validation for: approval-based live apply pipeline ekle x10",
+    "owned_scope": [
+      "architecture review",
+      "final high-risk review",
+      "escalation handling",
+      "approval-based",
+      "live",
+      "apply",
+      "pipeline"
+    ],
+    "required_skills": [
+      "Context Mode",
+      "Graphify",
+      "Architect",
+      "Code Review"
+    ],
+    "skipped_skills": [
+      "Scoped coding unless escalation requires it"
+    ],
+    "context_files": [
+      "README.md",
+      "AGENTS.md",
+      ".codex/config/delegation-rules.md",
+      ".codex/config/tier-definitions.md",
+      ".codex/instructions/reference/review-chain.instructions.md",
+      ".codex/contracts/review-report.md"
+    ],
+    "review_target": null,
+    "expected_output_format": "task-report",
+    "expected_model": "gpt-5.4",
+    "reasoning_effort": "high",
+    "edit_permission": "Full"
+  },
+  {
+    "agent_id": "T1-2",
+    "display_name": "T1-2 Principal",
+    "tier": "T1",
+    "role": "Principal",
+    "wave": "wave5-principal-review",
+    "prompt": "approval-based live apply pipeline ekle x10",
+    "task_summary": "Perform principal review and architecture validation for: approval-based live apply pipeline ekle x10",
+    "owned_scope": [
+      "architecture review",
+      "final high-risk review",
+      "escalation handling",
+      "approval-based",
+      "live",
+      "apply",
+      "pipeline"
+    ],
+    "required_skills": [
+      "Context Mode",
+      "Graphify",
+      "Architect",
+      "Code Review"
+    ],
+    "skipped_skills": [
+      "Scoped coding unless escalation requires it"
+    ],
+    "context_files": [
+      "README.md",
+      "AGENTS.md",
+      ".codex/config/delegation-rules.md",
+      ".codex/config/tier-definitions.md",
+      ".codex/instructions/reference/review-chain.instructions.md",
+      ".codex/contracts/review-report.md"
+    ],
+    "review_target": null,
+    "expected_output_format": "task-report",
+    "expected_model": "gpt-5.4",
+    "reasoning_effort": "high",
+    "edit_permission": "Full"
+  }
+]

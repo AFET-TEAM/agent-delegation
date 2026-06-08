@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "hooks": {
+    "preToolUse": [
+      {
+        "command": "Cursor/.cursor/hooks/pre-tool-use-write.sh",
+        "matcher": "Write|StrReplace|Edit",
+        "failClosed": true,
+        "timeout": 15
+      }
+    ],
+    "postToolUse": [
+      {
+        "command": "Cursor/.cursor/hooks/post-tool-use-write.sh",
+        "matcher": "Write|StrReplace|Edit",
+        "timeout": 15
+      }
+    ],
+    "beforeShellExecution": [
+      {
+        "command": "Cursor/.cursor/hooks/before-shell-execution.sh",
+        "failClosed": true,
+        "timeout": 10
+      }
+    ],
+    "beforeSubmitPrompt": [
+      {
+        "command": "Cursor/.cursor/hooks/before-submit-prompt.sh",
+        "matcher": "UserPromptSubmit",
+        "timeout": 45
+      }
+    ],
+    "subagentStart": [
+      {
+        "command": "Cursor/.cursor/hooks/subagent-start.sh",
+        "timeout": 10
+      }
+    ],
+    "subagentStop": [
+      {
+        "command": "Cursor/.cursor/hooks/subagent-stop.sh",
+        "timeout": 10
+      }
+    ],
+    "sessionEnd": [
+      {
+        "command": "Cursor/.cursor/hooks/session-end.sh",
+        "timeout": 30
+      }
+    ]
+  }
+}

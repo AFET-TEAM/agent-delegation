@@ -1,0 +1,39 @@
+{
+  "agent_id": "T5-1",
+  "display_name": "T5-1 Analyst",
+  "tier": "T5",
+  "role": "Analyst",
+  "wave": "wave1-discovery",
+  "prompt": "PCD smoke auth module x5",
+  "task_summary": "Analyze repository context and produce raw evidence for: PCD smoke auth module x5",
+  "owned_scope": [
+    "repo discovery",
+    "risk extraction",
+    "test scenarios",
+    "pcd",
+    "smoke",
+    "auth",
+    "module"
+  ],
+  "required_skills": [
+    "Context Mode",
+    "Graphify",
+    "Analysis"
+  ],
+  "skipped_skills": [
+    "Implementation"
+  ],
+  "context_files": [
+    "README.md",
+    "AGENTS.md",
+    ".cursor/config/delegation-rules.md",
+    ".cursor/config/tier-definitions.md",
+    ".cursor/instructions/reference/review-chain.instructions.md",
+    ".cursor/contracts/review-report.md"
+  ],
+  "review_target": "T4",
+  "expected_output_format": "task-report",
+  "expected_model": "gemini-3-flash",
+  "reasoning_effort": "high",
+  "edit_permission": "Scoped raw only"
+}

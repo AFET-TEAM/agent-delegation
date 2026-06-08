@@ -1,0 +1,13 @@
+[
+  {
+    "event": "SubagentStop",
+    "steps": [
+      {
+        "run": "mkdir -p .github/logs; AGENT=\"${COPILOT_AGENT:-unknown}\"; SAFE=$(echo \"$AGENT\" | tr -cd 'A-Za-z0-9_-'); COUNTER_FILE=\".github/logs/.edit-count-${SAFE}\"; COUNT=$(cat \"$COUNTER_FILE\" 2>/dev/null || echo 0); case \"$COUNT\" in ''|*[!0-9]*) COUNT=0;; esac; IS_CODING_AGENT=false; case \"$AGENT\" in PrincipalAlpha|PrincipalBeta|StaffEngineerAlpha|StaffEngineerBeta|MidCoderAlpha|MidCoderBeta) IS_CODING_AGENT=true;; esac; if [ \"$IS_CODING_AGENT\" = \"true\" ] && [ \"$COUNT\" -gt 5 ]; then echo \"\"; echo \"[POST-DEV] =======================================\"; echo \"[POST-DEV]  AUTO-ANALYSIS HOOK TRIGGERED\"; echo \"[POST-DEV]  Agent: $AGENT made $COUNT edits\"; echo \"[POST-DEV]  Threshold: >5 edits triggers analysis\"; echo \"[POST-DEV]  Action: Orchestrator should dispatch\"; echo \"[POST-DEV]  T5 Analyst for structure validation\"; echo \"[POST-DEV]  and doc consistency check.\"; echo \"[POST-DEV] =======================================\"; echo \"\"; echo \"[POST-DEV-TRIGGER] agent=$SAFE edits=$COUNT threshold=5 at $(date -u +'%Y-%m-%d %H:%M:%S UTC')\" >> .github/logs/agent-activity.log; fi"
+      },
+      {
+        "run": "AGENT=\"${COPILOT_AGENT:-unknown}\"; IS_CODING_AGENT=false; case \"$AGENT\" in PrincipalAlpha|PrincipalBeta|StaffEngineerAlpha|StaffEngineerBeta|MidCoderAlpha|MidCoderBeta) IS_CODING_AGENT=true;; esac; if [ \"$IS_CODING_AGENT\" = \"true\" ]; then CHANGED_FILES=$(git diff --name-only HEAD 2>/dev/null | wc -l | tr -d ' '); STAGED_FILES=$(git diff --cached --name-only 2>/dev/null | wc -l | tr -d ' '); TOTAL=$((CHANGED_FILES + STAGED_FILES)); if [ \"$TOTAL\" -gt 10 ]; then echo \"[POST-DEV] $TOTAL files modified — comprehensive doc update recommended\"; echo \"[POST-DEV-FILES] agent=$AGENT changed_files=$TOTAL at $(date -u +'%Y-%m-%d %H:%M:%S UTC')\" >> .github/logs/agent-activity.log; fi; fi"
+      }
+    ]
+  }
+]

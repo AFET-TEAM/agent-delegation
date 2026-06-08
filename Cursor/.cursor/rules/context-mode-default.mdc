@@ -1,0 +1,14 @@
+---
+description: Default-on context discipline for repo exploration
+alwaysApply: true
+---
+
+# Context Mode Default
+
+Unless `context-mode off`:
+
+- Search before broad reads
+- Prefer narrow file reads over recursive dumps
+- Summarize before expanding context
+- State what was intentionally not read yet
+- Use context-mode MCP (`ctx_*`) for large-repo analysis when available
