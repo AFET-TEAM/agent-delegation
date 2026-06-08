@@ -1,0 +1,43 @@
+---
+description: Basit anahtar kelime ile multi-agent modları — bin/ veya slash komut gerekmez
+alwaysApply: true
+---
+
+# Prompt Anahtar Kelimeleri (Kullanıcı Dili)
+
+Kullanıcılar terminal veya `bin/` çalıştırmaz. Görevi doğrudan Cursor sohbetine yazarlar.
+
+## Çok-ajan (otomatik)
+
+Prompt içinde **x2, x3, x4, x5, x7 veya x10** geçiyorsa multi-agent modu **otomatik** açılır.
+
+Örnekler:
+- `auth modülü x5`
+- `x10 migration analizi`
+- `pcd yeni servis x3`
+
+Orchestrator: manifest üretilir (`beforeSubmitPrompt` hook); `spawn-packets/` sırasıyla **Task** subagent çağır; review zinciri uygula.
+
+## Mod anahtar kelimeleri (kelime olarak, `/` şart değil)
+
+| Anahtar | Etki |
+|---------|------|
+| `pcd` | Proje bağlam keşfi — README, docs/ önce |
+| `caveman` | Kısa kullanıcı yanıtı (`lite` / `full` / `ultra` opsiyonel) |
+| `graphify` | Topoloji-first daraltma |
+| `context-mode` veya `ctx` | Context disiplini |
+| `review` | Review-first geçiş |
+| `architect` | T1 mimari yönlendirme |
+
+Örnekler:
+- `pcd repo analizi`
+- `pcd graphify auth akışı x5`
+- `caveman durum özeti`
+
+## Varsayılan (kapalı değilse)
+
+`caveman`, `context-mode`, `graphify` zaten açık. Kapatma: `no caveman`, `graphify off`, `context-mode off`.
+
+## Orchestrator yasağı
+
+xN varken uygulama kodu yazma; Task ile delegasyon. Kullanıcıya `bin/team` veya slash komut önerme.

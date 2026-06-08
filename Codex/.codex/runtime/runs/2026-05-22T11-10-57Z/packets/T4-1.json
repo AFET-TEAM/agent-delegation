@@ -1,0 +1,39 @@
+{
+  "agent_id": "T4-1",
+  "display_name": "T4-1 Lead Analyst",
+  "tier": "T4",
+  "role": "Lead Analyst",
+  "wave": "wave2-consolidation",
+  "prompt": "force-revision runtime write update README.md x5",
+  "task_summary": "Consolidate T5 evidence into actionable analysis for: force-revision runtime write update README.md x5",
+  "owned_scope": [
+    "analysis consolidation",
+    "evidence de-duplication",
+    "review of T5",
+    "force-revision",
+    "runtime",
+    "write",
+    "update"
+  ],
+  "required_skills": [
+    "Context Mode",
+    "Graphify",
+    "Analysis"
+  ],
+  "skipped_skills": [
+    "Implementation"
+  ],
+  "context_files": [
+    "README.md",
+    "AGENTS.md",
+    ".codex/config/delegation-rules.md",
+    ".codex/config/tier-definitions.md",
+    ".codex/instructions/reference/review-chain.instructions.md",
+    ".codex/contracts/review-report.md"
+  ],
+  "review_target": null,
+  "expected_output_format": "task-report",
+  "expected_model": "gpt-5.2",
+  "reasoning_effort": "high",
+  "edit_permission": "Scoped consolidated"
+}

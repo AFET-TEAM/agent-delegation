@@ -1,0 +1,40 @@
+{
+  "agent_id": "T2-1",
+  "display_name": "T2-1 Staff Engineer",
+  "tier": "T2",
+  "role": "Staff Engineer",
+  "wave": "wave4-staff-review",
+  "prompt": "PCD smoke auth module x5",
+  "task_summary": "Handle complex implementation and/or review T3 output for: PCD smoke auth module x5",
+  "owned_scope": [
+    "complex implementation",
+    "review of T3",
+    "integration validation",
+    "pcd",
+    "smoke",
+    "auth",
+    "module"
+  ],
+  "required_skills": [
+    "Context Mode",
+    "Graphify",
+    "Implementation",
+    "Testing Standards"
+  ],
+  "skipped_skills": [
+    "Analysis-only long-form discovery"
+  ],
+  "context_files": [
+    "README.md",
+    "AGENTS.md",
+    ".cursor/config/delegation-rules.md",
+    ".cursor/config/tier-definitions.md",
+    ".cursor/instructions/reference/review-chain.instructions.md",
+    ".cursor/contracts/review-report.md"
+  ],
+  "review_target": "T1",
+  "expected_output_format": "task-report",
+  "expected_model": "claude-4.6-sonnet",
+  "reasoning_effort": "high",
+  "edit_permission": "Full"
+}

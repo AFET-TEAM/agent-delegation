@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "description": "Machine-readable context budget per tier, mirrors context-budget.md",
+  "canonical_source": ".claude/config/tier-definitions.md",
+  "tiers": {
+    "orchestrator": {
+      "model": "opus",
+      "fallback": ["sonnet"],
+      "max_input_tokens": 200000,
+      "max_output_tokens": 32000,
+      "max_skills": null,
+      "max_pcd_files": null,
+      "role": "coordination-only, read-only on application code"
+    },
+    "T1": {
+      "model": "opus",
+      "fallback": ["sonnet"],
+      "max_skills": 5,
+      "max_pcd_files": 10,
+      "max_tokens_per_task": 8000
+    },
+    "T2": {
+      "model": "sonnet",
+      "fallback": ["haiku"],
+      "max_skills": 5,
+      "max_pcd_files": 8,
+      "max_tokens_per_task": 6000
+    },
+    "T3": {
+      "model": "sonnet",
+      "fallback": ["haiku"],
+      "max_skills": 4,
+      "max_pcd_files": 6,
+      "max_tokens_per_task": 5000
+    },
+    "T4": {
+      "model": "haiku",
+      "fallback": [],
+      "max_skills": 3,
+      "max_pcd_files": 5,
+      "max_tokens_per_task": 4000
+    },
+    "T5": {
+      "model": "haiku",
+      "fallback": [],
+      "max_skills": 3,
+      "max_pcd_files": 3,
+      "max_tokens_per_task": 3000
+    }
+  },
+  "enforcement": {
+    "overflow_protocol": "If a sub-task exceeds its tier's max_tokens_per_task, split further or escalate to next tier. See CLAUDE.md Step 3.",
+    "hook_validation": "Consider adding a pre-spawn validator hook that reads this file and rejects over-budget task assignments."
+  }
+}

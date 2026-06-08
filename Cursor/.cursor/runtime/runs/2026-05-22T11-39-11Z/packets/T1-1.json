@@ -1,0 +1,38 @@
+{
+  "agent_id": "T1-1",
+  "display_name": "T1-1 Principal",
+  "tier": "T1",
+  "role": "Principal",
+  "wave": "wave5-principal-review",
+  "prompt": "pcd smoke x3",
+  "task_summary": "Perform principal review and architecture validation for: pcd smoke x3",
+  "owned_scope": [
+    "architecture review",
+    "final high-risk review",
+    "escalation handling",
+    "pcd",
+    "smoke"
+  ],
+  "required_skills": [
+    "Context Mode",
+    "Graphify",
+    "Architect",
+    "Code Review"
+  ],
+  "skipped_skills": [
+    "Scoped coding unless escalation requires it"
+  ],
+  "context_files": [
+    "README.md",
+    "AGENTS.md",
+    ".cursor/config/delegation-rules.md",
+    ".cursor/config/tier-definitions.md",
+    ".cursor/instructions/reference/review-chain.instructions.md",
+    ".cursor/contracts/review-report.md"
+  ],
+  "review_target": null,
+  "expected_output_format": "task-report",
+  "expected_model": "claude-4.6-opus",
+  "reasoning_effort": "high",
+  "edit_permission": "Full"
+}

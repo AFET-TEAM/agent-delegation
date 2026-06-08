@@ -1,0 +1,40 @@
+{
+  "agent_id": "T3-1",
+  "display_name": "T3-1 Mid Coder",
+  "tier": "T3",
+  "role": "Mid Coder",
+  "wave": "wave3-implementation",
+  "prompt": "PCD smoke auth module x5",
+  "task_summary": "Implement bounded scoped changes for: PCD smoke auth module x5",
+  "owned_scope": [
+    "bounded implementation",
+    "scoped edits",
+    "local validation",
+    "pcd",
+    "smoke",
+    "auth",
+    "module"
+  ],
+  "required_skills": [
+    "Context Mode",
+    "Graphify",
+    "Implementation",
+    "Testing Standards"
+  ],
+  "skipped_skills": [
+    "Analysis-only long-form discovery"
+  ],
+  "context_files": [
+    "README.md",
+    "AGENTS.md",
+    ".cursor/config/delegation-rules.md",
+    ".cursor/config/tier-definitions.md",
+    ".cursor/instructions/reference/review-chain.instructions.md",
+    ".cursor/contracts/review-report.md"
+  ],
+  "review_target": "T2",
+  "expected_output_format": "task-report",
+  "expected_model": "composer-2.5-fast",
+  "reasoning_effort": "medium",
+  "edit_permission": "Full"
+}

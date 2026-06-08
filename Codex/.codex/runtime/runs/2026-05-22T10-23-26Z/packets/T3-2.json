@@ -1,0 +1,36 @@
+{
+  "agent_id": "T3-2",
+  "display_name": "T3-2 Mid Coder",
+  "tier": "T3",
+  "role": "Mid Coder",
+  "wave": "wave3-implementation",
+  "prompt": "migration audit x10",
+  "task_summary": "Implement bounded scoped changes for: migration audit x10",
+  "owned_scope": [
+    "bounded implementation",
+    "scoped edits",
+    "local validation"
+  ],
+  "required_skills": [
+    "Context Mode",
+    "Graphify",
+    "Implementation",
+    "Testing Standards"
+  ],
+  "skipped_skills": [
+    "Analysis-only long-form discovery"
+  ],
+  "context_files": [
+    "README.md",
+    "AGENTS.md",
+    ".codex/config/delegation-rules.md",
+    ".codex/config/tier-definitions.md",
+    ".codex/instructions/reference/review-chain.instructions.md",
+    ".codex/contracts/review-report.md"
+  ],
+  "review_target": "T2",
+  "expected_output_format": "task-report",
+  "expected_model": "gpt-5.2",
+  "reasoning_effort": "medium",
+  "edit_permission": "Full"
+}

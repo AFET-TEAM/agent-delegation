@@ -1,0 +1,36 @@
+{
+  "agent_id": "T2-1",
+  "display_name": "T2-1 Staff Engineer",
+  "tier": "T2",
+  "role": "Staff Engineer",
+  "wave": "wave4-review",
+  "prompt": "auth feature x3",
+  "task_summary": "Handle complex implementation and/or review T3 output for: auth feature x3",
+  "owned_scope": [
+    "complex implementation",
+    "review of T3",
+    "integration validation"
+  ],
+  "required_skills": [
+    "Context Mode",
+    "Graphify",
+    "Implementation",
+    "Testing Standards"
+  ],
+  "skipped_skills": [
+    "Analysis-only long-form discovery"
+  ],
+  "context_files": [
+    "README.md",
+    "AGENTS.md",
+    ".codex/config/delegation-rules.md",
+    ".codex/config/tier-definitions.md",
+    ".codex/instructions/reference/review-chain.instructions.md",
+    ".codex/contracts/review-report.md"
+  ],
+  "review_target": "T1",
+  "expected_output_format": "task-report",
+  "expected_model": "gpt-5.3-codex",
+  "reasoning_effort": "high",
+  "edit_permission": "Full"
+}

@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-05-22T11:55:37Z",
+  "results": [
+    {
+      "target": "README.md",
+      "mirror": "workspace-mirror/README.md",
+      "applied": false,
+      "reason": "blocked by global lock",
+      "validation": "failed",
+      "rollback_snapshot": null
+    }
+  ]
+}

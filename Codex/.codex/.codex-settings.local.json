@@ -1,0 +1,8 @@
+{
+  "outputStyle": "Explanatory",
+  "prefersReducedMotion": true,
+  "enableCavemanByKeyword": true,
+  "preflightReminder": true,
+  "defaultLargeTaskMode": "/context-mode",
+  "defaultReviewExpectation": "mandatory in multi-agent mode"
+}

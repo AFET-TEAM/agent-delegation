@@ -1,0 +1,8 @@
+--- AGENTS.md
++++ AGENTS.md (mirror)
+@@ -385,3 +385,5 @@
+ 
+ This file is required because the system needs an explicit operating contract to remain reliable under team usage.
+ 
++
++<!-- runtime mirror update by T1 -->

@@ -1,0 +1,189 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(npm test *)",
+      "Bash(npm install *)",
+      "Bash(npx *)",
+      "Bash(node *)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git show *)",
+      "Bash(git branch)",
+      "Bash(git remote -v)",
+      "Bash(git stash list)",
+      "Bash(git tag -l)",
+      "Bash(mkdir -p *)",
+      "Bash(ls *)",
+      "Bash(chmod +x *)",
+      "MCP(context-mode/ctx_execute)",
+      "MCP(context-mode/ctx_execute_file)",
+      "MCP(context-mode/ctx_batch_execute)",
+      "MCP(context-mode/ctx_index)",
+      "MCP(context-mode/ctx_search)",
+      "MCP(context-mode/ctx_fetch_and_index)",
+      "MCP(context-mode/ctx_stats)",
+      "MCP(context-mode/ctx_doctor)",
+      "MCP(context-mode/ctx_upgrade)",
+      "MCP(context-mode/ctx_purge)",
+      "MCP(context-mode/ctx_insight)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Edit(./.env)",
+      "Edit(./.env.*)",
+      "Write(./.env)",
+      "Write(./.env.*)",
+      "Read(./secrets/**)",
+      "Edit(./secrets/**)",
+      "Edit(./node_modules/**)",
+      "Write(./node_modules/**)",
+      "Edit(./dist/**)",
+      "Write(./dist/**)",
+      "Edit(./build/**)",
+      "Write(./build/**)"
+    ]
+  },
+  "mcpServers": {
+    "context-mode": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["@context-mode/mcp@1.0.146"],
+      "env": {
+        "CTX_FETCH_STRICT": "1",
+        "CTX_DENY_PATHS": "~/.ssh,~/.aws,~/.kube,~/.gnupg,./.env,./.env.*,./secrets",
+        "CTX_DB_PATH": ".claude/analysis/knowledge.db",
+        "CTX_MAX_CONCURRENCY": "4",
+        "CTX_OUTPUT_CAP": "102400000",
+        "CTX_SEARCH_RATE_LIMIT": "10",
+        "CTX_TIMEOUT_DEFAULT": "30000",
+        "CTX_DB_ENCRYPTION": "true"
+      }
+    }
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash $CLAUDE_PROJECT_DIR/.claude/hooks/block-console-log.sh",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "bash $CLAUDE_PROJECT_DIR/.claude/hooks/block-any-type.sh",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "bash $CLAUDE_PROJECT_DIR/.claude/hooks/block-comments.sh",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "bash $CLAUDE_PROJECT_DIR/.claude/hooks/secret-guard.sh",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "bash $CLAUDE_PROJECT_DIR/.claude/hooks/analysis-scope-guard.sh",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "bash $CLAUDE_PROJECT_DIR/.claude/hooks/figma-standards-guard.sh",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "bash $CLAUDE_PROJECT_DIR/.claude/hooks/sql-injection-check.sh",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "bash $CLAUDE_PROJECT_DIR/.claude/hooks/xss-prevention-check.sh",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "bash $CLAUDE_PROJECT_DIR/.claude/hooks/path-traversal-check.sh",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "bash $CLAUDE_PROJECT_DIR/.claude/hooks/field-injection-check.sh",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "bash $CLAUDE_PROJECT_DIR/.claude/hooks/cors-wildcard-check.sh",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash $CLAUDE_PROJECT_DIR/.claude/hooks/git-safety-check.sh",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "bash $CLAUDE_PROJECT_DIR/.claude/hooks/context-mode-guard.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash $CLAUDE_PROJECT_DIR/.claude/hooks/review-tracker.sh",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "bash $CLAUDE_PROJECT_DIR/.claude/hooks/self-learning-collector.sh",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "bash $CLAUDE_PROJECT_DIR/.claude/hooks/graphify-rebuild.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash $CLAUDE_PROJECT_DIR/.claude/hooks/update-leaderboard.sh",
+            "timeout": 15
+          },
+          {
+            "type": "command",
+            "command": "bash $CLAUDE_PROJECT_DIR/.claude/hooks/pattern-lifecycle.sh",
+            "timeout": 15
+          },
+          {
+            "type": "command",
+            "command": "bash $CLAUDE_PROJECT_DIR/.claude/hooks/graphify-audit.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

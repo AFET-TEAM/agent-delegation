@@ -1,0 +1,2082 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MayaCore MFE Context — Multi-Agent AI Framework Documentation</title>
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --primary-dark: #1557b0;
+            --secondary: #5f6368;
+            --accent: #34a853;
+            --warning: #fbbc04;
+            --danger: #ea4335;
+            --bg: #ffffff;
+            --bg-alt: #f8f9fa;
+            --bg-code: #1e1e1e;
+            --text: #202124;
+            --text-light: #5f6368;
+            --border: #dadce0;
+            --shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.15);
+            --radius: 8px;
+            --nav-width: 280px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            background: var(--bg);
+        }
+
+        /* Navigation */
+        .nav-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--nav-width);
+            height: 100vh;
+            background: var(--bg-alt);
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            z-index: 100;
+            padding: 20px 0;
+        }
+
+        .nav-logo {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 15px;
+        }
+
+        .nav-logo h2 {
+            font-size: 16px;
+            color: var(--primary);
+        }
+
+        .nav-logo span {
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        .nav-section {
+            padding: 8px 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-light);
+            margin-top: 10px;
+        }
+
+        .nav-sidebar a {
+            display: block;
+            padding: 6px 20px 6px 32px;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 13px;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .nav-sidebar a:hover {
+            background: #e8f0fe;
+            border-left-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .nav-sidebar a.active {
+            background: #e8f0fe;
+            border-left-color: var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: var(--nav-width);
+            padding: 40px 60px;
+            max-width: 1000px;
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, #1a73e8 0%, #4285f4 50%, #34a853 100%);
+            color: white;
+            padding: 60px 40px;
+            border-radius: var(--radius);
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .hero h1 {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            font-size: 16px;
+            opacity: 0.9;
+            max-width: 600px;
+        }
+
+        .hero .badges {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        /* Sections */
+        section {
+            margin-bottom: 50px;
+            scroll-margin-top: 20px;
+        }
+
+        h2 {
+            font-size: 24px;
+            color: var(--text);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        h3 {
+            font-size: 18px;
+            color: var(--text);
+            margin: 24px 0 12px;
+        }
+
+        h4 {
+            font-size: 15px;
+            color: var(--secondary);
+            margin: 16px 0 8px;
+        }
+
+        p { margin-bottom: 12px; }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 14px;
+            box-shadow: var(--shadow);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:nth-child(even) { background: var(--bg-alt); }
+        tr:hover { background: #e8f0fe; }
+
+        /* Code Blocks */
+        pre {
+            background: var(--bg-code);
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: var(--radius);
+            overflow-x: auto;
+            margin: 16px 0;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+            font-size: 13px;
+        }
+
+        :not(pre) > code {
+            background: #f1f3f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--danger);
+        }
+
+        /* Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card h4 {
+            color: var(--primary);
+            margin: 0 0 8px;
+        }
+
+        .card p {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 16px 20px;
+            border-radius: var(--radius);
+            margin: 16px 0;
+            border-left: 4px solid;
+        }
+
+        .alert-info {
+            background: #e8f0fe;
+            border-color: var(--primary);
+        }
+
+        .alert-success {
+            background: #e6f4ea;
+            border-color: var(--accent);
+        }
+
+        .alert-warning {
+            background: #fef7e0;
+            border-color: var(--warning);
+        }
+
+        .alert-danger {
+            background: #fce8e6;
+            border-color: var(--danger);
+        }
+
+        .alert strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* Architecture Diagram */
+        .architecture {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 30px;
+            text-align: center;
+            margin: 20px 0;
+            font-family: monospace;
+            white-space: pre;
+            line-height: 1.4;
+            overflow-x: auto;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 0;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-light);
+            transition: all 0.2s;
+        }
+
+        .tab:hover { color: var(--primary); }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px 0;
+        }
+
+        .tab-content.active { display: block; }
+
+        /* Flow Diagram */
+        .flow-step {
+            display: flex;
+            align-items: flex-start;
+            margin: 12px 0;
+            padding: 12px;
+            border-left: 3px solid var(--primary);
+            background: var(--bg-alt);
+            border-radius: 0 var(--radius) var(--radius) 0;
+        }
+
+        .flow-step .step-num {
+            background: var(--primary);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .flow-step .step-content h4 { margin: 0 0 4px; font-size: 14px; }
+        .flow-step .step-content p { margin: 0; font-size: 13px; color: var(--text-light); }
+
+        /* TOC in sections */
+        .toc-mini {
+            background: var(--bg-alt);
+            padding: 16px 20px;
+            border-radius: var(--radius);
+            margin-bottom: 20px;
+        }
+
+        .toc-mini ul {
+            list-style: none;
+            columns: 2;
+        }
+
+        .toc-mini li {
+            padding: 3px 0;
+            font-size: 13px;
+        }
+
+        .toc-mini a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-sidebar { display: none; }
+            .main-content { margin-left: 0; padding: 20px; }
+            .card-grid { grid-template-columns: 1fr; }
+            .toc-mini ul { columns: 1; }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-alt); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--secondary); }
+
+        /* Collapsible */
+        details {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 12px 16px;
+            margin: 12px 0;
+        }
+
+        details summary {
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        details[open] summary { margin-bottom: 12px; }
+
+        /* Tag/Chip */
+        .chip {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin: 2px;
+        }
+
+        .chip-blue { background: #e8f0fe; color: var(--primary); }
+        .chip-green { background: #e6f4ea; color: var(--accent); }
+        .chip-orange { background: #fef7e0; color: #e37400; }
+        .chip-red { background: #fce8e6; color: var(--danger); }
+    </style>
+</head>
+<body>
+
+<!-- Navigation Sidebar -->
+<nav class="nav-sidebar">
+    <div class="nav-logo">
+        <h2>MayaCore MFE Context</h2>
+        <span>Multi-Agent AI Framework v7.3</span>
+    </div>
+
+    <div class="nav-section">Başlangıç</div>
+    <a href="#overview">Genel Bakış</a>
+    <a href="#quickstart">Hızlı Başlangıç</a>
+    <a href="#platforms">Platform Desteği</a>
+
+    <div class="nav-section">Mimari</div>
+    <a href="#architecture">Sistem Mimarisi</a>
+    <a href="#tiers">5-Tier Agent Yapısı</a>
+    <a href="#delegation">xN Delegasyon</a>
+    <a href="#review-chain">Review Chain</a>
+
+    <div class="nav-section">Özellikler</div>
+    <a href="#slash-commands">Slash Komutları</a>
+    <a href="#hooks">Güvenlik Hooks</a>
+    <a href="#skills">Skills Sistemi</a>
+    <a href="#context-mode">Context Mode</a>
+    <a href="#caveman">Caveman Mode</a>
+    <a href="#graphify">Graphify</a>
+
+    <div class="nav-section">Yapılandırma</div>
+    <a href="#config">Konfigürasyon</a>
+    <a href="#memory">Memory & Learning</a>
+    <a href="#metrics">Metrics & Scoring</a>
+
+    <div class="nav-section">İleri Düzey</div>
+    <a href="#pcd">Project Context Discovery</a>
+    <a href="#templates">Proje Şablonları</a>
+    <a href="#custom-hooks">Özel Hook Yazma</a>
+    <a href="#custom-skills">Özel Skill Yazma</a>
+
+    <div class="nav-section">Referans</div>
+    <a href="#parity">Platform Paritesi</a>
+    <a href="#file-structure">Dosya Yapısı</a>
+    <a href="#troubleshooting">Sorun Giderme</a>
+    <a href="#changelog">Değişiklik Günlüğü</a>
+</nav>
+
+<!-- Main Content -->
+<main class="main-content">
+
+    <!-- Hero -->
+    <div class="hero">
+        <h1>MayaCore MFE Context</h1>
+        <p>Enterprise-grade multi-agent AI orchestration system. Claude Code, GitHub Copilot, OpenAI Codex ve Cursor için birleşik konfigürasyon framework'ü.</p>
+        <div class="badges">
+            <span class="badge">5-Tier Architecture</span>
+            <span class="badge">19 Security Hooks</span>
+            <span class="badge">20 Skills</span>
+            <span class="badge">4 Platforms</span>
+            <span class="badge">xN Delegation</span>
+            <span class="badge">11 Agents</span>
+        </div>
+    </div>
+
+    <!-- Overview -->
+    <section id="overview">
+        <h2>Genel Bakış</h2>
+        <p>MayaCore MFE Context, yazılım geliştirme ekiplerinin AI agent'larını merkezi bir yapılandırma ile yönetmesini sağlayan bir framework'tür. Birden fazla AI platformunu (Claude, Copilot, Codex, Cursor) aynı mimari kalıplar, güvenlik kuralları ve iş akışları ile çalıştırır.</p>
+
+        <div class="card-grid">
+            <div class="card">
+                <h4>🏗️ Multi-Agent Orchestration</h4>
+                <p>5 farklı yetkinlik seviyesinde agent'lar, tek bir orchestrator tarafından koordine edilir. Her agent kendi sorumluluk alanında çalışır.</p>
+            </div>
+            <div class="card">
+                <h4>🔒 Security-First Design</h4>
+                <p>19 adet pre/post hook ile SQL injection, XSS, secret leak, path traversal gibi güvenlik açıkları otomatik engellenir.</p>
+            </div>
+            <div class="card">
+                <h4>📊 Self-Learning System</h4>
+                <p>Agent'lar tekrarlayan kalıpları öğrenir, performans metriklerini takip eder ve oturum bazlı iyileştirmeler yapar.</p>
+            </div>
+            <div class="card">
+                <h4>⚡ Context Efficiency</h4>
+                <p>Token bütçe yönetimi, progressive disclosure ve context-mode ile %40-60 token tasarrufu sağlanır.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Start -->
+    <section id="quickstart">
+        <h2>Hızlı Başlangıç</h2>
+
+        <div class="alert alert-info">
+            <strong>💡 Ön Koşul</strong>
+            Bu framework'ü kullanmak için ilgili AI aracının (Claude Code CLI, GitHub Copilot, Codex CLI veya Cursor IDE) yüklü olması gerekir.
+        </div>
+
+        <h3>Adım 1: Repository'yi Klonlayın</h3>
+        <pre><code>git clone https://stash.turkcell.com.tr/git/scm/ma358402/mayacore-mfe-context.git
+cd mayacore-mfe-context</code></pre>
+
+        <h3>Adım 2: Platformunuzu Seçin</h3>
+
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab(event, 'tab-claude')">Claude Code</div>
+            <div class="tab" onclick="switchTab(event, 'tab-copilot')">GitHub Copilot</div>
+            <div class="tab" onclick="switchTab(event, 'tab-codex')">OpenAI Codex</div>
+            <div class="tab" onclick="switchTab(event, 'tab-cursor')">Cursor</div>
+        </div>
+
+        <div id="tab-claude" class="tab-content active">
+            <pre><code># Projenize kopyalayın
+cp -r Claude/.claude /your-project/
+cp Claude/CLAUDE.md /your-project/
+
+# Hook'ları çalıştırılabilir yapın
+chmod +x /your-project/.claude/hooks/*.sh
+
+# Claude Code ile açın
+cd /your-project && claude</code></pre>
+
+            <div class="alert alert-success">
+                <strong>✅ Hazır!</strong>
+                Claude Code otomatik olarak CLAUDE.md ve .claude/ yapılandırmasını okuyacaktır.
+            </div>
+        </div>
+
+        <div id="tab-copilot" class="tab-content">
+            <pre><code># Projenize kopyalayın
+cp -r Copilot/.github /your-project/
+cp -r Copilot/.vscode /your-project/
+
+# VS Code'da açın
+code /your-project</code></pre>
+
+            <div class="alert alert-success">
+                <strong>✅ Hazır!</strong>
+                Copilot Chat panelinde agent'ları @orchestrator şeklinde çağırabilirsiniz.
+            </div>
+        </div>
+
+        <div id="tab-codex" class="tab-content">
+            <pre><code># Projenize kopyalayın
+cp -r Codex/.codex /your-project/
+
+# Codex CLI ile açın
+cd /your-project && codex</code></pre>
+
+            <div class="alert alert-success">
+                <strong>✅ Hazır!</strong>
+                Codex otomatik olarak .codex/ yapılandırmasını algılayacaktır.
+            </div>
+        </div>
+
+        <div id="tab-cursor" class="tab-content">
+            <pre><code># Cursor adaptörünü inceleyin
+ls Cursor/
+
+# Kurulum ayrıntıları için rehberi açın
+open Cursor/README.md</code></pre>
+
+            <div class="alert alert-success">
+                <strong>✅ Hazır!</strong>
+                Cursor kurulumu ve wrapper script kullanımı için <code>Cursor/README.md</code> dosyasını izleyin.
+            </div>
+        </div>
+
+        <h3>Adım 3: İlk Komutu Çalıştırın</h3>
+        <pre><code># Basit bir görev delegasyonu
+/x3 Bu React component'ını refactor et
+
+# Context-mode aktif çalışma
+/context-mode Bu API'yi analiz et ve iyileştirme önerileri sun
+
+# Caveman mode (minimal token)
+/caveman Bu fonksiyondaki bug'ı bul ve düzelt</code></pre>
+    </section>
+
+    <!-- Platform Support -->
+    <section id="platforms">
+        <h2>Platform Desteği</h2>
+
+        <table>
+            <tr>
+                <th>Platform</th>
+                <th>Dizin</th>
+                <th>Skills</th>
+                <th>Hooks</th>
+                <th>Agents</th>
+            </tr>
+            <tr>
+                <td><strong>Claude Code</strong></td>
+                <td><code>Claude/</code></td>
+                <td>9 skill</td>
+                <td>19 hook (bash)</td>
+                <td>7 agent</td>
+            </tr>
+            <tr>
+                <td><strong>GitHub Copilot</strong></td>
+                <td><code>Copilot/</code></td>
+                <td>17 skill</td>
+                <td>8 hook (JSON+bash script)</td>
+                <td>11 agent</td>
+            </tr>
+            <tr>
+                <td><strong>OpenAI Codex</strong></td>
+                <td><code>Codex/</code></td>
+                <td>20 skill</td>
+                <td>18 hook (bash)</td>
+                <td>7 agent</td>
+            </tr>
+            <tr>
+                <td><strong>Cursor</strong></td>
+                <td><code>Cursor/</code></td>
+                <td>21 skill</td>
+                <td>27 hook/config files</td>
+                <td>7 agent</td>
+            </tr>
+        </table>
+
+        <h3>Cursor</h3>
+        <ul>
+            <li><strong>Folder:</strong> <code>Cursor/</code></li>
+            <li><strong>Version:</strong> v1.1.0</li>
+            <li><strong>Description:</strong> Cursor IDE adapter for the multi-agent framework. Mirrors Claude/Codex semantics with bin/ wrapper scripts (ctx, team, team-report, verify).</li>
+            <li><strong>Setup:</strong> See <code>Cursor/README.md</code>.</li>
+        </ul>
+
+        <div class="alert alert-warning">
+            <strong>⚠️ Uyumluluk Notu</strong>
+            Her platform aynı 5-tier mimarisini ve güvenlik kurallarını paylaşır. Fark yalnızca dosya formatı ve dizin yapısındadır.
+        </div>
+    </section>
+
+    <!-- Architecture -->
+    <section id="architecture">
+        <h2>Sistem Mimarisi</h2>
+
+        <div class="architecture">
+┌─────────────────────────────────────────────────────────────────┐
+│                      ORCHESTRATOR (T0)                            │
+│         Coordination · Task Planning · Quality Gate               │
+│         Model: Claude Opus 4.6 / GPT-5.5                         │
+├─────────┬───────────┬───────────┬───────────┬───────────────────┤
+│ T1      │ T2        │ T3        │ T4        │ T5                │
+│Principal│Staff Eng  │MidCoder   │Lead Analyst│Analyst           │
+│Opus 4.6 │Sonnet 4.6 │GPT-5.3    │Gemini 3.1 │Gemini 3 Flash   │
+│Arch+Rev │Features   │Standard   │Consolidate│Raw Research      │
+├─────────┴───────────┴───────────┴───────────┴───────────────────┤
+│                       SHARED LAYER                                │
+│  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌──────────┐ ┌────────┐  │
+│  │ Hooks   │ │ Skills  │ │ Memory  │ │ Metrics  │ │ Config │  │
+│  │ (19)    │ │ (16+)   │ │Sessions │ │Leaderboard│ │Registry│  │
+│  └─────────┘ └─────────┘ └─────────┘ └──────────┘ └────────┘  │
+└─────────────────────────────────────────────────────────────────┘
+        </div>
+
+        <h3>Veri Akışı</h3>
+        <div class="flow-step">
+            <span class="step-num">1</span>
+            <div class="step-content">
+                <h4>Kullanıcı İsteği</h4>
+                <p>Kullanıcı bir slash command veya doğal dil isteği gönderir → Orchestrator alır</p>
+            </div>
+        </div>
+        <div class="flow-step">
+            <span class="step-num">2</span>
+            <div class="step-content">
+                <h4>Task Planning & Delegation</h4>
+                <p>Orchestrator görevin karmaşıklığını analiz eder, uygun tier'a delege eder (xN multiplier ile)</p>
+            </div>
+        </div>
+        <div class="flow-step">
+            <span class="step-num">3</span>
+            <div class="step-content">
+                <h4>PreToolUse Hooks</h4>
+                <p>Agent her edit/bash işleminde güvenlik hook'larından geçer (secret-guard, sql-injection, xss...)</p>
+            </div>
+        </div>
+        <div class="flow-step">
+            <span class="step-num">4</span>
+            <div class="step-content">
+                <h4>Execution</h4>
+                <p>Agent görevini yürütür, skill'lerden faydalanır, context-mode kurallarına uyar</p>
+            </div>
+        </div>
+        <div class="flow-step">
+            <span class="step-num">5</span>
+            <div class="step-content">
+                <h4>PostToolUse + Review</h4>
+                <p>Edit sonrası review-tracker ve self-learning-collector çalışır. Review chain tetiklenir.</p>
+            </div>
+        </div>
+        <div class="flow-step">
+            <span class="step-num">6</span>
+            <div class="step-content">
+                <h4>SessionEnd</h4>
+                <p>Leaderboard güncellenir, pattern lifecycle çalışır, graphify audit yapılır</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5-Tier Agent Structure -->
+    <section id="tiers">
+        <h2>5-Tier Agent Yapısı</h2>
+
+        <p>Her tier farklı yetkinlik seviyesini, model gücünü ve sorumluluk alanını temsil eder.</p>
+
+        <table>
+            <tr>
+                <th>Tier</th>
+                <th>Rol</th>
+                <th>Model</th>
+                <th>Fallback</th>
+                <th>Yetki</th>
+            </tr>
+            <tr>
+                <td><span class="chip chip-red">T1</span></td>
+                <td><strong>Principal</strong></td>
+                <td>Claude Opus 4.6</td>
+                <td>Claude Opus 4.5</td>
+                <td>Architecture, binding decisions, review gate</td>
+            </tr>
+            <tr>
+                <td><span class="chip chip-orange">T2</span></td>
+                <td><strong>Staff Engineer</strong></td>
+                <td>Claude Sonnet 4.6</td>
+                <td>Claude Sonnet 4.5</td>
+                <td>Complex features, T3 review</td>
+            </tr>
+            <tr>
+                <td><span class="chip chip-blue">T3</span></td>
+                <td><strong>MidCoder</strong></td>
+                <td>GPT-5.3-Codex</td>
+                <td>GPT-5.2-Codex</td>
+                <td>Standard dev, boilerplate, simple bugs</td>
+            </tr>
+            <tr>
+                <td><span class="chip chip-green">T4</span></td>
+                <td><strong>Lead Analyst</strong></td>
+                <td>Gemini 3.1 Pro</td>
+                <td>Gemini 3.0 Pro</td>
+                <td>Consolidate T5 analysis, prioritize</td>
+            </tr>
+            <tr>
+                <td><span class="chip chip-green">T5</span></td>
+                <td><strong>Analyst</strong></td>
+                <td>Gemini 3 Flash</td>
+                <td>Claude Haiku 4.5</td>
+                <td>Raw research, dependency scan, docs</td>
+            </tr>
+        </table>
+
+        <h3>File Ownership</h3>
+        <ul>
+            <li><strong>T1-T3:</strong> Full edit access (source code, configs, tests)</li>
+            <li><strong>T4:</strong> Scoped — only <code>analysis/consolidated/</code></li>
+            <li><strong>T5:</strong> Scoped — only <code>analysis/raw/</code></li>
+        </ul>
+
+        <details>
+            <summary>Agent Naming Convention</summary>
+            <p>Agent isimleri <code>name-pool.md</code> dosyasından dinamik olarak atanır:</p>
+            <pre><code># Format: {tier-prefix}-{unique-name}
+principal-alpha
+staff-engineer-alpha
+staff-engineer-beta
+mid-coder-alpha
+mid-coder-beta
+lead-analyst
+analyst-alpha
+analyst-beta
+analyst-gamma</code></pre>
+        </details>
+    </section>
+
+    <!-- xN Delegation -->
+    <section id="delegation">
+        <h2>xN Delegasyon Sistemi</h2>
+
+        <p>Görevin karmaşıklığına göre birden fazla agent paralel veya sıralı olarak çalıştırılabilir. <code>/x2</code> ile <code>/x10</code> arası multiplier'lar kullanılır.</p>
+
+        <table>
+            <tr>
+                <th>Multiplier</th>
+                <th>T1</th>
+                <th>T2</th>
+                <th>T3</th>
+                <th>T4</th>
+                <th>T5</th>
+                <th>Toplam</th>
+            </tr>
+            <tr>
+                <td><strong>/x2</strong></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+                <td>2 agent</td>
+            </tr>
+            <tr>
+                <td><strong>/x3</strong></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+                <td>3 agent</td>
+            </tr>
+            <tr>
+                <td><strong>/x5</strong></td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>5 agent</td>
+            </tr>
+            <tr>
+                <td><strong>/x7</strong></td>
+                <td>1</td>
+                <td>2</td>
+                <td>2</td>
+                <td>1</td>
+                <td>1</td>
+                <td>7 agent</td>
+            </tr>
+            <tr>
+                <td><strong>/x10</strong></td>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>2</td>
+                <td>2</td>
+                <td>10 agent</td>
+            </tr>
+        </table>
+
+        <h3>Örnek: /x5 Kullanımı</h3>
+        <pre><code>/x5 Bu microservice'i refactor et: authentication modülü
+
+# Orchestrator şu şekilde dağıtım yapar:
+# T1 (Principal)  → Mimari kararları al, review gate olarak bekle
+# T2 (Staff Eng)  → Core authentication logic implementasyonu
+# T3 (MidCoder)   → Boilerplate ve test yazımı
+# T4 (Lead Anl.)  → Mevcut yapının analiz konsolidasyonu
+# T5 (Analyst)    → Dependency araştırması ve güvenlik audit</code></pre>
+
+        <h3>Review Waves</h3>
+        <p>xN delegasyonda review'lar wave bazlı yapılır:</p>
+        <ol>
+            <li><strong>Wave 1:</strong> T5 çıktısını T4 review eder</li>
+            <li><strong>Wave 2:</strong> T3 çıktısını T2 review eder</li>
+            <li><strong>Wave 3:</strong> T2 çıktısını T1 final review yapar</li>
+        </ol>
+    </section>
+
+    <!-- Review Chain -->
+    <section id="review-chain">
+        <h2>Review Chain</h2>
+
+        <p>Her kod değişikliği zorunlu review chain'den geçer. Üst tier, alt tier'ın çıktısını review eder.</p>
+
+        <div class="architecture">
+T5 Output → T4 Review → T2 Output → T1 Final Review → ✅ Merge Ready
+                         T3 Output ↗
+        </div>
+
+        <h3>Review Kriterleri</h3>
+        <table>
+            <tr>
+                <th>Kategori</th>
+                <th>Kontrol</th>
+                <th>Fail Condition</th>
+            </tr>
+            <tr>
+                <td>Security</td>
+                <td>Hook violations</td>
+                <td>Herhangi bir security hook fail</td>
+            </tr>
+            <tr>
+                <td>Quality</td>
+                <td>Clean code rules</td>
+                <td>any type, console.log, inline comment</td>
+            </tr>
+            <tr>
+                <td>Architecture</td>
+                <td>Pattern compliance</td>
+                <td>Mimari kararla çelişen implementasyon</td>
+            </tr>
+            <tr>
+                <td>Testing</td>
+                <td>Coverage gate</td>
+                <td>Yeni kod için test yoksa</td>
+            </tr>
+        </table>
+    </section>
+
+    <!-- Slash Commands -->
+    <section id="slash-commands">
+        <h2>Slash Komutları</h2>
+
+        <table>
+            <tr>
+                <th>Komut</th>
+                <th>Açıklama</th>
+                <th>Örnek</th>
+            </tr>
+            <tr>
+                <td><code>/context-mode</code></td>
+                <td>Context-efficient çalışma modu aktifleştirir</td>
+                <td><code>/context-mode Bu API'yi analiz et</code></td>
+            </tr>
+            <tr>
+                <td><code>/caveman</code></td>
+                <td>Minimal token output modu</td>
+                <td><code>/caveman Bug fix yap</code></td>
+            </tr>
+            <tr>
+                <td><code>/graphify</code></td>
+                <td>Knowledge graph oluştur/sorgula</td>
+                <td><code>/graphify . --local-only</code></td>
+            </tr>
+            <tr>
+                <td><code>/x2</code> — <code>/x10</code></td>
+                <td>Delegation multiplier</td>
+                <td><code>/x5 Refactor this module</code></td>
+            </tr>
+            <tr>
+                <td><code>/review</code></td>
+                <td>Review chain tetikle</td>
+                <td><code>/review son 3 commit</code></td>
+            </tr>
+            <tr>
+                <td><code>/plan</code></td>
+                <td>Yapılandırılmış görev planı oluştur</td>
+                <td><code>/plan Migration strategy</code></td>
+            </tr>
+            <tr>
+                <td><code>/analyze</code></td>
+                <td>Analiz agent'ını aktifleştir</td>
+                <td><code>/analyze dependency tree</code></td>
+            </tr>
+            <tr>
+                <td><code>/status</code></td>
+                <td>Mevcut plan durumunu göster</td>
+                <td><code>/status</code></td>
+            </tr>
+            <tr>
+                <td><code>/metrics</code></td>
+                <td>Performans metriklerini göster</td>
+                <td><code>/metrics session</code></td>
+            </tr>
+        </table>
+    </section>
+
+    <!-- Hooks -->
+    <section id="hooks">
+        <h2>Güvenlik Hooks (19 Adet)</h2>
+
+        <p>Hooks, agent'ların her tool kullanımında otomatik çalışan güvenlik ve kalite kontrollerdir.</p>
+
+        <h3>PreToolUse: Edit/Write/MultiEdit (11 hook)</h3>
+        <table>
+            <tr>
+                <th>Hook</th>
+                <th>Engellediği</th>
+                <th>Kural Referansı</th>
+            </tr>
+            <tr>
+                <td><code>block-any-type.sh</code></td>
+                <td>TypeScript <code>any</code> ve <code>@ts-ignore</code></td>
+                <td>clean-code §Absolute Prohibitions</td>
+            </tr>
+            <tr>
+                <td><code>block-comments.sh</code></td>
+                <td>Inline comments, TODO/FIXME</td>
+                <td>clean-code §Absolute Prohibitions</td>
+            </tr>
+            <tr>
+                <td><code>block-console-log.sh</code></td>
+                <td><code>console.*</code> ve browser dialogs</td>
+                <td>clean-code §Absolute Prohibitions</td>
+            </tr>
+            <tr>
+                <td><code>secret-guard.sh</code></td>
+                <td>Hardcoded credentials/API keys</td>
+                <td>backend-security §Password Security</td>
+            </tr>
+            <tr>
+                <td><code>analysis-scope-guard.sh</code></td>
+                <td>Analysis dizini dışına yazma</td>
+                <td>CLAUDE.md §File Ownership</td>
+            </tr>
+            <tr>
+                <td><code>figma-standards-guard.sh</code></td>
+                <td>Inline style, hardcoded color, px unit</td>
+                <td>react-patterns §Figma Standards</td>
+            </tr>
+            <tr>
+                <td><code>sql-injection-check.sh</code></td>
+                <td>SQL string concatenation</td>
+                <td>backend-security §SQL Injection</td>
+            </tr>
+            <tr>
+                <td><code>xss-prevention-check.sh</code></td>
+                <td>innerHTML, dangerouslySetInnerHTML, eval</td>
+                <td>backend-security §XSS</td>
+            </tr>
+            <tr>
+                <td><code>path-traversal-check.sh</code></td>
+                <td>Unsanitized file path ops</td>
+                <td>backend-security §Path Traversal</td>
+            </tr>
+            <tr>
+                <td><code>cors-wildcard-check.sh</code></td>
+                <td>CORS wildcard origin (<code>*</code>)</td>
+                <td>backend-security §CORS</td>
+            </tr>
+            <tr>
+                <td><code>field-injection-check.sh</code></td>
+                <td>Spring @Autowired field injection</td>
+                <td>backend-development §DI</td>
+            </tr>
+        </table>
+
+        <h3>PreToolUse: Bash (2 hook)</h3>
+        <table>
+            <tr>
+                <th>Hook</th>
+                <th>Engellediği</th>
+            </tr>
+            <tr>
+                <td><code>git-safety-check.sh</code></td>
+                <td>Destructive git operations (force push, reset --hard)</td>
+            </tr>
+            <tr>
+                <td><code>context-mode-guard.sh</code></td>
+                <td>Data exfiltration tools (nc, curl, wget) + sensitive paths</td>
+            </tr>
+        </table>
+
+        <h3>PostToolUse: Edit/Write (3 hook)</h3>
+        <table>
+            <tr>
+                <th>Hook</th>
+                <th>Görevi</th>
+            </tr>
+            <tr>
+                <td><code>review-tracker.sh</code></td>
+                <td>Dosya başına edit sayısını takip eder (5 ve 10'da alert)</td>
+            </tr>
+            <tr>
+                <td><code>self-learning-collector.sh</code></td>
+                <td>Tekrarlayan edit pattern'lerini learned-pattern olarak kaydeder</td>
+            </tr>
+            <tr>
+                <td><code>graphify-rebuild.sh</code></td>
+                <td>Source değişikliğinde graph'ı stale olarak işaretler</td>
+            </tr>
+        </table>
+
+        <h3>SessionEnd (3 hook)</h3>
+        <table>
+            <tr>
+                <th>Hook</th>
+                <th>Görevi</th>
+            </tr>
+            <tr>
+                <td><code>update-leaderboard.sh</code></td>
+                <td>Session scoring → leaderboard update</td>
+            </tr>
+            <tr>
+                <td><code>pattern-lifecycle.sh</code></td>
+                <td>Pattern hit-count increment, promote/archive</td>
+            </tr>
+            <tr>
+                <td><code>graphify-audit.sh</code></td>
+                <td>Graph freshness check (>7 day warning)</td>
+            </tr>
+        </table>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills">
+        <h2>Skills Sistemi</h2>
+
+        <p>Skills, agent'lara domain-specific yetenekler kazandıran yapılandırılmış talimat setleridir. Her skill bir <code>SKILL.md</code> dosyasında tanımlanır.</p>
+
+        <h3>Tüm Skill'ler — Cross-Platform Matrix</h3>
+        <table>
+            <tr>
+                <th>Skill</th>
+                <th>Açıklama</th>
+                <th>Claude</th>
+                <th>Copilot</th>
+                <th>Codex</th>
+            </tr>
+            <tr><td>🔧 backend-development</td><td>Spring Boot, microservice, DI, exception handling</td><td>—</td><td>✅</td><td>✅</td></tr>
+            <tr><td>⚛️ frontend-development</td><td>React, component arch, state mgmt, Ant Design</td><td>—</td><td>✅</td><td>✅</td></tr>
+            <tr><td>🔒 backend-security</td><td>OWASP, SQL injection, XSS, CORS, auth</td><td>—</td><td>✅</td><td>✅</td></tr>
+            <tr><td>🧪 testing-standards</td><td>Unit/integration tests, coverage, mocking</td><td>—</td><td>✅</td><td>✅</td></tr>
+            <tr><td>🏛️ code-architecture</td><td>Clean arch, SOLID, design patterns, DDD</td><td>—</td><td>✅</td><td>✅</td></tr>
+            <tr><td>🔌 api-integration</td><td>REST/GraphQL, retry, circuit breaker</td><td>—</td><td>✅</td><td>✅</td></tr>
+            <tr><td>📝 clean-code</td><td>Naming, function size, complexity</td><td>—</td><td>✅</td><td>✅</td></tr>
+            <tr><td>👀 code-review</td><td>Review checklist, severity, feedback</td><td>✅ <code>review</code></td><td>✅</td><td>✅</td></tr>
+            <tr><td>☕ java-quality-tooling</td><td>Checkstyle, SpotBugs, PMD</td><td>—</td><td>✅</td><td>✅</td></tr>
+            <tr><td>📊 analysis</td><td>Code analysis, risk assessment, deps</td><td>✅ <code>analyze</code></td><td>✅</td><td>✅</td></tr>
+            <tr><td>🚀 implementation</td><td>TDD workflow, incremental delivery</td><td>✅ <code>implement</code></td><td>✅</td><td>✅</td></tr>
+            <tr><td>📋 commit-standards</td><td>Conventional commits, semver</td><td>—</td><td>✅</td><td>✅</td></tr>
+            <tr><td>📄 pr-standards</td><td>PR template, description, labels</td><td>—</td><td>✅</td><td>✅</td></tr>
+            <tr><td>🦴 caveman</td><td>Minimal token output mode</td><td>✅</td><td>✅</td><td>✅</td></tr>
+            <tr><td>🧠 context-mode</td><td>Context window optimization</td><td>✅</td><td>✅ <code>context-efficiency</code></td><td>✅</td></tr>
+            <tr><td>🕸️ graphify</td><td>Knowledge graph build/query</td><td>✅</td><td>—</td><td>✅</td></tr>
+            <tr><td>🔍 knowledge-graph</td><td>Query-first + confidence tagging</td><td>—</td><td>✅</td><td>✅</td></tr>
+            <tr><td>🏗️ architect</td><td>System design, architecture decisions</td><td>✅</td><td>—</td><td>✅</td></tr>
+            <tr><td>🛡️ security-check</td><td>Security audit, vulnerability scan</td><td>✅</td><td>✅</td><td>✅</td></tr>
+            <tr><td>🧬 test-gen</td><td>Automated test generation</td><td>✅</td><td>—</td><td>—</td></tr>
+        </table>
+
+        <div class="alert alert-info">
+            <strong>📌 Platform Farkları</strong>
+            Claude'da skill'ler kısa, action-odaklı isimlerle (<code>analyze</code>, <code>implement</code>, <code>review</code>) tanımlanırken, Copilot ve Codex'te daha açıklayıcı isimler (<code>analysis</code>, <code>implementation</code>, <code>code-review</code>) kullanılır. Tümü aynı kuralları uygular.
+        </div>
+
+        <h3>Tier Bazlı Skill Erişimi</h3>
+        <table>
+            <tr>
+                <th>Tier</th>
+                <th>Erişebildiği Skill'ler</th>
+            </tr>
+            <tr>
+                <td>T1 (Principal)</td>
+                <td>Tümü (20 skill)</td>
+            </tr>
+            <tr>
+                <td>T2 (Staff Eng)</td>
+                <td>clean-code, implementation, code-review, frontend, backend, testing, security, java-quality, api-integration, commit, pr</td>
+            </tr>
+            <tr>
+                <td>T3 (MidCoder)</td>
+                <td>clean-code, implementation, code-review, frontend, backend, testing, java-quality, api-integration, commit, pr</td>
+            </tr>
+            <tr>
+                <td>T4 (Lead Analyst)</td>
+                <td>clean-code, analysis, code-review</td>
+            </tr>
+            <tr>
+                <td>T5 (Analyst)</td>
+                <td>analysis</td>
+            </tr>
+        </table>
+    </section>
+
+    <!-- Context Mode -->
+    <section id="context-mode">
+        <h2>Context Mode</h2>
+
+        <p>Context Mode, token bütçesini optimize eden ve gereksiz context yükünü azaltan bir çalışma modudur. Aktifleştirildiğinde agent'lar "query-first" prensibiyle çalışır.</p>
+
+        <h3>Aktivasyon</h3>
+        <pre><code>/context-mode [görev açıklaması]
+
+# veya doğal dil ile:
+"Context-mode aktif olarak bu kodu analiz et"</code></pre>
+
+        <h3>Temel Prensipler</h3>
+        <ol>
+            <li><strong>Query-First:</strong> Önce "bu bilgi gerçekten gerekli mi?" sor</li>
+            <li><strong>Progressive Disclosure:</strong> Minimum bilgi ile başla, gerektiğinde derinleş</li>
+            <li><strong>Output Routing:</strong> Büyük output'ları context dışına yönlendir</li>
+            <li><strong>Budget Awareness:</strong> Her tier'ın token bütçesine uy</li>
+        </ol>
+
+        <h3>Token Bütçeleri</h3>
+        <table>
+            <tr>
+                <th>Tier</th>
+                <th>Max Context Files</th>
+                <th>Max Output Tokens</th>
+                <th>PCD Depth</th>
+            </tr>
+            <tr>
+                <td>T1</td>
+                <td>15</td>
+                <td>32K</td>
+                <td>Full</td>
+            </tr>
+            <tr>
+                <td>T2</td>
+                <td>12</td>
+                <td>24K</td>
+                <td>Standard</td>
+            </tr>
+            <tr>
+                <td>T3</td>
+                <td>8</td>
+                <td>16K</td>
+                <td>Focused</td>
+            </tr>
+            <tr>
+                <td>T4</td>
+                <td>10</td>
+                <td>12K</td>
+                <td>Analysis-only</td>
+            </tr>
+            <tr>
+                <td>T5</td>
+                <td>6</td>
+                <td>8K</td>
+                <td>Minimal</td>
+            </tr>
+        </table>
+
+        <h3>Engellenen Pattern'ler</h3>
+        <div class="alert alert-danger">
+            <strong>❌ Context Mode'da Yasaklı</strong>
+            <ul>
+                <li>Dosya tam içeriğini output'a basma (summary kullan)</li>
+                <li>Tekrarlı bilgi gösterimi (reference ver)</li>
+                <li>Gereksiz açıklama paragrafları (bullet point kullan)</li>
+                <li>Network tool'ları explicit izinsiz (nc, curl, wget...)</li>
+            </ul>
+        </div>
+
+        <details>
+            <summary>Context Mode vs Normal Mode Karşılaştırması</summary>
+            <table>
+                <tr><th>Metrik</th><th>Normal</th><th>Context Mode</th><th>Tasarruf</th></tr>
+                <tr><td>Ortalama output/turn</td><td>~2000 token</td><td>~800 token</td><td>%60</td></tr>
+                <tr><td>Context file yükleme</td><td>Eager (tümü)</td><td>Lazy (gerektiğinde)</td><td>%40</td></tr>
+                <tr><td>Tekrarlı bilgi</td><td>Her turn tekrar</td><td>Reference ile</td><td>%50</td></tr>
+                <tr><td>Toplam session cost</td><td>Baseline</td><td>-%45 average</td><td>%45</td></tr>
+            </table>
+        </details>
+    </section>
+
+    <!-- Caveman Mode -->
+    <section id="caveman">
+        <h2>Caveman Mode</h2>
+
+        <p>Caveman Mode, output'u minimum token'a sıkıştıran "brutalist" bir çalışma modudur. Teknik doğruluğu korurken maksimum kısalık sağlar.</p>
+
+        <h3>Aktivasyon</h3>
+        <pre><code>/caveman [görev]
+
+# Seviyeleri:
+/caveman          → Level 1 (Concise)
+/caveman x2       → Level 2 (Terse)  
+/caveman x3       → Level 3 (Ultra-minimal)</code></pre>
+
+        <h3>Kurallar</h3>
+        <table>
+            <tr>
+                <th>Kural</th>
+                <th>Normal</th>
+                <th>Caveman</th>
+            </tr>
+            <tr>
+                <td>Açıklama</td>
+                <td>"Bu fonksiyon şu parametreleri alır ve şu değeri döner..."</td>
+                <td><code>fn(x,y) → z</code></td>
+            </tr>
+            <tr>
+                <td>Onay</td>
+                <td>"Değişiklikleri başarıyla uyguladım. İşte detaylar..."</td>
+                <td><code>✅ done</code></td>
+            </tr>
+            <tr>
+                <td>Hata</td>
+                <td>"Bir hata oluştu. Detaylı açıklama..."</td>
+                <td><code>❌ TypeError L42</code></td>
+            </tr>
+            <tr>
+                <td>Plan</td>
+                <td>Paragraflar halinde açıklama</td>
+                <td>Bullet list, max 5 item</td>
+            </tr>
+        </table>
+
+        <h3>Ne Değişmez?</h3>
+        <div class="alert alert-info">
+            <strong>ℹ️ Caveman sadece output format'ını etkiler</strong>
+            <ul>
+                <li>Kod kalitesi aynı kalır (hooks çalışmaya devam eder)</li>
+                <li>Security kontrolleri aktif kalır</li>
+                <li>Review chain tetiklenir</li>
+                <li>Metrics kaydedilir</li>
+            </ul>
+        </div>
+
+        <h3>Örnek</h3>
+        <pre><code># Normal mode output:
+"Authentication modülündeki login fonksiyonunda bir bug tespit ettim. 
+Kullanıcı null password gönderdiğinde NullPointerException fırlatılıyor. 
+Sorunu çözmek için password null check ekledim ve uygun error response 
+döndürdüm. İşte değişiklikler..."
+
+# Caveman mode output:
+"fix: null check @ AuthService.login:34 → 400 if !password"</code></pre>
+    </section>
+
+    <!-- Graphify -->
+    <section id="graphify">
+        <h2>Graphify — Knowledge Graph</h2>
+
+        <p>Graphify, kod tabanından otomatik knowledge graph oluşturan ve sorgulama yapan bir skill'dir. Bağımlılık haritaları, call graph'lar ve modül ilişkilerini görselleştirir.</p>
+
+        <h3>Kullanım</h3>
+        <pre><code># Graph oluştur
+/graphify . --local-only
+
+# Belirli dizin için
+/graphify src/auth/ --depth 3
+
+# Sorgulama
+/graphify query "AuthService bağımlılıkları"
+
+# Graph yenileme (stale olduğunda)
+/graphify rebuild</code></pre>
+
+        <h3>Graph Yapısı</h3>
+        <pre><code>{
+  "nodes": [
+    {"id": "AuthService", "type": "class", "file": "src/auth/AuthService.ts"},
+    {"id": "UserRepository", "type": "interface", "file": "src/user/UserRepository.ts"},
+    {"id": "JwtUtil", "type": "utility", "file": "src/common/JwtUtil.ts"}
+  ],
+  "edges": [
+    {"from": "AuthService", "to": "UserRepository", "type": "depends_on"},
+    {"from": "AuthService", "to": "JwtUtil", "type": "uses"}
+  ]
+}</code></pre>
+
+        <h3>Stale Detection</h3>
+        <p><code>graphify-rebuild.sh</code> hook'u her source edit'inde <code>.graphify-stale</code> marker dosyası oluşturur. Session sonunda <code>graphify-audit.sh</code> bu marker'ı kontrol eder ve uyarı verir.</p>
+
+        <details>
+            <summary>God-Node Detection</summary>
+            <p>10'dan fazla gelen bağlantısı olan node'lar "god-node" olarak işaretlenir ve refactoring önerisi sunulur. Bu, karmaşıklık göstergesidir.</p>
+        </details>
+    </section>
+
+    <!-- Config -->
+    <section id="config">
+        <h2>Konfigürasyon</h2>
+
+        <h3>Temel Config Dosyaları</h3>
+        <table>
+            <tr>
+                <th>Dosya</th>
+                <th>Konum</th>
+                <th>İçerik</th>
+            </tr>
+            <tr>
+                <td><code>tier-definitions.md</code></td>
+                <td>config/</td>
+                <td>Tier → model → token budget mapping</td>
+            </tr>
+            <tr>
+                <td><code>delegation-rules.md</code></td>
+                <td>config/</td>
+                <td>xN dağıtım tablosu ve formülleri</td>
+            </tr>
+            <tr>
+                <td><code>model-registry.md</code></td>
+                <td>config/</td>
+                <td>Model seçimi ve fallback chain</td>
+            </tr>
+            <tr>
+                <td><code>context-budget.json</code></td>
+                <td>config/</td>
+                <td>Machine-readable token bütçeleri</td>
+            </tr>
+            <tr>
+                <td><code>hook-registry.md</code></td>
+                <td>config/</td>
+                <td>19 hook'un cross-reference tablosu</td>
+            </tr>
+            <tr>
+                <td><code>name-pool.md</code></td>
+                <td>config/</td>
+                <td>Agent isimlendirme havuzu</td>
+            </tr>
+            <tr>
+                <td><code>task-assignment-matrix.md</code></td>
+                <td>config/</td>
+                <td>Görev tipi → tier mapping</td>
+            </tr>
+        </table>
+
+        <h3>settings.json Yapısı (Claude)</h3>
+        <pre><code>{
+  "permissions": {
+    "allow": ["Bash(npm run *)", "Bash(git status *)", ...],
+    "deny": ["Read(./.env)", "Edit(./node_modules/**)", ...]
+  },
+  "hooks": {
+    "PreToolUse": [
+      { "matcher": "Edit|Write|MultiEdit", "hooks": [...] },
+      { "matcher": "Bash", "hooks": [...] }
+    ],
+    "PostToolUse": [
+      { "matcher": "Edit|Write|MultiEdit", "hooks": [...] }
+    ],
+    "SessionEnd": [
+      { "matcher": "", "hooks": [...] }
+    ]
+  }
+}</code></pre>
+    </section>
+
+    <!-- Memory & Learning -->
+    <section id="memory">
+        <h2>Memory & Learning Sistemi</h2>
+
+        <p>Framework, oturum bazlı öğrenme ve kalıp tanıma yeteneğine sahiptir.</p>
+
+        <h3>Bileşenler</h3>
+
+        <div class="card-grid">
+            <div class="card">
+                <h4>📝 Session Memory</h4>
+                <p>Her oturum <code>sessions/</code> dizininde tarih bazlı kaydedilir. Kararlar, hatalar ve öğrenilen dersler kayıt altına alınır.</p>
+            </div>
+            <div class="card">
+                <h4>🧠 Learned Patterns</h4>
+                <p>Tekrarlayan edit pattern'leri otomatik algılanır ve <code>learned-patterns/</code> altında kaydedilir. 3+ hit'te rule'a promote edilir.</p>
+            </div>
+            <div class="card">
+                <h4>📊 Knowledge Graphs</h4>
+                <p>Graphify ile oluşturulan kod ilişki graph'ları <code>graphs/</code> altında saklanır.</p>
+            </div>
+            <div class="card">
+                <h4>📚 History Archive</h4>
+                <p>Eski session'lar arşivlenir. Pattern'ler 5+ session hit almadan arşive taşınır.</p>
+            </div>
+        </div>
+
+        <h3>Pattern Lifecycle</h3>
+        <div class="flow-step">
+            <span class="step-num">1</span>
+            <div class="step-content">
+                <h4>Detection</h4>
+                <p><code>self-learning-collector.sh</code> tekrarlayan edit'leri yakalar</p>
+            </div>
+        </div>
+        <div class="flow-step">
+            <span class="step-num">2</span>
+            <div class="step-content">
+                <h4>Recording</h4>
+                <p>Pattern <code>learned-patterns/LP-{date}-{id}.md</code> formatında kaydedilir</p>
+            </div>
+        </div>
+        <div class="flow-step">
+            <span class="step-num">3</span>
+            <div class="step-content">
+                <h4>Promotion</h4>
+                <p>3+ hit count'a ulaşan pattern'ler <code>rules/</code> altına promote edilir</p>
+            </div>
+        </div>
+        <div class="flow-step">
+            <span class="step-num">4</span>
+            <div class="step-content">
+                <h4>Archival</h4>
+                <p>5+ session boyunca hit almayan pattern'ler <code>archive/</code> klasörüne taşınır</p>
+            </div>
+        </div>
+
+        <h3>Session Template</h3>
+        <pre><code># Session: {YYYY-MM-DD}-{description}
+
+## Context
+- Task: [görev açıklaması]
+- Tier Used: [T1-T5]
+- Duration: [süre]
+
+## Decisions Made
+- [karar 1]
+- [karar 2]
+
+## Patterns Observed
+- [pattern 1]
+
+## Lessons Learned
+- [ders 1]</code></pre>
+    </section>
+
+    <!-- Metrics -->
+    <section id="metrics">
+        <h2>Metrics & Scoring</h2>
+
+        <h3>Agent Performance Metrics</h3>
+        <table>
+            <tr>
+                <th>Metrik</th>
+                <th>Açıklama</th>
+                <th>Ağırlık</th>
+            </tr>
+            <tr>
+                <td>Code Quality</td>
+                <td>Hook violation sayısı (düşük = iyi)</td>
+                <td>30%</td>
+            </tr>
+            <tr>
+                <td>Task Completion</td>
+                <td>Verilen görevin tamamlanma oranı</td>
+                <td>25%</td>
+            </tr>
+            <tr>
+                <td>Token Efficiency</td>
+                <td>Output token / actual value ratio</td>
+                <td>20%</td>
+            </tr>
+            <tr>
+                <td>Review Score</td>
+                <td>Review chain'den geçme oranı</td>
+                <td>15%</td>
+            </tr>
+            <tr>
+                <td>Learning</td>
+                <td>Pattern contribution ve reuse</td>
+                <td>10%</td>
+            </tr>
+        </table>
+
+        <h3>Leaderboard</h3>
+        <p><code>update-leaderboard.sh</code> her session sonunda agent scoring'i günceller ve <code>leaderboard.md</code> dosyasını yeniler.</p>
+
+        <h3>Token Usage Tracking</h3>
+        <pre><code># token-usage.md formatı:
+| Session | Agent | Input Tokens | Output Tokens | Total Cost |
+|---------|-------|--------------|---------------|------------|
+| 2026-05-20 | staff-eng-alpha | 12,400 | 3,200 | $0.047 |
+| 2026-05-20 | mid-coder-alpha | 8,100 | 2,800 | $0.021 |</code></pre>
+    </section>
+
+    <!-- PCD -->
+    <section id="pcd">
+        <h2>Project Context Discovery (PCD)</h2>
+
+        <p>PCD, agent'ların proje yapısını otomatik keşfetmesini sağlayan bir mekanizmadır. Projenin tech stack'ini, dizin yapısını ve convention'larını analiz eder.</p>
+
+        <h3>Keşif Sırası</h3>
+        <ol>
+            <li><code>package.json</code> → Frontend framework, dependencies</li>
+            <li><code>pom.xml</code> / <code>build.gradle</code> → Backend framework</li>
+            <li><code>tsconfig.json</code> → TypeScript configuration</li>
+            <li><code>.eslintrc</code> → Linting rules</li>
+            <li><code>Dockerfile</code> → Deployment target</li>
+            <li>Directory structure → Architecture pattern (monorepo, modular, etc.)</li>
+        </ol>
+
+        <h3>PCD Output Örneği</h3>
+        <pre><code>{
+  "projectType": "full-stack",
+  "frontend": {
+    "framework": "React 18",
+    "stateManagement": "Redux Toolkit",
+    "ui": "Ant Design 5.x",
+    "bundler": "Vite"
+  },
+  "backend": {
+    "framework": "Spring Boot 3.x",
+    "language": "Java 21",
+    "database": "PostgreSQL",
+    "orm": "JPA/Hibernate"
+  },
+  "testing": {
+    "unit": "Jest + JUnit 5",
+    "integration": "Testcontainers",
+    "e2e": "Cypress"
+  },
+  "conventions": {
+    "commits": "conventional-commits",
+    "branching": "gitflow",
+    "codeStyle": "checkstyle + eslint"
+  }
+}</code></pre>
+    </section>
+
+    <!-- Templates -->
+    <section id="templates">
+        <h2>Proje Şablonları</h2>
+
+        <p>Hazır proje şablonları yeni projeleri hızlıca başlatmak için kullanılır.</p>
+
+        <div class="card-grid">
+            <div class="card">
+                <h4>⚛️ React SPA</h4>
+                <p>React + TypeScript + Ant Design + Redux Toolkit + Vite. MFE uyumlu.</p>
+                <pre><code>templates/react-spa.md</code></pre>
+            </div>
+            <div class="card">
+                <h4>☕ Spring Boot</h4>
+                <p>Spring Boot 3 + Java 21 + JPA + PostgreSQL + Testcontainers.</p>
+                <pre><code>templates/spring-boot.md</code></pre>
+            </div>
+            <div class="card">
+                <h4>🔄 Full-Stack</h4>
+                <p>React SPA + Spring Boot backend. Monorepo yapıda.</p>
+                <pre><code>templates/full-stack.md</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Custom Hooks -->
+    <section id="custom-hooks">
+        <h2>Özel Hook Yazma</h2>
+
+        <h3>Hook Anatomisi</h3>
+        <pre><code>#!/usr/bin/env bash
+set -euo pipefail
+
+# stdin'den tool input JSON'ını oku
+INPUT=$(cat)
+
+# jq varsa kullan, yoksa grep fallback
+if command -v jq &gt;/dev/null 2&amp;&amp;1; then
+  CONTENT=$(jq -r '.tool_input.content // empty' &lt;&lt;&lt;"$INPUT")
+else
+  CONTENT=$(echo "$INPUT" | grep -o '"content"\s*:\s*"[^"]*"' | head -1 | sed 's/.*: *"//;s/"$//')
+fi
+
+# Kontrol mantığı
+if echo "$CONTENT" | grep -qE "DANGEROUS_PATTERN"; then
+  # BLOCK: exit 2 ile engelle
+  echo '{"type":"text","text":"[my-hook] BLOCKED: reason"}' &gt;&amp;2
+  exit 2
+fi
+
+# ADVISORY: exit 0 ile uyarı ver (engellemez)
+if echo "$CONTENT" | grep -qE "SUSPICIOUS_PATTERN"; then
+  echo '{"type":"text","text":"[my-hook] ADVISORY: warning message"}' &gt;&amp;2
+fi
+
+exit 0</code></pre>
+
+        <h3>Exit Codes</h3>
+        <table>
+            <tr>
+                <th>Code</th>
+                <th>Anlam</th>
+                <th>Davranış</th>
+            </tr>
+            <tr>
+                <td><code>0</code></td>
+                <td>Pass / Advisory</td>
+                <td>İşlem devam eder, stderr uyarı olarak gösterilir</td>
+            </tr>
+            <tr>
+                <td><code>2</code></td>
+                <td>Block</td>
+                <td>İşlem engellenir, agent'a hata mesajı döner</td>
+            </tr>
+        </table>
+
+        <h3>Hook Kayıt (settings.json)</h3>
+        <pre><code>// PreToolUse hook eklemek için:
+{
+  "hooks": {
+    "PreToolUse": [{
+      "matcher": "Edit|Write|MultiEdit",  // hangi tool'larda çalışsın
+      "hooks": [{
+        "type": "command",
+        "command": "bash $CLAUDE_PROJECT_DIR/.claude/hooks/my-hook.sh",
+        "timeout": 10  // saniye
+      }]
+    }]
+  }
+}</code></pre>
+    </section>
+
+    <!-- Custom Skills -->
+    <section id="custom-skills">
+        <h2>Özel Skill Yazma</h2>
+
+        <h3>SKILL.md Template</h3>
+        <pre><code># Skill: {skill-name}
+
+## Purpose
+{Bu skill ne yapar, tek paragraf}
+
+## When to Activate
+- {koşul 1}
+- {koşul 2}
+
+## Rules
+1. {kural 1}
+2. {kural 2}
+3. {kural 3}
+
+## Examples
+
+### Good ✅
+```{language}
+{iyi örnek}
+```
+
+### Bad ❌
+```{language}
+{kötü örnek}
+```
+
+## Integration Points
+- Hook: {ilişkili hook varsa}
+- Rule: {ilişkili rule dosyası}
+- Config: {gerekli config}</code></pre>
+
+        <h3>Skill Dizin Yapısı</h3>
+        <pre><code>skills/
+├── my-skill/
+│   └── SKILL.md          # Skill tanımı (zorunlu)
+├── another-skill/
+│   └── SKILL.md
+└── ...</code></pre>
+
+        <div class="alert alert-warning">
+            <strong>⚠️ Dikkat</strong>
+            Yeni skill oluşturduktan sonra <code>agent-scaffolding</code> dosyasındaki Tier→Skill matrisini de güncellemeyi unutmayın.
+        </div>
+    </section>
+
+    <!-- Platform Parity -->
+    <section id="parity">
+        <h2>Platform Paritesi</h2>
+
+        <p>Üç platformun (Claude, Copilot, Codex) bileşen paritesi aşağıdaki tabloda özetlenmiştir.</p>
+
+        <table>
+            <tr>
+                <th>Bileşen</th>
+                <th>Claude</th>
+                <th>Copilot</th>
+                <th>Codex</th>
+            </tr>
+            <tr>
+                <td>Agent Sayısı</td>
+                <td>7 (6 role + shared)</td>
+                <td>11 (alpha/beta variants)</td>
+                <td>7 (6 role + shared)</td>
+            </tr>
+            <tr>
+                <td>Skill Sayısı</td>
+                <td>9</td>
+                <td>17</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>Hook Sayısı</td>
+                <td>19 (bash)</td>
+                <td>8 (JSON dispatcher + bash script)</td>
+                <td>18 (bash)</td>
+            </tr>
+            <tr>
+                <td>Rule Sayısı</td>
+                <td>19</td>
+                <td>3 (instructions)</td>
+                <td>19</td>
+            </tr>
+            <tr>
+                <td>Templates</td>
+                <td>3 (react-spa, spring-boot, full-stack)</td>
+                <td>3</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>Metrics Tracking</td>
+                <td>✅ leaderboard + token + performance</td>
+                <td>✅ leaderboard + token + performance</td>
+                <td>✅ leaderboard + token + performance + fallback</td>
+            </tr>
+            <tr>
+                <td>Memory System</td>
+                <td>✅ sessions + patterns + graphs</td>
+                <td>✅ sessions + history</td>
+                <td>✅ sessions + patterns + resume</td>
+            </tr>
+            <tr>
+                <td>Config Files</td>
+                <td>7 (tier, delegation, model, budget, hooks, names, tasks)</td>
+                <td>4 (checkstyle, pom, spotbugs, names)</td>
+                <td>7 (tier, delegation, model, budget, hooks, names, tasks)</td>
+            </tr>
+            <tr>
+                <td>Documentation</td>
+                <td>CLAUDE.md + README + cave.md + 7 docs</td>
+                <td>README + USAGE + AGENTS + CHANGELOG + 5 docs</td>
+                <td>README + USAGE + START_HERE + AGENTS + 15+ docs</td>
+            </tr>
+            <tr>
+                <td>i18n</td>
+                <td>—</td>
+                <td>—</td>
+                <td>✅ TR + EN docs</td>
+            </tr>
+        </table>
+
+        <div class="alert alert-warning">
+            <strong>⚠️ Bilinen Farklar</strong>
+            <ul>
+                <li><strong>Copilot hooks:</strong> v7.4.1 ile <strong>JSON dispatcher + bash script</strong> mimarisine geçildi — Claude/Codex'in script-based enforcement modeliyle <strong>tam parite</strong>. <code>.github/hooks/*.json</code> dosyaları sadece event/tool matcher görevini görür; gerçek enforcement (secret/XSS/SQL/path traversal/force-push tespiti, tier-aware safety guard, review chain) <code>.github/hooks/scripts/*.sh</code> altındaki 15 bash script'te. <code>selftest.sh</code> 39 vaka ile sandbox'ta doğrulama sağlar.</li>
+                <li><strong>Claude skills:</strong> Action-odaklı kısa isimler kullanır (analyze, implement, review, architect, security-check, test-gen). Domain-specific skill'ler (backend-dev, frontend-dev vb.) rule dosyalarıyla karşılanır.</li>
+                <li><strong>Codex:</strong> En kapsamlı platform — 20 skill, TR/EN dokümantasyon, contracts, checklists, demo dosyaları içerir.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- File Structure -->
+    <section id="file-structure">
+        <h2>Dosya Yapısı Referansı</h2>
+
+        <pre><code>mayacore-mfe-context/
+├── README.md                          # Proje root README
+├── docs/
+│   └── index.html                     # Bu dokümantasyon
+│
+├── Claude/                            # Claude Code konfigürasyonu
+│   ├── CLAUDE.md                      # Ana orchestration spec
+│   ├── README.md                      # Claude-specific guide
+│   ├── cave.md                        # Caveman mode reference
+│   └── .claude/
+│       ├── settings.json              # Permissions + hooks
+│       ├── settings.local.json        # Local overrides
+│       ├── agents/                    # Agent tanımları
+│       ├── config/                    # Tier, delegation, model configs
+│       ├── hooks/                     # 19 bash hook scripts
+│       ├── skills/                    # caveman, context-mode, graphify
+│       ├── rules/                     # 19 rule dosyası
+│       ├── templates/                 # Proje şablonları
+│       ├── memory/                    # Sessions, patterns, graphs
+│       ├── metrics/                   # Performance, leaderboard, tokens
+│       ├── analysis/                  # Raw + consolidated analysis
+│       ├── docs/                      # Internal docs + ADRs
+│       └── todo/                      # Active plan tracking
+│
+├── Copilot/                           # GitHub Copilot konfigürasyonu
+│   ├── README.md                      # Copilot-specific guide
+│   ├── USAGE.md                       # Detailed usage guide
+│   ├── CHANGELOG.md                   # Version history
+│   ├── AGENTS.md                      # Agent reference
+│   ├── docs/                          # Feature documentation
+│   └── .github/
+│       ├── copilot-instructions.md    # Base instructions
+│       ├── agents/                    # 11 agent definitions
+│       ├── instructions/              # Shared + reference instructions
+│       ├── skills/                    # 17 skill definitions
+│       ├── hooks/                     # 8 JSON dispatchers + scripts/ bash
+│       │   └── scripts/               # 15 enforcement scripts + _lib.sh
+│       ├── config/                    # Quality configs
+│       ├── templates/                 # Project templates
+│       ├── metrics/                   # Performance tracking
+│       ├── memory/                    # Session history
+│       ├── logs/                      # Operation logs
+│       ├── docs/                      # ADRs
+│       └── todo/                      # Task tracking
+│
+└── Codex/                             # OpenAI Codex konfigürasyonu
+    ├── README.md                      # Codex overview
+    ├── START_HERE.md                  # Reading order guide
+    ├── AGENTS.md                      # Agent definitions
+    ├── USAGE.md                       # Usage guide
+    ├── ONE_PAGE_QUICKSTART.md         # Quick reference
+    └── .codex/
+        ├── agents/                    # Agent definitions
+        ├── rules/                     # Quality rules
+        ├── skills/                    # Skill definitions
+        ├── instructions/              # Core instructions
+        ├── hooks/                     # Hook scripts
+        ├── config/                    # System configs
+        ├── contracts/                 # API contracts
+        ├── checklists/                # Quality checklists
+        ├── docs/                      # Documentation
+        ├── demo/                      # Demo files
+        ├── analysis/                  # Analysis outputs
+        ├── memory/                    # Session memory
+        ├── metrics/                   # Metrics
+        ├── templates/                 # Templates
+        └── todo/                      # Task tracking</code></pre>
+    </section>
+
+    <!-- Troubleshooting -->
+    <section id="troubleshooting">
+        <h2>Sorun Giderme</h2>
+
+        <details>
+            <summary>Hook'lar çalışmıyor</summary>
+            <ol>
+                <li>Hook dosyalarının executable olduğunu kontrol edin: <code>chmod +x .claude/hooks/*.sh</code></li>
+                <li><code>settings.json</code>'da doğru path'in tanımlı olduğunu doğrulayın</li>
+                <li>Hook'un stdin'den JSON okuduğundan emin olun</li>
+                <li><code>jq</code> yüklü değilse grep fallback'in çalıştığını test edin</li>
+            </ol>
+        </details>
+
+        <details>
+            <summary>Agent doğru tier'da çalışmıyor</summary>
+            <ol>
+                <li><code>config/tier-definitions.md</code> içindeki model mapping'i kontrol edin</li>
+                <li><code>config/delegation-rules.md</code> içindeki xN tablosunu doğrulayın</li>
+                <li>Agent dosyasındaki <code>model:</code> field'ını kontrol edin</li>
+            </ol>
+        </details>
+
+        <details>
+            <summary>Context-mode guard yanlışlıkla engelliyor</summary>
+            <ol>
+                <li>Guard sadece <code>/context-mode</code> aktifken çalışır</li>
+                <li>Gerekli network erişimi için <code>ctx_execute</code> wrapper kullanın</li>
+                <li>Sensitive path listesini <code>context-mode-guard.sh</code> içinde düzenleyebilirsiniz</li>
+            </ol>
+        </details>
+
+        <details>
+            <summary>Leaderboard güncellenmiyor</summary>
+            <ol>
+                <li><code>flock</code> komutunun sistemde mevcut olduğunu kontrol edin (macOS: <code>brew install util-linux</code>)</li>
+                <li><code>.leaderboard.lock</code> dosyasının kilitli kalmadığını doğrulayın</li>
+                <li>Session'ın düzgün sonlandığından emin olun (SessionEnd hook tetiklenmeli)</li>
+            </ol>
+        </details>
+
+        <details>
+            <summary>Graphify stale uyarısı</summary>
+            <p><code>/graphify rebuild</code> komutu ile graph'ı yeniden oluşturun. Veya <code>.graphify-stale</code> marker dosyasını silin:</p>
+            <pre><code>find . -name ".graphify-stale" -delete
+/graphify . --local-only</code></pre>
+        </details>
+
+        <details>
+            <summary>Copilot agent'ları görünmüyor</summary>
+            <ol>
+                <li>VS Code'da Copilot Chat panelini açın</li>
+                <li><code>.github/agents/</code> dizininin projenin root'unda olduğunu doğrulayın</li>
+                <li>Agent dosyasının <code>.agent.md</code> uzantılı olduğunu kontrol edin</li>
+                <li>VS Code'u yeniden başlatın</li>
+            </ol>
+        </details>
+    </section>
+
+    <!-- Changelog -->
+    <section id="changelog">
+        <h2>Değişiklik Günlüğü (Son Sürümler)</h2>
+
+        <h3>v7.4.3 — Token-Efficiency Modları Varsayılan AÇIK</h3>
+        <ul>
+            <li><strong>Üç mod artık her session'da otomatik aktif</strong>: <code>/caveman</code>, <code>/context-mode</code>, <code>/graphify</code> — kullanıcı promptta hiçbir mod komutu yazmasa bile üçü tetiklenir; sadece <code>xN</code> ile delegation agent sayısı belirtilir</li>
+            <li>⚠️ <strong>Copilot-only</strong>: Default-on modes apply to Copilot v7.4.3+ only. Claude/Codex/Cursor remain opt-in for these slash commands.</li>
+            <li><strong>Yeni dosya</strong>: <code>.github/config/mode-overrides.md</code> — kalıcı opt-out / level pin için tek kaynak. Format: <code>disabled: caveman</code> / <code>disabled: context-mode</code> / <code>disabled: graphify</code> / <code>caveman-level: lite|full|ultra</code></li>
+            <li><strong>Slash komut semantiği güncellendi</strong>: <code>/X off</code>, <code>/X on</code>, <code>/caveman lite|full|ultra</code> artık <strong>yalnızca o promptu</strong> etkiler (single-prompt) — <code>mode-overrides.md</code>'yi değiştirmez. Kalıcı off için manuel dosya düzenleme gerekir</li>
+            <li><strong>Aktivasyon precedence</strong>: (1) Mevcut promptta slash (tek-prompt, en yüksek) → (2) <code>mode-overrides.md</code> <code>disabled:</code> (kalıcı) → (3) Varsayılan = AÇIK</li>
+            <li><strong>Boot sequence</strong>: Her session başında üç skill (caveman ~1.5K + context-efficiency ~2.2K + knowledge-graph ~1.8K = ~5.5K sabit overhead) varsayılan yüklenir, session boyunca amortize edilir</li>
+            <li><strong>Kullanıcı deneyimi</strong>: <code>/delegate Auth modülünü refactor et x7</code> artık tek başına caveman + context-mode + graphify üçünü otomatik tetikler — ≥%80 token tasarrufu eforsuz elde edilir</li>
+            <li>Güncellenen: <code>shared-base.instructions.md</code> (Default-On master section), <code>slash-commands.instructions.md</code> (Mode Activation Lifecycle), <code>context-loading.instructions.md</code>, README, USAGE, CHANGELOG, <code>Copilot/docs/README.md</code></li>
+            <li><strong>Breaking değil</strong>: Eski <code>/X</code> çağrıları çalışmaya devam eder (no-op — zaten açık)</li>
+        </ul>
+
+        <h3>v7.4.2 — Copilot `/graphify` Komutu (Knowledge Graph Read-Side Compression)</h3>
+        <ul>
+            <li><strong>Üçüncü token-verimliliği modu</strong>: <code>/graphify</code> (read-side), <code>/context-mode</code> (handling), <code>/caveman</code> (output) — ortogonal, üçü stack edilebilir</li>
+            <li><strong>Davranış</strong>: <code>knowledge-graph/SKILL.md</code> tam yükleme, Query-First zorunlu (grep önce, view sonra), per-task okuma bütçesi caps (3-20 KB), progressive disclosure (shape → interface → logic → detail), confidence-tagged finding zorunlu (🟢/🟡/🔴), summary-table rapor, god-node tespiti</li>
+            <li><strong>Tasarruf</strong>: tek başına %70-90 (analiz görevlerinde), üçlü stack ile <strong>≥%80 birleşik</strong></li>
+            <li>Tetikleyici: <code>/graphify</code> slash veya <code>graphify</code>/<code>knowledge graph mode</code> anahtar kelime; deaktivasyon: <code>/graphify off</code></li>
+            <li>Slash komut sayısı: 9 → 10</li>
+            <li>README, USAGE, CHANGELOG, slash-commands.instructions.md, shared-base.instructions.md, context-loading.instructions.md güncellendi</li>
+        </ul>
+
+        <h3>v7.4.1 — Copilot Hook Enforcement: JSON → Bash Script</h3>
+        <ul>
+            <li><strong>Copilot hooks artık script-based</strong>: 8 JSON dispatcher + 15 bash script + <code>_lib.sh</code> shared helpers</li>
+            <li><strong>selftest.sh</strong>: 39 smoke test (lifecycle, context, review, safety, quality, git-safety) — sandboxed COPILOT_PROJECT_DIR ile repo log'larını kirletmez</li>
+            <li>Tüm script'ler <code>set -uo pipefail</code> ile başlar — ShellCheck-ready</li>
+            <li>Tier resolution tek noktadan (<code>tier_for()</code> in <code>_lib.sh</code>)</li>
+            <li>GitHub PAT pattern (<code>ghp_</code>) detection eklendi</li>
+            <li>hook-registry.md güncellendi (yeni mimari + selftest dokümantasyonu)</li>
+            <li>Claude/Codex bash-script paritesi <strong>tam sağlandı</strong></li>
+        </ul>
+
+        <h3>v7.4.0 — Framework Consolidation & Copilot Hook Parity</h3>
+        <ul>
+            <li><strong>Copilot hook coverage parity</strong>: 3 yeni JSON hook eklendi — <code>code-quality-guard</code> (console.log, any-type, secret, XSS, SQL inject, path traversal pattern taraması), <code>git-safety</code> (force-push blok), <code>leaderboard-update</code></li>
+            <li><strong>Copilot security-check skill</strong>: OWASP Top 10 cross-platform review checklist eklendi (17. skill)</li>
+            <li><strong>Copilot hook registry</strong>: <code>.github/config/hook-registry.md</code> oluşturuldu — 8 hook'un coverage matrix'i ve log marker referansı</li>
+            <li>Copilot kırık referans temizliği (orchestrator.agent.md → docs/api-design.md)</li>
+            <li>Copilot stale planning dosyaları kaldırıldı (PROGRESS.md, plan.md)</li>
+            <li>Cross-platform gap analizi ve parite tablosu güncellendi</li>
+            <li>Codex kırık referanslar temizlendi (AGENTS.tr, INDEX.md, HTML doc)</li>
+            <li>Kapsamlı HTML dokümantasyon güncellendi (skill matrix, parity section, sayım düzeltmeleri)</li>
+            <li>Root README.md eklendi (unified overview)</li>
+            <li>.gitignore genişletildi</li>
+        </ul>
+
+        <h3>v7.3.0 — Context Mode & Graphify Integration</h3>
+        <ul>
+            <li>Context-mode-guard.sh hook eklendi (Bash PreToolUse)</li>
+            <li>Graphify-audit.sh hook eklendi (SessionEnd)</li>
+            <li>Graphify-rebuild.sh hook eklendi (PostToolUse)</li>
+            <li>3 yeni skill: caveman, context-mode, graphify</li>
+            <li>Token bütçe sistemi (context-budget.json)</li>
+            <li>Pattern lifecycle ve archival mekanizması</li>
+        </ul>
+
+        <h3>v7.2.0 — Multi-Agent Delegation</h3>
+        <ul>
+            <li>5-tier agent yapısı finalize edildi</li>
+            <li>xN delegation formülleri (x2-x10)</li>
+            <li>Review chain zorunlu hale getirildi</li>
+            <li>Agent scaffolding instructions eklendi</li>
+        </ul>
+
+        <h3>v7.1.0 — Security Hooks</h3>
+        <ul>
+            <li>19 hook tam entegrasyon</li>
+            <li>SQL injection, XSS, path traversal kontrolleri</li>
+            <li>Secret-guard ve field-injection-check</li>
+            <li>Leaderboard scoring sistemi</li>
+        </ul>
+    </section>
+
+</main>
+
+<script>
+function switchTab(event, tabId) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById(tabId).classList.add('active');
+}
+
+// Active nav highlighting
+document.addEventListener('scroll', () => {
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-sidebar a');
+    let current = '';
+    sections.forEach(section => {
+        if (window.scrollY >= section.offsetTop - 100) {
+            current = section.getAttribute('id');
+        }
+    });
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+            link.classList.add('active');
+        }
+    });
+});
+</script>
+
+</body>
+</html>

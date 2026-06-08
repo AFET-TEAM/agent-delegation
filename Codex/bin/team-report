@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+MODE="${1:-summary}"
+case "$MODE" in
+  summary)
+    python3 "$ROOT/.codex/scripts/wrapper_usage_summary.py"
+    echo
+    python3 "$ROOT/.codex/scripts/wrapper_usage_analyzer.py"
+    ;;
+  --markdown)
+    python3 "$ROOT/.codex/scripts/wrapper_usage_markdown_report.py"
+    ;;
+  *)
+    echo "Usage: ./bin/team-report [summary|--markdown]" >&2
+    exit 2
+    ;;
+esac

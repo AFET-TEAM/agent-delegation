@@ -1,0 +1,40 @@
+{
+  "agent_id": "T1-2",
+  "display_name": "T1-2 Principal",
+  "tier": "T1",
+  "role": "Principal",
+  "wave": "wave5-principal-review",
+  "prompt": "approval-based live apply pipeline ekle x10",
+  "task_summary": "Perform principal review and architecture validation for: approval-based live apply pipeline ekle x10",
+  "owned_scope": [
+    "architecture review",
+    "final high-risk review",
+    "escalation handling",
+    "approval-based",
+    "live",
+    "apply",
+    "pipeline"
+  ],
+  "required_skills": [
+    "Context Mode",
+    "Graphify",
+    "Architect",
+    "Code Review"
+  ],
+  "skipped_skills": [
+    "Scoped coding unless escalation requires it"
+  ],
+  "context_files": [
+    "README.md",
+    "AGENTS.md",
+    ".codex/config/delegation-rules.md",
+    ".codex/config/tier-definitions.md",
+    ".codex/instructions/reference/review-chain.instructions.md",
+    ".codex/contracts/review-report.md"
+  ],
+  "review_target": null,
+  "expected_output_format": "task-report",
+  "expected_model": "gpt-5.4",
+  "reasoning_effort": "high",
+  "edit_permission": "Full"
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "packet": "T5-1.json",
+    "output": "/Users/tcvmaksutoglu/Dev/w/crm/mayacore-mfe-context/Codex/.codex/runtime/runs/2026-06-02T08-18-42Z/agents/T5-1.md",
+    "returncode": "0",
+    "stdout": "",
+    "stderr": "",
+    "revision_round": "0"
+  },
+  {
+    "packet": "T1-1.json",
+    "output": "/Users/tcvmaksutoglu/Dev/w/crm/mayacore-mfe-context/Codex/.codex/runtime/runs/2026-06-02T08-18-42Z/agents/T1-1.md",
+    "returncode": "0",
+    "stdout": "",
+    "stderr": "",
+    "revision_round": "0"
+  }
+]

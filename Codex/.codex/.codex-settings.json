@@ -1,0 +1,23 @@
+{
+  "version": "2.3.0",
+  "defaultMode": "multi-agent-ready",
+  "primaryModel": "gpt-5.4",
+  "codingModel": "gpt-5.3-codex",
+  "lightweightModel": "gpt-5.2",
+  "fallbackModel": "gpt-5.3-codex",
+  "principalReasoningEffort": "high",
+  "orchestratorReasoningEffort": "high",
+  "analysisReasoningEffort": "high",
+  "contextModeDefault": "query-first",
+  "reviewChainRequired": true,
+  "gitConsentRequired": true,
+  "analysisDirectories": {
+    "raw": ".codex/analysis/raw",
+    "consolidated": ".codex/analysis/consolidated"
+  },
+  "runtimeNotes": [
+    "Verify model access in the real account before rollout.",
+    "Wire hooks via wrapper, CI, or local enforcement convention.",
+    "Use PCD before broad repo tasks."
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "target": "/Users/tcvmaksutoglu/Dev/w/crm/mayacore-mfe-context/Codex/README.md",
+  "mirror": "/Users/tcvmaksutoglu/Dev/w/crm/mayacore-mfe-context/Codex/.codex/runtime/runs/2026-05-22T11-31-18Z/workspace-mirror/README.md",
+  "status": "passed",
+  "exact_status": "passed",
+  "target_size": 19659,
+  "mirror_size": 19659,
+  "semantic": {
+    "path": "/Users/tcvmaksutoglu/Dev/w/crm/mayacore-mfe-context/Codex/README.md",
+    "suffix": ".md",
+    "exists": true,
+    "size": 19659,
+    "semantic_status": "passed",
+    "checks": [
+      "markdown-nonempty:passed",
+      "markdown-structure:passed"
+    ]
+  }
+}

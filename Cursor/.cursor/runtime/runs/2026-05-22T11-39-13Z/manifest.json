@@ -1,0 +1,8 @@
+{
+  "mode": "x1",
+  "prompt": "verify delegate",
+  "spawn_order": [],
+  "packets": [],
+  "spawn_packets_dir": "/Users/tcvmaksutoglu/Dev/w/crm/mayacore-mfe-context/Cursor/.cursor/runtime/runs/2026-05-22T11-39-13Z/spawn-packets",
+  "orchestration": "cursor-task"
+}
