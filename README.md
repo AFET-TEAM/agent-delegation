@@ -1,4 +1,4 @@
-# MayaCore MFE Context — Multi-Agent AI Development Framework
+# Multi-Agent AI Development Framework
 
 Enterprise-grade, multi-platform AI agent orchestration system for software development teams. Provides unified configuration templates for **Claude Code**, **GitHub Copilot**, and **OpenAI Codex** with shared architecture patterns.
 
